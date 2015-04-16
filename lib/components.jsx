@@ -42,6 +42,14 @@ class Question extends React.Component {
     }
 }
 
+class JSONViewer extends React.Component {
+    render() {
+        const json = JSON.stringify(this.props.data, null, 4);
+        
+        return <textarea className="quiz-builder__json-viewer" value={json} />;
+    }
+}
+
 export class QuizBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -74,7 +82,8 @@ export class QuizBuilder extends React.Component {
     render() {
         const questions = this.state.get('questions')
             .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} />)
-            .toJS()
+            .toJS();
+        const json = this.state.toJS();
         
         return <div className="quiz-builder">
             <div className="quiz-builder__questions">
@@ -82,6 +91,8 @@ export class QuizBuilder extends React.Component {
             </div>
 
             <button className="quiz-builder__new-question" onClick={this.addQuestion.bind(this)}>New question</button>
+
+            <JSONViewer data={json} />
         </div>;
     }
 }
