@@ -39,7 +39,7 @@ class Question extends React.Component {
             
             {answers}
 
-            <button className="quiz-builder__question-close">{close(18)}</button>
+            <button className="quiz-builder__question-close" onClick={this.props.onClose}>{close(18)}</button>
         </div>;
     }
 }
@@ -70,6 +70,15 @@ export class QuizBuilder extends React.Component {
         }
     }
 
+    deleteQuestion(n) {
+        return (function () {
+            this.updateState(state => state.update(
+                'questions',
+                questions => questions.remove(n)
+            ));
+        }).bind(this);
+    }
+
     addQuestion() {
         this.updateState(state => state.update(
             'questions', 
@@ -83,7 +92,7 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const questions = this.state.get('questions')
-            .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} />)
+              .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} />)
             .toJS();
         const json = this.state.toJS();
         
