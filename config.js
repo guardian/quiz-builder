@@ -17,10 +17,11 @@ System.config({
   "map": {
     "babel": "npm:babel-core@5.1.10",
     "babel-runtime": "npm:babel-runtime@5.1.10",
+    "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
-    "qwery": "github:ded/qwery@4.0.0",
     "immutable-js": "github:facebook/immutable-js@3.7.2",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
+    "qwery": "github:ded/qwery@4.0.0",
     "react": "npm:react@0.13.1",
     "reqwest": "github:ded/reqwest@1.1.5",
     "github:floatdrop/plugin-jsx@1.1.0": {
@@ -130,6 +131,9 @@ System.config({
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
+    },
+    "npm:classnames@1.2.0": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:commander@2.5.1": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",

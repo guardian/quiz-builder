@@ -4,6 +4,7 @@
       "lib": "lib"
     },
     "dependencies": {
+      "classnames": "npm:classnames@^1.2.0",
       "ded/qwery": "github:ded/qwery@^4.0.0",
       "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
