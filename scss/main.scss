@@ -37,6 +37,13 @@ button:focus {
     position: relative;
 }
 
+.quiz-builder__question-text {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: 0;
+}
+
 .quiz-builder__json-viewer {
     border: 1px solid $guardian-brand-dark;
     display: block;

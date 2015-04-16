@@ -17,6 +17,10 @@ class Question extends React.Component {
             isExpanded: false
         };
     }
+
+    handleQuestionTextChange(event) {
+        this.props.setText(event.target.value);
+    }
     
     render() {
         const classes = classnames({
@@ -35,7 +39,7 @@ class Question extends React.Component {
             
         return <div className={classes}>
             <h2 className="quiz-builder__question-number">Question {this.props.index}.</h2>
-            <div className="quiz-builder__question-text">{question.question}</div>
+            <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
             
             {answers}
 
@@ -71,12 +75,17 @@ export class QuizBuilder extends React.Component {
     }
 
     deleteQuestion(n) {
-        return (function () {
-            this.updateState(state => state.update(
-                'questions',
-                questions => questions.remove(n)
-            ));
-        }).bind(this);
+        return () => this.updateState(state => state.update(
+            'questions',
+            questions => questions.remove(n)
+        ));
+    }
+
+    setQuestionText(n) {
+        return (text) => this.updateState(state => state.updateIn(
+            ['questions', n],
+            question => question.set('question', text)
+        ));
     }
 
     addQuestion() {
@@ -92,7 +101,7 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const questions = this.state.get('questions')
-              .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} />)
+              .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} setText={this.setQuestionText(i)} />)
             .toJS();
         const json = this.state.toJS();
         
