@@ -1,0 +1,8 @@
+/* Do not include these in the thing that's spat out; but check they are in frontend.css */
+html {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    padding: 12px 20px;
+}
