@@ -19,7 +19,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.1.10",
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
-    "immutable-js": "github:facebook/immutable-js@3.7.2",
+    "immutable": "github:facebook/immutable-js@3.7.2",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "qwery": "github:ded/qwery@4.0.0",
     "react": "npm:react@0.13.1",
