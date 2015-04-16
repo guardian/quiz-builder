@@ -105,14 +105,22 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const questions = this.state.get('questions')
-              .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} setText={this.setQuestionText(i)} />)
+            .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} setText={this.setQuestionText(i)} />)
             .toJS();
         const json = this.state.toJS();
+
+        let questionsHtml;
+
+        if (questions.length > 0) {
+            questionsHtml = <div className="quiz-builder__questions">
+                {questions}
+            </div>;
+        } else {
+            questionsHtml = <p>Add some questions to get started!</p>
+        }
         
         return <div className="quiz-builder">
-            <div className="quiz-builder__questions">
-                {questions}
-            </div>
+            {questionsHtml}
 
             <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button>
 
