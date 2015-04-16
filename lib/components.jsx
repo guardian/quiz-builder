@@ -34,6 +34,7 @@ class Question extends React.Component {
             
         return <div className={classes}>
             <div className="quiz-builder__question-text">
+                <span className="quiz-builder__question-number">{this.props.index}</span>
                 {question.question}
             </div>
             {answers}
@@ -72,7 +73,7 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const questions = this.state.get('questions')
-            .map(question => <Question question={question} />)
+            .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} />)
             .toJS()
         
         return <div className="quiz-builder">
