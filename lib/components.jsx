@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Immutable from 'immutable';
+import {close} from './svgs.jsx!';
 
 class Answer extends React.Component {
     render() {
@@ -33,11 +34,12 @@ class Question extends React.Component {
         }
             
         return <div className={classes}>
-            <div className="quiz-builder__question-text">
-                <span className="quiz-builder__question-number">{this.props.index}</span>
-                {question.question}
-            </div>
+            <h2 className="quiz-builder__question-number">Question {this.props.index}.</h2>
+            <div className="quiz-builder__question-text">{question.question}</div>
+            
             {answers}
+
+            <button className="quiz-builder__question-close">{close(18)}</button>
         </div>;
     }
 }
@@ -46,7 +48,7 @@ class JSONViewer extends React.Component {
     render() {
         const json = JSON.stringify(this.props.data, null, 4);
         
-        return <textarea className="quiz-builder__json-viewer" value={json} />;
+        return <textarea className="quiz-builder__json-viewer" value={json} readOnly />;
     }
 }
 
