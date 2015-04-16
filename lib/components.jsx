@@ -5,7 +5,7 @@ import {close} from './svgs.jsx!';
 
 class Answer extends React.Component {
     render() {
-        return <p>Answer</p>;
+        return <p>Answer here</p>;
     }
 }
 
@@ -25,13 +25,12 @@ class Question extends React.Component {
     render() {
         const classes = classnames({
             'quiz-builder__question': true,
-            'quiz-builder__question--expanded': this.state.isExpanded
         });
         const question = this.props.question;
         let answersData = question.get('multiChoiceAnswers');
         let answers;
 
-        if (this.props.isExpanded && answersData.size > 0) {
+        if (answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
                 {answersData.map(answer => <Answer answer={answer} />).toJS()}
             </div>
@@ -92,6 +91,20 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    addAnswer(questionNumber) {
+        return () => this.updateState(state => state.updateIn(
+            ['questions', questionNumber],
+            question => question.update(
+                'multiChoiceAnswers',
+                answers => answers.push(Immutable.fromJS({
+                    answer: "",
+                    imageUrl: "",
+                    correct: false
+                }))
+            )
+        ));
+    }
+
     addQuestion() {
         this.updateState(state => state.update(
             'questions', 
@@ -105,7 +118,12 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const questions = this.state.get('questions')
-            .map((question, i) => <Question question={question} key={`question_${i + 1}`} index={i + 1} onClose={this.deleteQuestion(i)} setText={this.setQuestionText(i)} />)
+            .map((question, i) => <Question question={question} 
+                 key={`question_${i + 1}`} 
+                 index={i + 1} 
+                 onClose={this.deleteQuestion(i)} 
+                 setText={this.setQuestionText(i)}
+                 addAnswer={this.addAnswer(i)} />)
             .toJS();
         const json = this.state.toJS();
 
