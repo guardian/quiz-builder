@@ -1,5 +1,33 @@
 
+$guardian-brand: #005689;
+$guardian-brand-light: #94b1ca;
+$guardian-brand-dark: #00456e;
 
 .quiz-builder {
-    background-color: blue;
+
+}
+
+.quiz-builder__question {
+    padding: 10px;
+    border: 1px solid $guardian-brand-dark;
+    margin-bottom: 20px;
+}
+
+.quiz-builder__new-question {
+    border-radius: 10px;
+    border: 1px solid $guardian-brand;
+    background-color: white;
+    padding: 10px;
+    color: $guardian-brand;
+}
+
+.quiz-builder__json-viewer {
+    border: 1px solid $guardian-brand-dark;
+    display: block;
+    margin-top: 20px;
+    background-color: black;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    height: 400px;
+    width: 100%;
 }
