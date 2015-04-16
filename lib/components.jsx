@@ -12,8 +12,6 @@ class Question extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log("Creating question", props);
-
         this.state = {
             isExpanded: false
         };
@@ -27,8 +25,6 @@ class Question extends React.Component {
         const question = this.props.question;
         let answersData = question.get('multiChoiceAnswers');
         let answers;
-
-        console.log("Hi in a question");
 
         if (this.props.isExpanded && answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
@@ -75,13 +71,9 @@ export class QuizBuilder extends React.Component {
     }
     
     render() {
-        console.log("hi", this.state.toJS());
-
         const questions = this.state.get('questions')
-              .map(question => <Question question={question} />)
+            .map(question => <Question question={question} />)
             .toJS()
-
-        console.log("Questions", questions);
         
         return <div className="quiz-builder">
             <div className="quiz-builder__questions">
