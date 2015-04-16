@@ -1,0 +1,8 @@
+{
+  "jspm": {
+    "directories": {
+      "lib": "lib",
+      "packages": "jspm_packages"
+    }
+  }
+}
