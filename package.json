@@ -1,8 +1,16 @@
 {
   "jspm": {
     "directories": {
-      "lib": "lib",
-      "packages": "jspm_packages"
+      "lib": "lib"
+    },
+    "dependencies": {
+      "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
+      "react": "npm:react@^0.13.1"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.0.12",
+      "babel-runtime": "npm:babel-runtime@^5.0.12",
+      "core-js": "npm:core-js@^0.8.1"
     }
   }
 }
