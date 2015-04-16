@@ -40,8 +40,12 @@ class Question extends React.Component {
         return <div className={classes}>
             <h2 className="quiz-builder__question-number">Question {this.props.index}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
+
+            <h3>Answers</h3>
             
             {answers}
+
+            <button className="quiz-builder__button" onClick={this.props.addAnswer}>Add answer</button>
 
             <button className="quiz-builder__question-close" onClick={this.props.onClose}>{close(18)}</button>
         </div>;
@@ -110,7 +114,7 @@ export class QuizBuilder extends React.Component {
                 {questions}
             </div>
 
-            <button className="quiz-builder__new-question" onClick={this.addQuestion.bind(this)}>New question</button>
+            <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button>
 
             <JSONViewer data={json} />
         </div>;
