@@ -19,11 +19,11 @@ class Answer extends React.Component {
             'quiz-builder__answer--correct': isCorrect
         });
         const icon = isCorrect ? tick : cross;
+
+        const header = isCorrect ? <span>{icon} {letter}.</span> : <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>;
         
         return <div className={classes}>
-            <h4 className="quiz-builder__answer-letter">
-                <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>
-            </h4>
+            <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
         </div>;
     }
