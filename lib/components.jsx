@@ -217,8 +217,6 @@ export class QuizBuilder extends React.Component {
         const dragIndex = this.state.get('dragIndex');
         const dropIndex = this.state.get('dropIndex');
 
-        console.log(`Moving ${dragIndex} to ${dropIndex}`);
-        
         this.updateQuiz(quiz => quiz.update(
             'questions',
             questions => {
