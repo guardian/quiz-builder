@@ -15,6 +15,10 @@ class Answer extends React.Component {
         this.props.setText(event.target.value);
     }
 
+    handleImageUrlChange(event) {
+        this.props.setImageUrl(event.target.value);
+    }
+
     handleRevealChange(event) {
         this.props.setReveal(event.target.value);
     }
@@ -22,6 +26,7 @@ class Answer extends React.Component {
     render() {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
+        const imageUrl = answer.get('imageUrl');
         const letter = nthLetter(this.props.index);
         const isCorrect = answer.get('correct');
         const classes = classnames({
@@ -37,6 +42,7 @@ class Answer extends React.Component {
         return <div className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+            <input className="quiz-builder__answer-text" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
             {revealText}
             <button className="quiz-builder__answer-close" onClick={this.props.removeAnswer}>{close(16)}</button>
         </div>;
@@ -93,6 +99,7 @@ class Question extends React.Component {
                                  setCorrect={this.props.setAnswerCorrect.bind(null, index)}
                                  setReveal={this.props.setRevealText}
                                  removeAnswer={this.props.removeAnswer.bind(null, index)}
+                                 setImageUrl={this.props.setAnswerImageUrl(index)}
                                  revealText={question.get('more')} />).toJS()}
             </div>
         }
@@ -196,9 +203,9 @@ export class QuizBuilder extends React.Component {
     }
 
     setAnswerText(questionNumber) {
-        return (answerNumber) => (text) => this.updateQuiz(state => state.updateIn(
-            ['questions', questionNumber, 'multiChoiceAnswers', answerNumber],
-            answer => answer.set('answer', text)
+        return (answerNumber) => (text) => this.updateQuiz(state => state.setIn(
+            ['questions', questionNumber, 'multiChoiceAnswers', answerNumber, 'answer'],
+            text
         ));
     }
 
@@ -265,6 +272,13 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    setAnswerImageUrl(questionNumber) {
+        return (answerNumber) => (imageUrl) => this.updateQuiz(quiz => quiz.setIn(
+            ['questions', questionNumber, 'multiChoiceAnswers', answerNumber, 'imageUrl'],
+            imageUrl
+        ));
+    }
+
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -289,6 +303,7 @@ export class QuizBuilder extends React.Component {
                  setDropIndex={this.setDropIndex.bind(this)}
                  setDragIndex={this.setDragIndex.bind(this)}
                  setImageUrl={this.setQuestionImageUrl(i)}
+                 setAnswerImageUrl={this.setAnswerImageUrl(i)}
                  setIsDragging={this.setIsDragging.bind(this)}
                  removeAnswer={this.removeAnswer(i)}
                  reorder={this.reorder.bind(this)}
