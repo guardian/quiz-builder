@@ -1,25 +1,29 @@
 import React from 'react';
 import classnames from 'classnames';
 import Immutable from 'immutable';
-import {close} from './svgs.jsx!';
+import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter} from './utils';
 
 class Answer extends React.Component {
     handleChange(event) {
         this.props.setText(event.target.value);
     }
-    
+
     render() {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
         const letter = nthLetter(this.props.index);
+        const isCorrect = answer.get('correct');
         const classes = classnames({
             'quiz-builder__answer': true,
-            'quiz-builder__answer--correct': answer.get('correct')
+            'quiz-builder__answer--correct': isCorrect
         });
+        const icon = isCorrect ? tick : cross;
         
         return <div className={classes}>
-            <h4 className="quiz-builder__answer-letter">{letter}.</h4>
+            <h4 className="quiz-builder__answer-letter">
+                <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>
+            </h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
         </div>;
     }
@@ -45,7 +49,7 @@ class Question extends React.Component {
 
         if (answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
-                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} setText={this.props.setAnswerText(index)} />).toJS()}
+                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} setText={this.props.setAnswerText(index)} setCorrect={this.props.setAnswerCorrect.bind(null, index)} />).toJS()}
             </div>
         }
             
@@ -125,6 +129,13 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    setAnswerCorrect(questionNumber) {
+        return (answerNumber) => this.updateState(state => state.updateIn(
+            ['questions', questionNumber, 'multiChoiceAnswers'],
+            answers => answers.map((answer, i) => answer.set('correct', i === answerNumber))
+        ));
+    }
+
     addQuestion() {
         this.updateState(state => state.update(
             'questions', 
@@ -144,6 +155,7 @@ export class QuizBuilder extends React.Component {
                  onClose={this.deleteQuestion(i)} 
                  setText={this.setQuestionText(i)}
                  setAnswerText={this.setAnswerText(i)}
+                 setAnswerCorrect={this.setAnswerCorrect(i)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
         const json = this.state.toJS();
