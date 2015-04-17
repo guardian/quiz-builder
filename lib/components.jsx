@@ -8,6 +8,7 @@ import flatten from 'lodash-node/modern/array/flatten';
 import drop from 'lodash-node/modern/array/drop';
 import take from 'lodash-node/modern/array/take';
 import shuffle from 'lodash-node/modern/collection/shuffle';
+import some from 'lodash-node/modern/collection/some';
 
 class Answer extends React.Component {
     handleChange(event) {
@@ -175,9 +176,17 @@ export class QuizBuilder extends React.Component {
     }
 
     removeAnswer(questionNumber) {
+        const ensureCorrectExists = (answers) => {
+            if (answers.size === 0 || some(answers.toJS(), answer => answer.correct)) {
+                return answers;
+            } else {
+                return answers.update(0, a => a.set('correct', true));
+            }
+        };
+        
         return (answerNumber) => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber, 'multiChoiceAnswers'],
-            answers => answers.remove(answerNumber)
+            answers => ensureCorrectExists(answers.remove(answerNumber))
         ));
     }
 
