@@ -3,7 +3,7 @@ import bonzo from 'bonzo';
 import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close, tick, cross} from './svgs.jsx!';
-import {nthLetter} from './utils';
+import {nthLetter, insertAt} from './utils';
 import flatten from 'lodash-node/modern/array/flatten';
 import drop from 'lodash-node/modern/array/drop';
 import take from 'lodash-node/modern/array/take';
@@ -60,8 +60,8 @@ class Question extends React.Component {
     }
 
     onDragEnd(event) {
-        this.props.setIsDragging(false);
         this.props.reorder();
+        this.props.setIsDragging(false);
     }
 
     onDragOver(event) {
@@ -214,7 +214,19 @@ export class QuizBuilder extends React.Component {
     }
 
     reorder() {
-        console.log("Reorder!");
+        const dragIndex = this.state.get('dragIndex');
+        const dropIndex = this.state.get('dropIndex');
+
+        console.log(`Moving ${dragIndex} to ${dropIndex}`);
+        
+        this.updateQuiz(quiz => quiz.update(
+            'questions',
+            questions => {
+                const dragged = questions.get(dragIndex);
+
+                return insertAt(questions, dropIndex, dragged).remove(dropIndex < dragIndex ? dragIndex + 1 : dragIndex);
+            }
+        ));
     }
     
     render() {
@@ -239,10 +251,6 @@ export class QuizBuilder extends React.Component {
         if (questions.length > 1 && this.state.get('isDragging') && this.state.get('dropIndex') !== null) {
             const dragIndex = this.state.get('dragIndex');
             const dropIndex = this.state.get('dropIndex');
-
-            console.log({
-                drag: dragIndex, drop: dropIndex
-            });
 
             if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
                 questions = flatten([
