@@ -52,6 +52,10 @@ class Question extends React.Component {
         };
     }
 
+    handleImageUrlChange(event) {
+        this.props.setImageUrl(event.target.value);
+    }
+
     handleQuestionTextChange(event) {
         this.props.setText(event.target.value);
     }
@@ -100,6 +104,7 @@ class Question extends React.Component {
                 onDragStart={this.onDragStart.bind(this)}
                 draggable="true">Question {this.props.index + 1}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
+            <input className="quiz-builder__question-text" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
             <h3>Answers</h3>
             
@@ -216,6 +221,7 @@ export class QuizBuilder extends React.Component {
             'questions', 
             questions => questions.push(Immutable.fromJS({
                 question: "",
+                imageUrl: "",
                 more: "",
                 multiChoiceAnswers: []
             }))
@@ -252,6 +258,13 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    setQuestionImageUrl(questionNumber) {
+        return (imageUrl) => this.updateQuiz(quiz => quiz.setIn(
+            ['questions', questionNumber, 'imageUrl'],
+            imageUrl
+        ));
+    }
+
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -275,6 +288,7 @@ export class QuizBuilder extends React.Component {
                  setRevealText={this.setRevealText(i)}
                  setDropIndex={this.setDropIndex.bind(this)}
                  setDragIndex={this.setDragIndex.bind(this)}
+                 setImageUrl={this.setQuestionImageUrl(i)}
                  setIsDragging={this.setIsDragging.bind(this)}
                  removeAnswer={this.removeAnswer(i)}
                  reorder={this.reorder.bind(this)}
