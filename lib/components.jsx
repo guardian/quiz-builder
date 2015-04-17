@@ -5,14 +5,18 @@ import {close} from './svgs.jsx!';
 import {nthLetter} from './utils';
 
 class Answer extends React.Component {
+    handleChange(event) {
+        this.props.setText(event.target.value);
+    }
+    
     render() {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
         const letter = nthLetter(this.props.index);
         
         return <div className="quiz-builder__answer">
-            <h4 className="quiz-builder__answer-letter">Answer {letter}.</h4>
-            <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." />
+            <h4 className="quiz-builder__answer-letter">{letter}.</h4>
+            <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
         </div>;
     }
 }
@@ -40,7 +44,7 @@ class Question extends React.Component {
 
         if (answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
-                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} />).toJS()}
+                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} setText={this.props.setAnswerText(index)} />).toJS()}
             </div>
         }
             
@@ -113,6 +117,13 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    setAnswerText(questionNumber) {
+        return (answerNumber) => (text) => this.updateState(state => state.updateIn(
+            ['questions', questionNumber, 'multiChoiceAnswers', answerNumber],
+            answer => answer.set('answer', text)
+        ));
+    }
+
     addQuestion() {
         this.updateState(state => state.update(
             'questions', 
@@ -131,6 +142,7 @@ export class QuizBuilder extends React.Component {
                  index={i + 1} 
                  onClose={this.deleteQuestion(i)} 
                  setText={this.setQuestionText(i)}
+                 setAnswerText={this.setAnswerText(i)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
         const json = this.state.toJS();
