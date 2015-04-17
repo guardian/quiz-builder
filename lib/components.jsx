@@ -48,6 +48,24 @@ class Question extends React.Component {
     handleQuestionTextChange(event) {
         this.props.setText(event.target.value);
     }
+
+    onDragStart(event) {
+        event.dataTransfer.effectAllowed = 'move';
+        this.props.setIsDragging(true);
+        this.props.setDragIndex(this.props.index);
+    }
+
+    onDragEnd(event) {
+        this.props.setIsDragging(false);
+        this.props.reorder();
+    }
+
+    onDragOver(event) {
+        const node = React.findDOMNode(this);
+        const relY = event.clientY - node.offsetTop;
+        const dropPosition = this.props.index + (relY >= node.offsetHeight / 2 ? 1 : 0);
+        this.props.setDropIndex(dropPosition);
+    }
     
     render() {
         const question = this.props.question;
@@ -60,8 +78,12 @@ class Question extends React.Component {
             </div>
         }
             
-        return <div className="quiz-builder__question">
-            <h2 className="quiz-builder__question-number">Question {this.props.index}.</h2>
+        return <div className="quiz-builder__question" onDragOver={this.onDragOver.bind(this)}>
+            <h2 className="quiz-builder__question-number"
+                data-index={this.props.index}
+                onDragEnd={this.onDragEnd.bind(this)}
+                onDragStart={this.onDragStart.bind(this)}
+                draggable="true">Question {this.props.index + 1}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
 
             <h3>Answers</h3>
@@ -88,7 +110,12 @@ export class QuizBuilder extends React.Component {
         super(props);
 
         this.state = Immutable.fromJS({
-            questions: []
+            isDragging: false,
+            dragIndex: null,
+            dropIndex: null,
+            quiz: {
+                questions: []
+            }
         });
     }
 
@@ -101,28 +128,32 @@ export class QuizBuilder extends React.Component {
         }
     }
 
+    updateQuiz(f) {
+        this.updateState(state => state.update('quiz', f));
+    }
+
     deleteQuestion(n) {
-        return () => this.updateState(state => state.update(
+        return () => this.updateQuiz(state => state.update(
             'questions',
             questions => questions.remove(n)
         ));
     }
 
     setQuestionText(n) {
-        return (text) => this.updateState(state => state.updateIn(
+        return (text) => this.updateQuiz(state => state.updateIn(
             ['questions', n],
             question => question.set('question', text)
         ));
     }
 
     addAnswer(questionNumber) {
-        return () => this.updateState(state => state.updateIn(
+        return () => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber],
             question => question.update(
                 'multiChoiceAnswers',
                 answers => answers.push(Immutable.fromJS({
-                    answer: "",
-                    imageUrl: "",
+                    answer: '',
+                    imageUrl: '',
                     correct: answers.size === 0
                 }))
             )
@@ -130,28 +161,28 @@ export class QuizBuilder extends React.Component {
     }
 
     setAnswerText(questionNumber) {
-        return (answerNumber) => (text) => this.updateState(state => state.updateIn(
+        return (answerNumber) => (text) => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber, 'multiChoiceAnswers', answerNumber],
             answer => answer.set('answer', text)
         ));
     }
 
     setAnswerCorrect(questionNumber) {
-        return (answerNumber) => this.updateState(state => state.updateIn(
+        return (answerNumber) => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber, 'multiChoiceAnswers'],
             answers => answers.map((answer, i) => answer.set('correct', i === answerNumber))
         ));
     }
 
     setRevealText(questionNumber) {
-        return (text) => this.updateState(state => state.setIn(
+        return (text) => this.updateQuiz(state => state.setIn(
             ['questions', questionNumber, 'more'],
             text
         ));
     }
 
     addQuestion() {
-        this.updateState(state => state.update(
+        this.updateQuiz(state => state.update(
             'questions', 
             questions => questions.push(Immutable.fromJS({
                 question: "",
@@ -160,21 +191,46 @@ export class QuizBuilder extends React.Component {
             }))
         ));
     }
+
+    setDragIndex(index) {
+        this.updateState(state => state.set('dragIndex', index));
+    }
+
+    setDropIndex(index) {
+        this.updateState(state => state.set('dropIndex', index));
+    }
+
+    setIsDragging(isDragging) {
+        this.updateState(state => state.set('isDragging', isDragging));
+    }
+
+    reorder() {
+        console.log("Reorder!");
+    }
     
     render() {
-        const questions = this.state.get('questions')
+        const quiz = this.state.get('quiz');
+        const questions = quiz.get('questions')
             .map((question, i) => <Question question={question} 
                  key={`question_${i + 1}`} 
-                 index={i + 1} 
+                 index={i} 
                  onClose={this.deleteQuestion(i)} 
                  setText={this.setQuestionText(i)}
                  setAnswerText={this.setAnswerText(i)}
                  setAnswerCorrect={this.setAnswerCorrect(i)}
                  setRevealText={this.setRevealText(i)}
+                 setDropIndex={this.setDropIndex.bind(this)}
+                 setDragIndex={this.setDragIndex.bind(this)}
+                 setIsDragging={this.setIsDragging.bind(this)}
+                 reorder={this.reorder.bind(this)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
-        const json = this.state.toJS();
+        const json = quiz.toJS();
 
+        if (this.state.get('isDragging')) {
+            
+        }
+        
         let questionsHtml;
 
         if (questions.length > 0) {
