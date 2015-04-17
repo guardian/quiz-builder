@@ -57,6 +57,7 @@ button:focus {
     background-color: black;
     color: white;
     font-family: "Courier New", Courier, monospace;
+    overflow-y: scroll;
     height: 400px;
     width: 100%;
 }
@@ -77,6 +78,10 @@ button:focus {
 
 .quiz-builder__answer {
     margin-bottom: 10px;
+}
+
+.quiz-builder__answer--correct .quiz-builder__answer-letter {
+    color: green;
 }
 
 .quiz-builder__answer-text {

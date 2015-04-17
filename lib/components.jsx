@@ -13,8 +13,12 @@ class Answer extends React.Component {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
         const letter = nthLetter(this.props.index);
+        const classes = classnames({
+            'quiz-builder__answer': true,
+            'quiz-builder__answer--correct': answer.get('correct')
+        });
         
-        return <div className="quiz-builder__answer">
+        return <div className={classes}>
             <h4 className="quiz-builder__answer-letter">{letter}.</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
         </div>;
@@ -35,9 +39,6 @@ class Question extends React.Component {
     }
     
     render() {
-        const classes = classnames({
-            'quiz-builder__question': true,
-        });
         const question = this.props.question;
         let answersData = question.get('multiChoiceAnswers');
         let answers;
@@ -48,7 +49,7 @@ class Question extends React.Component {
             </div>
         }
             
-        return <div className={classes}>
+        return <div className="quiz-builder__question">
             <h2 className="quiz-builder__question-number">Question {this.props.index}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
 
@@ -111,7 +112,7 @@ export class QuizBuilder extends React.Component {
                 answers => answers.push(Immutable.fromJS({
                     answer: "",
                     imageUrl: "",
-                    correct: false
+                    correct: answers.size === 0
                 }))
             )
         ));
