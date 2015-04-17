@@ -17,9 +17,9 @@ System.config({
   "map": {
     "babel": "npm:babel-core@5.1.10",
     "babel-runtime": "npm:babel-runtime@5.1.10",
+    "bonzo": "github:ded/bonzo@2.0.0",
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
-    "bonzo": "github:ded/bonzo@2.0.0",
     "immutable": "github:facebook/immutable-js@3.7.2",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
