@@ -96,8 +96,19 @@ button:focus {
 }
 
 .quiz-builder__answer {
+    position: relative;
     background-color: $neutral-8;
+    padding-left: 5px;
     margin-bottom: 10px;
+}
+
+.quiz-builder__answer-close {
+    border: 0;
+    background-color: transparent;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 0;
 }
 
 .quiz-builder__answer--correct .quiz-builder__answer-letter {

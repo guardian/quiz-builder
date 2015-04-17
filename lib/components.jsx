@@ -37,6 +37,7 @@ class Answer extends React.Component {
             <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
             {revealText}
+            <button className="quiz-builder__answer-close" onClick={this.props.removeAnswer}>{close(16)}</button>
         </div>;
     }
 }
@@ -80,7 +81,14 @@ class Question extends React.Component {
 
         if (answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
-                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} setText={this.props.setAnswerText(index)} setCorrect={this.props.setAnswerCorrect.bind(null, index)} setReveal={this.props.setRevealText} revealText={question.get('more')} />).toJS()}
+                {answersData.map((answer, index) => <Answer answer={answer}
+                                 index={index}
+                                 key={`answer_${index + 1}`}
+                                 setText={this.props.setAnswerText(index)}
+                                 setCorrect={this.props.setAnswerCorrect.bind(null, index)}
+                                 setReveal={this.props.setRevealText}
+                                 removeAnswer={this.props.removeAnswer.bind(null, index)}
+                                 revealText={question.get('more')} />).toJS()}
             </div>
         }
             
@@ -163,6 +171,13 @@ export class QuizBuilder extends React.Component {
                     correct: answers.size === 0
                 }))
             )
+        ));
+    }
+
+    removeAnswer(questionNumber) {
+        return (answerNumber) => this.updateQuiz(state => state.updateIn(
+            ['questions', questionNumber, 'multiChoiceAnswers'],
+            answers => answers.remove(answerNumber)
         ));
     }
 
@@ -252,6 +267,7 @@ export class QuizBuilder extends React.Component {
                  setDropIndex={this.setDropIndex.bind(this)}
                  setDragIndex={this.setDragIndex.bind(this)}
                  setIsDragging={this.setIsDragging.bind(this)}
+                 removeAnswer={this.removeAnswer(i)}
                  reorder={this.reorder.bind(this)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
