@@ -2,10 +2,18 @@ import React from 'react';
 import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close} from './svgs.jsx!';
+import {nthLetter} from './utils';
 
 class Answer extends React.Component {
     render() {
-        return <p>Answer here</p>;
+        const answer = this.props.answer;
+        const answerText = answer.get('answer');
+        const letter = nthLetter(this.props.index);
+        
+        return <div className="quiz-builder__answer">
+            <span className="quiz-builder__answer-letter">{letter}</span>
+            <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." />
+        </div>;
     }
 }
 
@@ -32,7 +40,7 @@ class Question extends React.Component {
 
         if (answersData.size > 0) {
             answers = <div className="quiz-builder__answers">
-                {answersData.map(answer => <Answer answer={answer} />).toJS()}
+                {answersData.map((answer, index) => <Answer answer={answer} index={index} key={`answer_${index + 1}`} />).toJS()}
             </div>
         }
             
