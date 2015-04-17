@@ -11,7 +11,7 @@ class Answer extends React.Component {
         const letter = nthLetter(this.props.index);
         
         return <div className="quiz-builder__answer">
-            <span className="quiz-builder__answer-letter">{letter}</span>
+            <h4 className="quiz-builder__answer-letter">Answer {letter}.</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." />
         </div>;
     }
