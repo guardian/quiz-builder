@@ -1,8 +1,12 @@
 import React from 'react';
+import bonzo from 'bonzo';
 import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter} from './utils';
+import flatten from 'lodash-node/modern/array/flatten';
+import drop from 'lodash-node/modern/array/drop';
+import take from 'lodash-node/modern/array/take';
 
 class Answer extends React.Component {
     handleChange(event) {
@@ -61,9 +65,10 @@ class Question extends React.Component {
     }
 
     onDragOver(event) {
-        const node = React.findDOMNode(this);
-        const relY = event.clientY - node.offsetTop;
-        const dropPosition = this.props.index + (relY >= node.offsetHeight / 2 ? 1 : 0);
+        const $node = bonzo(React.findDOMNode(this));
+        const offset = $node.offset();
+        const relY = bonzo(document.body).scrollTop() + event.clientY - offset.top;
+        const dropPosition = this.props.index + (relY >= offset.height / 2 ? 1 : 0);
         this.props.setDropIndex(dropPosition);
     }
     
@@ -202,6 +207,10 @@ export class QuizBuilder extends React.Component {
 
     setIsDragging(isDragging) {
         this.updateState(state => state.set('isDragging', isDragging));
+
+        if (!isDragging) {
+            this.updateState(state => state.set('dropIndex', null).set('dragIndex', null));
+        }
     }
 
     reorder() {
@@ -210,7 +219,7 @@ export class QuizBuilder extends React.Component {
     
     render() {
         const quiz = this.state.get('quiz');
-        const questions = quiz.get('questions')
+        let questions = quiz.get('questions')
             .map((question, i) => <Question question={question} 
                  key={`question_${i + 1}`} 
                  index={i} 
@@ -227,8 +236,21 @@ export class QuizBuilder extends React.Component {
             .toJS();
         const json = quiz.toJS();
 
-        if (this.state.get('isDragging')) {
-            
+        if (questions.length > 1 && this.state.get('isDragging') && this.state.get('dropIndex') !== null) {
+            const dragIndex = this.state.get('dragIndex');
+            const dropIndex = this.state.get('dropIndex');
+
+            console.log({
+                drag: dragIndex, drop: dropIndex
+            });
+
+            if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
+                questions = flatten([
+                    take(questions, dropIndex),
+                    <div key="placeholder" className="quiz-builder__drop-placeholder"></div>,
+                    drop(questions, dropIndex)
+                ]);
+            }
         }
         
         let questionsHtml;

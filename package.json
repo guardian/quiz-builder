@@ -5,9 +5,12 @@
     },
     "dependencies": {
       "classnames": "npm:classnames@^1.2.0",
+      "ded/bonzo": "github:ded/bonzo@^2.0.0",
       "ded/qwery": "github:ded/qwery@^4.0.0",
       "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
+      "lodash": "npm:lodash@^3.7.0",
+      "lodash-node": "npm:lodash-node@^3.7.0",
       "react": "npm:react@^0.13.1",
       "reqwest": "github:ded/reqwest@^1.1.5"
     },

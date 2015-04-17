@@ -19,8 +19,11 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.1.10",
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
+    "bonzo": "github:ded/bonzo@2.0.0",
     "immutable": "github:facebook/immutable-js@3.7.2",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
+    "lodash": "npm:lodash@3.7.0",
+    "lodash-node": "npm:lodash-node@3.7.0",
     "qwery": "github:ded/qwery@4.0.0",
     "react": "npm:react@0.13.1",
     "reqwest": "github:ded/reqwest@1.1.5",
@@ -287,6 +290,12 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
+    },
+    "npm:lodash-node@3.7.0": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:lodash@3.7.0": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:miller-rabin@1.1.5": {
       "bn.js": "npm:bn.js@1.3.0",
