@@ -7,6 +7,7 @@ import {nthLetter, insertAt} from './utils';
 import flatten from 'lodash-node/modern/array/flatten';
 import drop from 'lodash-node/modern/array/drop';
 import take from 'lodash-node/modern/array/take';
+import shuffle from 'lodash-node/modern/collection/shuffle';
 
 class Answer extends React.Component {
     handleChange(event) {
@@ -226,6 +227,16 @@ export class QuizBuilder extends React.Component {
             }
         ));
     }
+
+    shuffleAnswers() {
+        this.updateQuiz(quiz => quiz.update(
+            'questions',
+            questions => questions.map(question => question.update(
+                'multiChoiceAnswers',
+                answers => Immutable.fromJS(shuffle(answers.toJS()))
+            ))
+        ));
+    }
     
     render() {
         const quiz = this.state.get('quiz');
@@ -272,7 +283,8 @@ export class QuizBuilder extends React.Component {
         return <div className="quiz-builder">
             {questionsHtml}
 
-            <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button>
+            <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
+            <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
 
             <JSONViewer data={json} />
         </div>;
