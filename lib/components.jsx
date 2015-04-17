@@ -26,7 +26,7 @@ class Answer extends React.Component {
 
         const header = isCorrect ? <span>{icon} {letter}.</span> : <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>;
 
-        const revealText = isCorrect && <input className="quiz-builder__answer-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
+        const revealText = isCorrect && <input className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
         return <div className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>

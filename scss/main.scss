@@ -107,6 +107,15 @@ button:focus {
     padding: 10px 0;
 }
 
+.quiz-builder__reveal-text {
+    font-size: 14px;
+    font-style: italic;
+    box-sizing: border-box;
+    width: 100%;
+    border: 0;
+    padding: 10px 0;
+}
+
 .quiz-builder__cross-path {
     fill: $error;
 }
