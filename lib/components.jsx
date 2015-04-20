@@ -21,21 +21,6 @@ class Answer extends React.Component {
         this.props.setReveal(event.target.value);
     }
 
-    onDragStart(event) {
-        // draggable events propagate. seems weird but ok.
-        event.stopPropagation();
-        setDraggedElement(this);
-    }
-
-    onDragEnd(event) {
-        event.stopPropagation();
-        unsetDraggedElement();
-    }
-
-    onDragOver(event) {
-
-    }
-
     render() {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
@@ -52,12 +37,7 @@ class Answer extends React.Component {
 
         const revealText = isCorrect && <input className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
-        return <div draggable="true"
-                    onDragStart={this.onDragStart.bind(this)}
-                    onDragEnd={this.onDragEnd.bind(this)}
-                    onDragOver={this.onDragOver.bind(this)}
-                    data-drag-context="answer"
-                    className={classes}>
+        return <div className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
             <input className="quiz-builder__answer-text" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
@@ -90,8 +70,8 @@ class Question extends React.Component {
         let answers;
 
         if (answersData.size > 0) {
-            answers = <div className="quiz-builder__answers">
-                {answersData.map((answer, index) => <Answer answer={answer}
+            answers = answersData.map((answer, index) =>
+                         <Answer answer={answer}
                                  index={index}
                                  key={`answer_${index + 1}`}
                                  setText={this.props.setAnswerText(index)}
@@ -99,8 +79,8 @@ class Question extends React.Component {
                                  setReveal={this.props.setRevealText}
                                  removeAnswer={this.props.removeAnswer.bind(null, index)}
                                  setImageUrl={this.props.setAnswerImageUrl(index)}
-                                 revealText={question.get('more')} />).toJS()}
-            </div>
+                                 revealText={question.get('more')} />
+            ).toJS()
         }
             
         return <div className="quiz-builder__question">
@@ -109,8 +89,10 @@ class Question extends React.Component {
             <input className="quiz-builder__question-text" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
             <h3>Answers</h3>
-            
-            {answers}
+
+            <div className="quiz-builder__answers">
+            <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
+            </div>
 
             <button className="quiz-builder__button" onClick={this.props.addAnswer}>Add answer</button>
 
@@ -238,6 +220,19 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
+    reorderAnswers(questionNumber) {
+        return (dragIndex, dropIndex) => {
+            this.updateQuiz(quiz => quiz.updateIn(
+                ['questions', questionNumber, 'multiChoiceAnswers'],
+                answers => {
+                    const dragged = answers.get(dragIndex);
+
+                    return insertAt(answers, dropIndex, dragged).remove(dropIndex < dragIndex ? dragIndex + 1 : dragIndex);
+                }
+            ));
+        }
+    }
+
     setQuestionImageUrl(questionNumber) {
         return (imageUrl) => this.updateQuiz(quiz => quiz.setIn(
             ['questions', questionNumber, 'imageUrl'],
@@ -276,6 +271,7 @@ export class QuizBuilder extends React.Component {
                  setImageUrl={this.setQuestionImageUrl(i)}
                  setAnswerImageUrl={this.setAnswerImageUrl(i)}
                  removeAnswer={this.removeAnswer(i)}
+                 reorder={this.reorderAnswers(i)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
         const json = quiz.toJS();
