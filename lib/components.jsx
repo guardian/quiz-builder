@@ -23,6 +23,18 @@ class Answer extends React.Component {
         this.props.setReveal(event.target.value);
     }
 
+    onDragOver(event) {
+
+    }
+
+    onDragEnd(event) {
+
+    }
+
+    onDragStart(event) {
+
+    }
+
     render() {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
@@ -39,7 +51,11 @@ class Answer extends React.Component {
 
         const revealText = isCorrect && <input className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
-        return <div className={classes}>
+        return <div draggable="true"
+                    onDragStart={this.onDragStart}
+                    onDragEnd={this.onDragEnd}
+                    onDragOver={this.onDragOver}
+                    className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
             <input className="quiz-builder__answer-text" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
@@ -104,12 +120,12 @@ class Question extends React.Component {
             </div>
         }
             
-        return <div className="quiz-builder__question" onDragOver={this.onDragOver.bind(this)}>
-            <h2 className="quiz-builder__question-number"
-                data-index={this.props.index}
-                onDragEnd={this.onDragEnd.bind(this)}
-                onDragStart={this.onDragStart.bind(this)}
-                draggable="true">Question {this.props.index + 1}.</h2>
+        return <div className="quiz-builder__question" onDragOver={this.onDragOver.bind(this)}
+                    data-index={this.props.index}
+                    onDragEnd={this.onDragEnd.bind(this)}
+                    onDragStart={this.onDragStart.bind(this)}
+                    draggable="true">
+            <h2 className="quiz-builder__question-number">Question {this.props.index + 1}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
             <input className="quiz-builder__question-text" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
