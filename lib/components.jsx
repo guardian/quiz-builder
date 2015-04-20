@@ -4,12 +4,9 @@ import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter, insertAt} from './utils';
-import {setDraggedElement, unsetDraggedElement, draggedElementContext} from './draggedElement';
-import flatten from 'lodash-node/modern/array/flatten';
-import drop from 'lodash-node/modern/array/drop';
-import take from 'lodash-node/modern/array/take';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import some from 'lodash-node/modern/collection/some';
+import ReorderableList from './ReorderableList.jsx!';
 
 class Answer extends React.Component {
     handleChange(event) {
@@ -86,29 +83,6 @@ class Question extends React.Component {
     handleQuestionTextChange(event) {
         this.props.setText(event.target.value);
     }
-
-    onDragStart(event) {
-        setDraggedElement(this);
-        event.dataTransfer.effectAllowed = 'move';
-        this.props.setIsDragging(true);
-        this.props.setDragIndex(this.props.index);
-    }
-
-    onDragEnd(event) {
-        unsetDraggedElement();
-        this.props.reorder();
-        this.props.setIsDragging(false);
-    }
-
-    onDragOver(event) {
-        if (draggedElementContext() === 'question') {
-            const $node = bonzo(React.findDOMNode(this));
-            const offset = $node.offset();
-            const relY = bonzo(document.body).scrollTop() + event.clientY - offset.top;
-            const dropPosition = this.props.index + (relY >= offset.height / 2 ? 1 : 0);
-            this.props.setDropIndex(dropPosition);
-        }
-    }
     
     render() {
         const question = this.props.question;
@@ -129,12 +103,7 @@ class Question extends React.Component {
             </div>
         }
             
-        return <div className="quiz-builder__question" onDragOver={this.onDragOver.bind(this)}
-                    data-index={this.props.index}
-                    data-drag-context="question"
-                    onDragEnd={this.onDragEnd.bind(this)}
-                    onDragStart={this.onDragStart.bind(this)}
-                    draggable="true">
+        return <div className="quiz-builder__question">
             <h2 className="quiz-builder__question-number">Question {this.props.index + 1}.</h2>
             <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
             <input className="quiz-builder__question-text" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
@@ -163,9 +132,6 @@ export class QuizBuilder extends React.Component {
         super(props);
 
         this.state = Immutable.fromJS({
-            isDragging: false,
-            dragIndex: null,
-            dropIndex: null,
             quiz: {
                 questions: []
             }
@@ -261,26 +227,7 @@ export class QuizBuilder extends React.Component {
         ));
     }
 
-    setDragIndex(index) {
-        this.updateState(state => state.set('dragIndex', index));
-    }
-
-    setDropIndex(index) {
-        this.updateState(state => state.set('dropIndex', index));
-    }
-
-    setIsDragging(isDragging) {
-        this.updateState(state => state.set('isDragging', isDragging));
-
-        if (!isDragging) {
-            this.updateState(state => state.set('dropIndex', null).set('dragIndex', null));
-        }
-    }
-
-    reorder() {
-        const dragIndex = this.state.get('dragIndex');
-        const dropIndex = this.state.get('dropIndex');
-
+    reorder(dragIndex, dropIndex) {
         this.updateQuiz(quiz => quiz.update(
             'questions',
             questions => {
@@ -326,35 +273,18 @@ export class QuizBuilder extends React.Component {
                  setAnswerText={this.setAnswerText(i)}
                  setAnswerCorrect={this.setAnswerCorrect(i)}
                  setRevealText={this.setRevealText(i)}
-                 setDropIndex={this.setDropIndex.bind(this)}
-                 setDragIndex={this.setDragIndex.bind(this)}
                  setImageUrl={this.setQuestionImageUrl(i)}
                  setAnswerImageUrl={this.setAnswerImageUrl(i)}
-                 setIsDragging={this.setIsDragging.bind(this)}
                  removeAnswer={this.removeAnswer(i)}
-                 reorder={this.reorder.bind(this)}
                  addAnswer={this.addAnswer(i)} />)
             .toJS();
         const json = quiz.toJS();
-
-        if (questions.length > 1 && this.state.get('isDragging') && this.state.get('dropIndex') !== null) {
-            const dragIndex = this.state.get('dragIndex');
-            const dropIndex = this.state.get('dropIndex');
-
-            if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
-                questions = flatten([
-                    take(questions, dropIndex),
-                    <div key="placeholder" className="quiz-builder__drop-placeholder"></div>,
-                    drop(questions, dropIndex)
-                ]);
-            }
-        }
         
         let questionsHtml;
 
         if (questions.length > 0) {
             questionsHtml = <div className="quiz-builder__questions">
-                {questions}
+                <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
             </div>;
         } else {
             questionsHtml = <p>Add some questions to get started!</p>
