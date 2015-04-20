@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter, insertAt} from './utils';
+import {setDraggedElement, unsetDraggedElement, draggedElementContext} from './draggedElement';
 import flatten from 'lodash-node/modern/array/flatten';
 import drop from 'lodash-node/modern/array/drop';
 import take from 'lodash-node/modern/array/take';
@@ -23,15 +24,18 @@ class Answer extends React.Component {
         this.props.setReveal(event.target.value);
     }
 
-    onDragOver(event) {
-
+    onDragStart(event) {
+        // draggable events propagate. seems weird but ok.
+        event.stopPropagation();
+        setDraggedElement(this);
     }
 
     onDragEnd(event) {
-
+        event.stopPropagation();
+        unsetDraggedElement();
     }
 
-    onDragStart(event) {
+    onDragOver(event) {
 
     }
 
@@ -52,9 +56,10 @@ class Answer extends React.Component {
         const revealText = isCorrect && <input className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
         return <div draggable="true"
-                    onDragStart={this.onDragStart}
-                    onDragEnd={this.onDragEnd}
-                    onDragOver={this.onDragOver}
+                    onDragStart={this.onDragStart.bind(this)}
+                    onDragEnd={this.onDragEnd.bind(this)}
+                    onDragOver={this.onDragOver.bind(this)}
+                    data-drag-context="answer"
                     className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>
             <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
@@ -83,22 +88,26 @@ class Question extends React.Component {
     }
 
     onDragStart(event) {
+        setDraggedElement(this);
         event.dataTransfer.effectAllowed = 'move';
         this.props.setIsDragging(true);
         this.props.setDragIndex(this.props.index);
     }
 
     onDragEnd(event) {
+        unsetDraggedElement();
         this.props.reorder();
         this.props.setIsDragging(false);
     }
 
     onDragOver(event) {
-        const $node = bonzo(React.findDOMNode(this));
-        const offset = $node.offset();
-        const relY = bonzo(document.body).scrollTop() + event.clientY - offset.top;
-        const dropPosition = this.props.index + (relY >= offset.height / 2 ? 1 : 0);
-        this.props.setDropIndex(dropPosition);
+        if (draggedElementContext() === 'question') {
+            const $node = bonzo(React.findDOMNode(this));
+            const offset = $node.offset();
+            const relY = bonzo(document.body).scrollTop() + event.clientY - offset.top;
+            const dropPosition = this.props.index + (relY >= offset.height / 2 ? 1 : 0);
+            this.props.setDropIndex(dropPosition);
+        }
     }
     
     render() {
@@ -122,6 +131,7 @@ class Question extends React.Component {
             
         return <div className="quiz-builder__question" onDragOver={this.onDragOver.bind(this)}
                     data-index={this.props.index}
+                    data-drag-context="question"
                     onDragEnd={this.onDragEnd.bind(this)}
                     onDragStart={this.onDragStart.bind(this)}
                     draggable="true">
