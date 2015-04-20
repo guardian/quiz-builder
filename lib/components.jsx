@@ -3,7 +3,7 @@ import bonzo from 'bonzo';
 import classnames from 'classnames';
 import Immutable from 'immutable';
 import {close, tick, cross} from './svgs.jsx!';
-import {nthLetter, insertAt} from './utils';
+import {nthLetter, move} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import some from 'lodash-node/modern/collection/some';
 import ReorderableList from './ReorderableList.jsx!';
@@ -212,11 +212,7 @@ export class QuizBuilder extends React.Component {
     reorder(dragIndex, dropIndex) {
         this.updateQuiz(quiz => quiz.update(
             'questions',
-            questions => {
-                const dragged = questions.get(dragIndex);
-
-                return insertAt(questions, dropIndex, dragged).remove(dropIndex < dragIndex ? dragIndex + 1 : dragIndex);
-            }
+            questions => move(questions, dragIndex, dropIndex)
         ));
     }
 
@@ -224,11 +220,7 @@ export class QuizBuilder extends React.Component {
         return (dragIndex, dropIndex) => {
             this.updateQuiz(quiz => quiz.updateIn(
                 ['questions', questionNumber, 'multiChoiceAnswers'],
-                answers => {
-                    const dragged = answers.get(dragIndex);
-
-                    return insertAt(answers, dropIndex, dragged).remove(dropIndex < dragIndex ? dragIndex + 1 : dragIndex);
-                }
+                answers => move(answers, dragIndex, dropIndex)
             ));
         }
     }
