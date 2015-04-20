@@ -7,6 +7,7 @@ import {nthLetter, move} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import some from 'lodash-node/modern/collection/some';
 import ReorderableList from './ReorderableList.jsx!';
+import validate from './schema';
 
 class Answer extends React.Component {
     handleChange(event) {
@@ -248,6 +249,24 @@ export class QuizBuilder extends React.Component {
             ))
         ));
     }
+
+    loadFromJSON() {
+        try {
+            const json = JSON.parse(prompt("Enter JSON here"));
+            const result = validate(json);
+            
+            if (!result.valid) {
+                throw null;
+            }
+            
+            this.state = Immutable.fromJS({
+                quiz: json
+            });
+            this.forceUpdate();
+        } catch (error) {
+            alert("Bad JSON format, could not load.");
+        }
+    }
     
     render() {
         const quiz = this.state.get('quiz');
@@ -282,8 +301,9 @@ export class QuizBuilder extends React.Component {
             {questionsHtml}
 
             <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
-            <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
-
+            <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button> &nbsp;
+            <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
+        
             <JSONViewer data={json} />
         </div>;
     }

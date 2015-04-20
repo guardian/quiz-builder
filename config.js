@@ -21,6 +21,7 @@ System.config({
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
     "immutable": "github:facebook/immutable-js@3.7.2",
+    "jsonschema": "npm:jsonschema@1.0.1",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
     "lodash-node": "npm:lodash-node@3.7.0",
@@ -282,6 +283,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:jsonschema@1.0.1": {
+      "url": "github:jspm/nodelibs-url@0.1.0"
     },
     "npm:jstransform@10.1.0": {
       "base62": "npm:base62@0.1.1",
