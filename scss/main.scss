@@ -227,6 +227,10 @@ $min-score-col-width: 40px;
     &:last-of-type {
         margin-bottom: 25px;
     }
+
+    &:first-of-type {
+        margin-top: 20px;
+    }
 }
 
 .quiz-builder__min-score {
