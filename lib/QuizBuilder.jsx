@@ -152,17 +152,21 @@ export default class QuizBuilder extends React.Component {
 
     loadFromJSON() {
         try {
-            const json = JSON.parse(prompt("Enter JSON here"));
-            const result = validate(json);
-            
-            if (!result.valid) {
-                throw null;
+            const userJson = prompt("Enter JSON here");
+
+            if (userJson) {
+                const json = JSON.parse(userJson);
+                const result = validate(json);
+                
+                if (!result.valid) {
+                    throw null;
+                }
+                
+                this.state = Immutable.fromJS({
+                    quiz: json
+                });
+                this.forceUpdate();
             }
-            
-            this.state = Immutable.fromJS({
-                quiz: json
-            });
-            this.forceUpdate();
         } catch (error) {
             alert("Bad JSON format, could not load.");
         }
