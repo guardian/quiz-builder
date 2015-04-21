@@ -8,6 +8,7 @@ import shuffle from 'lodash-node/modern/collection/shuffle';
 import some from 'lodash-node/modern/collection/some';
 import ElasticTextArea from './ElasticTextArea';
 import ReorderableList from './ReorderableList.jsx!';
+import JSONViewer from './JSONViewer.jsx!';
 import validate from './schema';
 
 class Answer extends React.Component {
@@ -90,6 +91,7 @@ class Question extends React.Component {
             <ElasticTextArea className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
             <input className="quiz-builder__image-url" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
+
             <div className="quiz-builder__answers">
             <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
             </div>
@@ -101,21 +103,14 @@ class Question extends React.Component {
     }
 }
 
-class JSONViewer extends React.Component {
-    render() {
-        const json = JSON.stringify(this.props.data, null, 4);
-        
-        return <ElasticTextArea className="quiz-builder__json-viewer" value={json} readOnly />;
-    }
-}
-
 export class QuizBuilder extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = Immutable.fromJS({
             quiz: {
-                questions: []
+                questions: [],
+                resultGroups: []
             }
         });
     }
