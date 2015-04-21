@@ -2,16 +2,7 @@ import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
 import {close} from './svgs.jsx!';
 import map from 'lodash-node/modern/collection/map';
-import sortBy from 'lodash-node/modern/collection/sortBy';
-
-class Range extends React.Component {
-
-    render() {
-        return <div className="range-input">
-                <input type="text" className="range-input__input range-input__input--left" value={this.props.minValue} />&ndash;<input type="text" className="range-input__input range-input__input--right" value={this.props.maxValue} />
-            </div>;
-    }
-}
+import {on} from './utils';
 
 class ResultGroup extends React.Component {
     removeGroup() {
@@ -20,10 +11,12 @@ class ResultGroup extends React.Component {
     
     render() {
         return <div className="quiz-builder__result-group">
-            <Range minValue={this.props.group.get('minScore')} maxValue={this.props.group.get('maxScore')} />
-            <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('title')} placeholder="Enter message text here ..." />
-            <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('share')} placeholder="Enter share text here ..." />
-            <button className="quiz-builder__answer-close" onClick={this.removeGroup.bind(this)}>{close(16)}</button>
+            <div className="quiz-builder__min-score">{this.props.group.get('minScore')}</div>
+            <div className="quiz-builder__result-group-inner">
+                <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('title')} placeholder="Enter message text here ..." />
+                <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('share')} placeholder="Enter share text here ..." />
+                <button className="quiz-builder__answer-close" onClick={this.removeGroup.bind(this)}>{close(16)}</button>
+            </div>
         </div>;
     }
 }
@@ -34,8 +27,9 @@ export default class ResultGroups extends React.Component {
     }
     
     render() {
-        const groups = this.props.groups.map((group, index) =>
-                                             <ResultGroup key={index} group={group} />);
+        const groups = this.props.groups
+              .sort(on(group => -group.get('minScore')))
+              .map((group, index) => <ResultGroup key={index} group={group} />);
 
         let groupsHtml;
 
