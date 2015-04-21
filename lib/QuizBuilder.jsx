@@ -194,7 +194,7 @@ export default class QuizBuilder extends React.Component {
                 <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
             </div>;
         } else {
-            questionsHtml = <p>Add some questions to get started!</p>
+            questionsHtml = <p>Add some questions to get started.</p>
         }
         
         return <div className="quiz-builder">
@@ -208,11 +208,7 @@ export default class QuizBuilder extends React.Component {
                 <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
             </section>
 
-            <section className="quiz-builder__section">
-                <h2 className="quiz-builder__section-title">Messaging</h2>
-
-                <ResultGroups groups={this.state.get('resultGroups')} />
-            </section>
+            <ResultGroups groups={this.state.get('resultGroups')} />
 
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">JSON</h2>
