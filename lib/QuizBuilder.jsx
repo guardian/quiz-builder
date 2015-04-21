@@ -6,6 +6,7 @@ import some from 'lodash-node/modern/collection/some';
 import ReorderableList from './ReorderableList.jsx!';
 import JSONViewer from './JSONViewer.jsx!';
 import Question from './Question.jsx!';
+import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';
 
 export default class QuizBuilder extends React.Component {
@@ -210,7 +211,7 @@ export default class QuizBuilder extends React.Component {
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">Messaging</h2>
 
-                <p>Todo.</p>
+                <ResultGroups groups={this.state.get('resultGroups')} />
             </section>
 
             <section className="quiz-builder__section">
