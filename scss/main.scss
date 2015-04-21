@@ -239,6 +239,10 @@ $min-score-col-width: 40px;
     padding-right: 5px;
     bottom: -12px;
     left: 0;
+
+    .quiz-builder__result-group--error & {
+        color: $error;
+    }
 }
 
 .quiz-builder__result-group-inner {
@@ -248,6 +252,10 @@ $min-score-col-width: 40px;
     padding-right: 5px;
     padding-bottom: 5px;
     border-bottom: 2px solid $guardian-brand-light;
+
+    .quiz-builder__result-group--error & {
+        border-bottom: 2px solid $error;
+    }
 }
 
 .range-input {

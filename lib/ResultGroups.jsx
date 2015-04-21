@@ -1,6 +1,7 @@
 import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
 import {close} from './svgs.jsx!';
+import classnames from 'classnames';
 import map from 'lodash-node/modern/collection/map';
 import {on} from './utils';
 
@@ -10,7 +11,14 @@ class ResultGroup extends React.Component {
     }
     
     render() {
-        return <div className="quiz-builder__result-group">
+        const classes = classnames({
+            'quiz-builder__result-group': true,
+            'quiz-builder__result-group--error': this.props.isError
+        });
+
+        console.log(classes);
+        
+        return <div className={classes}>
             <div className="quiz-builder__min-score">{this.props.group.get('minScore')}</div>
             <div className="quiz-builder__result-group-inner">
                 <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('title')} placeholder="Enter message text here ..." />
@@ -28,8 +36,8 @@ export default class ResultGroups extends React.Component {
     
     render() {
         const groups = this.props.groups
-              .sort(on(group => -group.get('minScore')))
-              .map((group, index) => <ResultGroup key={index} group={group} />);
+            .sort(on(group => -group.get('minScore')))
+            .map((group, index) => <ResultGroup key={index} group={group} isError={group.get('minScore') > this.props.numberOfQuestions} />);
 
         let groupsHtml;
 
