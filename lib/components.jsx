@@ -6,6 +6,7 @@ import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter, move} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import some from 'lodash-node/modern/collection/some';
+import ElasticTextArea from './ElasticTextArea';
 import ReorderableList from './ReorderableList.jsx!';
 import validate from './schema';
 
@@ -36,12 +37,12 @@ class Answer extends React.Component {
 
         const header = isCorrect ? <span>{icon} {letter}.</span> : <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>;
 
-        const revealText = isCorrect && <input className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
+        const revealText = isCorrect && <ElasticTextArea className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
         return <div className={classes}>
             <h4 className="quiz-builder__answer-letter">{header}</h4>
-            <input className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
-            <input className="quiz-builder__answer-text" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
+            <ElasticTextArea className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+            <input className="quiz-builder__image-url" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
             {revealText}
             <button className="quiz-builder__answer-close" onClick={this.props.removeAnswer}>{close(16)}</button>
         </div>;
@@ -106,7 +107,7 @@ class JSONViewer extends React.Component {
     render() {
         const json = JSON.stringify(this.props.data, null, 4);
         
-        return <textarea className="quiz-builder__json-viewer" value={json} readOnly />;
+        return <ElasticTextArea className="quiz-builder__json-viewer" value={json} readOnly />;
     }
 }
 

@@ -18,10 +18,6 @@ button:focus {
     padding: 20px;
 }
 
-.quiz-builder {
-
-}
-
 .quiz-builder__question {
     padding: 10px;
     border: 1px solid $guardian-brand-dark;
@@ -56,15 +52,17 @@ button:focus {
 }
 
 .quiz-builder__json-viewer {
-    border: 1px solid $guardian-brand-dark;
-    display: block;
     margin-top: 20px;
-    background-color: black;
-    color: white;
-    font-family: "Courier New", Courier, monospace;
-    overflow-y: scroll;
-    height: 400px;
-    width: 100%;
+    
+    .elastic-text-area__textarea,
+    .elastic-text-area__grow-box {
+        border: 1px solid $guardian-brand-dark;
+        display: block;
+        background-color: black;
+        color: white;
+        font-family: "Courier New", Courier, monospace;
+        width: 100%;
+    }
 }
 
 .quiz-builder__question-close {
@@ -116,21 +114,34 @@ button:focus {
 }
 
 .quiz-builder__answer-text {
+    .elastic-text-area__textarea,
+    .elastic-text-area__grow-box {
+        background-color: transparent;
+        box-sizing: border-box;
+        border: 0;
+        padding: 10px 0;
+    }
+}
+
+.quiz-builder__image-url {
     background-color: transparent;
     box-sizing: border-box;
-    width: 100%;
     border: 0;
     padding: 10px 0;
+    width: 100%;
 }
 
 .quiz-builder__reveal-text {
-    background-color: transparent;
-    font-size: 14px;
-    font-style: italic;
-    box-sizing: border-box;
-    width: 100%;
-    border: 0;
-    padding: 10px 0;
+    .elastic-text-area__textarea,
+    .elastic-text-area__grow-box {
+        background-color: transparent;
+        font-size: 14px;
+        font-style: italic;
+        box-sizing: border-box;
+        width: 100%;
+        border: 0;
+        padding: 10px 0;
+    }
 }
 
 .quiz-builder__cross-path {
@@ -145,4 +156,27 @@ button:focus {
     background-color: $neutral-7;
     padding: 10px;
     margin-bottom: 20px;
+}
+
+.elastic-text-area__container {
+    position: relative;
+}
+
+.elastic-text-area__grow-box {
+    display: none;
+    white-space: pre-wrap;
+    display: block;
+    visibility: hidden;
+    word-wrap: break-word;
+}
+
+.elastic-text-area__textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    resize: none;
 }

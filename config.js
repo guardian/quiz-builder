@@ -20,6 +20,7 @@ System.config({
     "bonzo": "github:ded/bonzo@2.0.0",
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
+    "bean": "github:fat/bean@1.0.14",
     "immutable": "github:facebook/immutable-js@3.7.2",
     "jsonschema": "npm:jsonschema@1.0.1",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",

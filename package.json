@@ -8,6 +8,7 @@
       "ded/bonzo": "github:ded/bonzo@^2.0.0",
       "ded/qwery": "github:ded/qwery@^4.0.0",
       "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
+      "fat/bean": "github:fat/bean@^1.0.14",
       "jsonschema": "npm:jsonschema@^1.0.1",
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
       "lodash": "npm:lodash@^3.7.0",
