@@ -8,6 +8,10 @@ $news-support-6: #63717a;
 $error: #d61d00;
 $success: #4a7801;
 
+pre {
+    margin: 0;
+}
+
 button:focus {
     outline: 0;
 }
@@ -45,10 +49,12 @@ button:focus {
 }
 
 .quiz-builder__question-text {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    border: 0;
+    .elastic-text-area__textarea,
+    .elastic-text-area__grow-box {
+        display: block;
+        padding: 10px 0;
+        border: 0;
+    }
 }
 
 .quiz-builder__json-viewer {

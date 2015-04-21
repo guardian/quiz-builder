@@ -87,8 +87,8 @@ class Question extends React.Component {
             
         return <div className="quiz-builder__question">
             <h2 className="quiz-builder__question-number">Question {this.props.index + 1}.</h2>
-            <input className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
-            <input className="quiz-builder__question-text" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
+            <ElasticTextArea className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
+            <input className="quiz-builder__image-url" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
             <h3>Answers</h3>
 
