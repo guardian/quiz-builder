@@ -217,3 +217,11 @@ button:focus {
     left: 0;
     resize: none;
 }
+
+.quiz-builder__result-group {
+    background-color: $neutral-8;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}

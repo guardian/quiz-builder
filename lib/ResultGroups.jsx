@@ -1,9 +1,14 @@
 import React from 'react';
+import ElasticTextArea from './ElasticTextArea';
 import map from 'lodash-node/modern/collection/map';
+import sortBy from 'lodash-node/modern/collection/sortBy';
 
 class ResultGroup extends React.Component {
     render() {
-        return <p>{this.props.group.get('title')}</p>;
+        return <div className="quiz-builder__result-group">
+            <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('title')} placeholder="Enter message text here ..." />
+            <ElasticTextArea className="quiz-builder__answer-text" value={this.props.group.get('share')} placeholder="Enter share text here ..." />
+        </div>;
     }
 }
 
@@ -13,7 +18,8 @@ export default class ResultGroups extends React.Component {
     }
     
     render() {
-        const groups = this.props.groups.map(group => <ResultGroup group={group} />);
+        const groups = this.props.groups.map((group, index) =>
+                                             <ResultGroup key={index} group={group} />);
 
         let groupsHtml;
 
