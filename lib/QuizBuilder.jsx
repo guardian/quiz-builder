@@ -11,7 +11,7 @@ import JSONViewer from './JSONViewer.jsx!';
 import Question from './Question.jsx!';
 import validate from './schema';
 
-export class QuizBuilder extends React.Component {
+export default class QuizBuilder extends React.Component {
     constructor(props) {
         super(props);
 
