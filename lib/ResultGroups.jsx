@@ -30,11 +30,7 @@ class ResultGroup extends React.Component {
     }
 }
 
-export default class ResultGroups extends React.Component {
-    onAddGroup() {
-        console.log("add group");
-    }
-    
+export default class ResultGroups extends React.Component {    
     render() {
         const groups = this.props.groups
             .sort(on(group => -group.get('minScore')))
@@ -58,7 +54,7 @@ export default class ResultGroups extends React.Component {
 
         return <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">Messaging</h2>
-                <button className="quiz-builder__button" onClick={this.onAddGroup.bind(this)}>Add group</button>
+                <button className="quiz-builder__button" onClick={this.props.addGroup}>Add group</button>
                 {groupsHtml}
             </section>;
     }
