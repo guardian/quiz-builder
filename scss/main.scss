@@ -51,10 +51,14 @@ button:focus {
 .quiz-builder__question-text {
     .elastic-text-area__textarea,
     .elastic-text-area__grow-box {
+        font-size: 18px;
+        font-weight: bold;
         display: block;
         padding: 10px 0;
         border: 0;
     }
+
+    margin-bottom: 3px;
 }
 
 .quiz-builder__json-viewer {
@@ -82,6 +86,7 @@ button:focus {
 }
 
 .quiz-builder__answer-letter {
+    margin-top: 0;
     color: $error;
     margin-bottom: 5px;
 
@@ -99,11 +104,19 @@ button:focus {
     padding: 0;
 }
 
+.quiz-builder__answers {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 .quiz-builder__answer {
     position: relative;
     background-color: $neutral-8;
     padding-left: 5px;
-    margin-bottom: 10px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    margin-top: 0;
 }
 
 .quiz-builder__answer-close {
@@ -161,6 +174,13 @@ button:focus {
 .quiz-builder__drop-placeholder {
     background-color: $neutral-7;
     padding: 10px;
+}
+
+.quiz-builder__drop-placeholder--answer {
+    margin-bottom: 5px;
+}
+
+.quiz-builder__drop-placeholder--question {
     margin-bottom: 20px;
 }
 

@@ -90,9 +90,10 @@ export default class ReorderableList extends React.Component {
             const {dragIndex, dropIndex} = this.state;
 
             if (dragIndex !== dropIndex && dragIndex + 1 !== dropIndex) {
+                const placeholderClassName = 'quiz-builder__drop-placeholder quiz-builder__drop-placeholder--' + this.props.context;
                 items = flatten([
                     take(items, dropIndex),
-                    <div key="placeholder" className="quiz-builder__drop-placeholder"></div>,
+                    <div key="placeholder" className={placeholderClassName}></div>,
                     drop(items, dropIndex)
                 ]);
             }
