@@ -17,6 +17,16 @@ button:focus {
     outline: 0;
 }
 
+.quiz-builder__section {
+    margin-bottom: 35px;
+}
+
+.quiz-builder__section-title {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
 .quiz-builder__header {
     background-color: $guardian-brand-dark;
     color: $guardian-brand-light;
@@ -63,7 +73,7 @@ button:focus {
 }
 
 .quiz-builder__json-viewer {
-    margin-top: 20px;
+    margin-bottom: 20px;
     
     .elastic-text-area__textarea,
     .elastic-text-area__grow-box {

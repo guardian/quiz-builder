@@ -198,22 +198,26 @@ export default class QuizBuilder extends React.Component {
         
         return <div className="quiz-builder">
 
-            <h2 className="quiz-builder__section-title">Questions</h2>
+            <section className="quiz-builder__section">
+                <h2 className="quiz-builder__section-title">Questions</h2>
         
-            {questionsHtml}
+                {questionsHtml}
 
-            <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
-            <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button> &nbsp;
-            
-            <h2 className="quiz-builder__section-title">Messaging</h2>
+                <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
+                <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
+            </section>
 
-            <p>Todo.</p>
+            <section className="quiz-builder__section">
+                <h2 className="quiz-builder__section-title">Messaging</h2>
 
-            <h2 className="quiz-builder__section-title">JSON</h2>
+                <p>Todo.</p>
+            </section>
 
-            <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
-        
-            <JSONViewer data={json} />
+            <section className="quiz-builder__section">
+                <h2 className="quiz-builder__section-title">JSON</h2>
+                <JSONViewer data={json} />
+                <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
+            </section>
         </div>;
     }
 }
