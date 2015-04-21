@@ -208,7 +208,7 @@ export default class QuizBuilder extends React.Component {
                 <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
             </section>
 
-            <ResultGroups groups={this.state.get('resultGroups')} />
+            <ResultGroups groups={quiz.get('resultGroups')} />
 
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">JSON</h2>
