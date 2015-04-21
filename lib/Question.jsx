@@ -1,4 +1,5 @@
 import React from 'react';
+import {close} from './svgs.jsx!';
 import ElasticTextArea from './ElasticTextArea';
 import ReorderableList from './ReorderableList.jsx!';
 import Answer from './Answer.jsx!';
