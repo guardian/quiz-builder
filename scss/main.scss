@@ -258,17 +258,7 @@ $min-score-col-width: 40px;
     }
 }
 
-.range-input {
-    font-size: 24px;
-}
-
-.range-input__input {
-    width: 2em;
-    border: 0;
-    background-color: transparent;
-    font-size: 24px;
-}
-
-.range-input__input--left {
-    text-align: right;
+.quiz-builder__error-message {
+    font-size: 18px;
+    color: $error;
 }
