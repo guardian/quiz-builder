@@ -4,6 +4,7 @@ $guardian-brand-light: #94b1ca;
 $guardian-brand-dark: #00456e;
 $neutral-7: #f1f1f1;
 $neutral-8: #f6f6f6;
+$neutral-2: #767676;
 $news-support-6: #63717a;
 $error: #d61d00;
 $success: #4a7801;
@@ -28,9 +29,7 @@ button:focus {
 }
 
 .quiz-builder__header {
-    background-color: $guardian-brand-dark;
-    color: $guardian-brand-light;
-    padding: 20px;
+    color: $guardian-brand;
 }
 
 .quiz-builder__question {
@@ -227,6 +226,7 @@ $min-score-col-width: 40px;
 
 .quiz-builder__min-score {
     box-sizing: border-box;
+    color: $neutral-2;
     text-align: right;
     width: $min-score-col-width;
     font-size: 24px;
