@@ -57,9 +57,9 @@ export default class ResultGroups extends React.Component {
             const isSingle = this.props.numberOfQuestions === 1;
 
             errors.push(
-                <p key="error_too_high" className="quiz-builder__error-message">
+                <li key="error_too_high" className="quiz-builder__error-message">
                     Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
-                </p>
+                </li>
             );
         }
 
@@ -67,16 +67,18 @@ export default class ResultGroups extends React.Component {
 
         if (minMinScore !== Infinity && minMinScore > 0) {
             errors.push(
-                <p key="error_no_zero" className="quiz-builder__error-message">
+                <li key="error_no_zero" className="quiz-builder__error-message">
                     You do not have messaging for when a user scores less than {minMinScore}.
-                </p>
+                </li>
             );
         }
+
+        let errorsHtml = (errors.length > 0) ? <ul>{errors}</ul> : null;
 
         return <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">Messaging</h2>
                 <button className="quiz-builder__button" onClick={this.props.addGroup}>Add group</button>
-                {errors}
+                {errorsHtml}
                 {groups}
             </section>;
     }
