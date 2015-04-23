@@ -2,6 +2,7 @@ import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
 import {close} from './svgs.jsx!';
 import classnames from 'classnames';
+import min from 'lodash-node/modern/math/min';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
 
@@ -38,6 +39,7 @@ class ResultGroup extends React.Component {
 
 export default class ResultGroups extends React.Component {    
     render() {
+        const jsGroups = this.props.groups.toJS();
         const groups = this.props.groups
             .map((group, index) => <ResultGroup key={index} 
                                                 group={group}
@@ -47,27 +49,35 @@ export default class ResultGroups extends React.Component {
                                                 isError={group.get('minScore') > this.props.numberOfQuestions} />)
             .toJS();
 
-        const hasError = some(this.props.groups.toJS(), group => group.minScore > this.props.numberOfQuestions);
-        const isSingle = this.props.numberOfQuestions === 1;
         
-        let groupsHtml;
+        
+        let errors = [];
 
-        if (groups.length > 0) {
-            if (hasError) {
-                groupsHtml = [
-                    <p key="error" className="quiz-builder__error-message">
-                        Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
-                    </p>
-                ].concat(groups);
-            } else {
-                groupsHtml = groups;
-            }
+        if (some(jsGroups, group => group.minScore > this.props.numberOfQuestions)) {
+            const isSingle = this.props.numberOfQuestions === 1;
+
+            errors.push(
+                <p key="error_too_high" className="quiz-builder__error-message">
+                    Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
+                </p>
+            );
+        }
+
+        const minMinScore = min(map(jsGroups, g => g.minScore));
+
+        if (minMinScore !== Infinity && minMinScore > 0) {
+            errors.push(
+                <p key="error_no_zero" className="quiz-builder__error-message">
+                    You do not have messaging for when a user scores less than {minMinScore}.
+                </p>
+            );
         }
 
         return <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">Messaging</h2>
                 <button className="quiz-builder__button" onClick={this.props.addGroup}>Add group</button>
-                {groupsHtml}
+                {errors}
+                {groups}
             </section>;
     }
 }
