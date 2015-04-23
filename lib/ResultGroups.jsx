@@ -4,11 +4,10 @@ import {close} from './svgs.jsx!';
 import classnames from 'classnames';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
-import {on} from './utils';
 
 class ResultGroup extends React.Component {
     removeGroup() {
-        console.log("remove group");
+        this.props.remove();
     }
     
     render() {
@@ -34,9 +33,9 @@ class ResultGroup extends React.Component {
 export default class ResultGroups extends React.Component {    
     render() {
         const groups = this.props.groups
-            .sort(on(group => -group.get('minScore')))
             .map((group, index) => <ResultGroup key={index} 
-                                                group={group} 
+                                                group={group}
+                                                remove={this.props.removeGroup.bind(null, index)}
                                                 isError={group.get('minScore') > this.props.numberOfQuestions} />);
 
         const hasError = some(this.props.groups.toJS(), group => group.minScore > this.props.numberOfQuestions);

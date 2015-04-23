@@ -1,6 +1,6 @@
 import React from 'react';
 import Immutable from 'immutable';
-import {move} from './utils';
+import {move, on} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
@@ -34,6 +34,13 @@ export default class QuizBuilder extends React.Component {
 
     updateQuiz(f) {
         this.updateState(state => state.update('quiz', f));
+    }
+
+    reSortGroups() {
+        this.updateQuiz(quiz => quiz.update(
+            'resultGroups',
+            groups => groups.sort(on(group => -group.get('minScore')))
+        ));
     }
 
     addGroup() {
@@ -153,6 +160,10 @@ export default class QuizBuilder extends React.Component {
         ));
     }
 
+    removeGroup(index) {
+        this.updateQuiz(quiz => quiz.update('resultGroups', groups => groups.remove(index)));
+    }
+
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -178,6 +189,7 @@ export default class QuizBuilder extends React.Component {
                 this.state = Immutable.fromJS({
                     quiz: json
                 });
+                this.reSortGroups()
                 this.forceUpdate();
             }
         } catch (error) {
@@ -225,7 +237,7 @@ export default class QuizBuilder extends React.Component {
                 <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
             </section>
 
-            <ResultGroups groups={quiz.get('resultGroups')} numberOfQuestions={questions.length} addGroup={this.addGroup.bind(this)} />
+            <ResultGroups groups={quiz.get('resultGroups')} numberOfQuestions={questions.length} addGroup={this.addGroup.bind(this)} removeGroup={this.removeGroup.bind(this)} />
 
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">JSON</h2>
