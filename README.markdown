@@ -2,19 +2,37 @@
 
 Tool for building Guardian quiz JSON.
 
-## Building
+## Dependencies
 
-You will need to build the stylesheets:
+You will need NPM installed.
+
+Then:
 
 ```bash
 npm install
-gulp sass
+jspm install
 ```
 
-## Running
+## Development
+
+Run the watch task for the SCSS in one terminal:
+
+```bash
+gulp
+```
+
+Run a web server in another:
 
 ```bash
 python -m SimpleHTTPServer
 ```
 
 Then open http://localhost:8000 in your browser.
+
+## Building
+
+```bash
+gulp build
+```
+
+The output is in the `target` folder.
