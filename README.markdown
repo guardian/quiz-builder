@@ -52,7 +52,7 @@ Add aws.json to this folder, with the following:
 
 Now typing
 
-``bash
+```bash
 gulp deploy
 ```
 
