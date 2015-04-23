@@ -178,6 +178,22 @@ export default class QuizBuilder extends React.Component {
         ));
     }
 
+    decreaseGroupMinScore(index) {
+        this.updateQuiz(quiz => quiz.updateIn(
+            ['resultGroups', index, 'minScore'],
+            score => score - 1
+        ));
+        this.reSortGroups();
+    }
+
+    increaseGroupMinScore(index) {
+        this.updateQuiz(quiz => quiz.updateIn(
+            ['resultGroups', index, 'minScore'],
+            score => score + 1
+        ));
+        this.reSortGroups();
+    }
+
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -252,6 +268,8 @@ export default class QuizBuilder extends React.Component {
             </section>
 
             <ResultGroups groups={quiz.get('resultGroups')}
+                          increaseMinScore={this.increaseGroupMinScore.bind(this)}
+                          decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
                           numberOfQuestions={questions.length}
                           addGroup={this.addGroup.bind(this)}
                           removeGroup={this.removeGroup.bind(this)}

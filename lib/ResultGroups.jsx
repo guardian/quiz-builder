@@ -22,11 +22,11 @@ class ResultGroup extends React.Component {
     }
 
     onUp() {
-        console.log("Up");
+        this.props.increaseMinScore();
     }
 
     onDown() {
-        console.log("Down");
+        this.props.decreaseMinScore();
     }
     
     render() {
@@ -73,6 +73,8 @@ export default class ResultGroups extends React.Component {
         const groups = this.props.groups
             .map((group, index) => <ResultGroup key={index} 
                                                 group={group}
+                                                increaseMinScore={this.props.increaseMinScore.bind(null, index)} 
+                                                decreaseMinScore={this.props.decreaseMinScore.bind(null, index)}
                                                 setText={this.props.setGroupText(index)}
                                                 setShare={this.props.setGroupShare(index)}
                                                 remove={this.props.removeGroup.bind(null, index)}
