@@ -2,9 +2,11 @@ import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
 import {close, up, down} from './svgs.jsx!';
 import classnames from 'classnames';
+import countBy from 'lodash-node/modern/collection/countBy';
 import min from 'lodash-node/modern/math/min';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
+import values from 'lodash-node/modern/object/values';
 
 class ResultGroup extends React.Component {
     removeGroup() {
@@ -62,13 +64,19 @@ class ResultGroup extends React.Component {
 export default class ResultGroups extends React.Component {    
     render() {
         const jsGroups = this.props.groups.toJS();
+
+        const minScoreCounts = countBy(jsGroups, 'minScore');
+
+        const isError = (minScore) =>
+            minScore > this.props.numberOfQuestions || minScoreCounts[minScore] > 1;
+        
         const groups = this.props.groups
             .map((group, index) => <ResultGroup key={index} 
                                                 group={group}
                                                 setText={this.props.setGroupText(index)}
                                                 setShare={this.props.setGroupShare(index)}
                                                 remove={this.props.removeGroup.bind(null, index)}
-                                                isError={group.get('minScore') > this.props.numberOfQuestions} />)
+                                                isError={isError(group.get('minScore'))} />)
             .toJS();        
         
         let errors = [];
@@ -79,6 +87,14 @@ export default class ResultGroups extends React.Component {
             errors.push(
                 <li key="error_too_high" className="quiz-builder__error-message">
                     Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
+                </li>
+            );
+        }
+
+        if (some(values(minScoreCounts), (count) => count > 1)) {
+            errors.push(
+                <li key="error_duplicates" className="quiz-builder__error-message">
+                    Duplicate messages exist for the same scores.
                 </li>
             );
         }
