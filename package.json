@@ -33,6 +33,7 @@
     "jspm": "^0.15.3"
   },
   "devDependencies": {
+    "gulp-s3": "^0.3.0",
     "gulp-shell": "^0.4.1"
   },
   "scripts": {
