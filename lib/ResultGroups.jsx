@@ -9,6 +9,14 @@ class ResultGroup extends React.Component {
     removeGroup() {
         this.props.remove();
     }
+
+    onChangeText(event) {
+        this.props.setText(event.target.value);
+    }
+
+    onChangeShare(event) {
+        this.props.setShare(event.target.value);
+    }
     
     render() {
         const classes = classnames({
@@ -16,14 +24,12 @@ class ResultGroup extends React.Component {
             'quiz-builder__result-group--error': this.props.isError
         });
         const group = this.props.group;
-
-        console.log(classes);
         
         return <div className={classes}>
             <div className="quiz-builder__min-score">{group.get('minScore')}</div>
             <div className="quiz-builder__result-group-inner">
-                <ElasticTextArea className="quiz-builder__answer-text" value={group.get('title')} placeholder="Enter message text here ..." />
-                <ElasticTextArea className="quiz-builder__answer-text" value={group.get('share')} placeholder="Enter share text here ..." />
+                <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeText.bind(this)} value={group.get('title')} placeholder="Enter message text here ..." />
+                <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
                 <button className="quiz-builder__answer-close" onClick={this.removeGroup.bind(this)}>{close(16)}</button>
             </div>
         </div>;
@@ -35,8 +41,11 @@ export default class ResultGroups extends React.Component {
         const groups = this.props.groups
             .map((group, index) => <ResultGroup key={index} 
                                                 group={group}
+                                                setText={this.props.setGroupText(index)}
+                                                setShare={this.props.setGroupShare(index)}
                                                 remove={this.props.removeGroup.bind(null, index)}
-                                                isError={group.get('minScore') > this.props.numberOfQuestions} />);
+                                                isError={group.get('minScore') > this.props.numberOfQuestions} />)
+            .toJS();
 
         const hasError = some(this.props.groups.toJS(), group => group.minScore > this.props.numberOfQuestions);
         const isSingle = this.props.numberOfQuestions === 1;

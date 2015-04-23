@@ -164,6 +164,20 @@ export default class QuizBuilder extends React.Component {
         this.updateQuiz(quiz => quiz.update('resultGroups', groups => groups.remove(index)));
     }
 
+    setGroupText(index) {
+        return (text) => this.updateQuiz(quiz => quiz.setIn(
+            ['resultGroups', index, 'title'],
+            text
+        ));
+    }
+
+    setGroupShare(index) {
+        return (shareText) => this.updateQuiz(quiz => quiz.setIn(
+            ['resultGroups', index, 'share'],
+            shareText
+        ));
+    }
+
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -237,7 +251,13 @@ export default class QuizBuilder extends React.Component {
                 <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
             </section>
 
-            <ResultGroups groups={quiz.get('resultGroups')} numberOfQuestions={questions.length} addGroup={this.addGroup.bind(this)} removeGroup={this.removeGroup.bind(this)} />
+            <ResultGroups groups={quiz.get('resultGroups')}
+                          numberOfQuestions={questions.length}
+                          addGroup={this.addGroup.bind(this)}
+                          removeGroup={this.removeGroup.bind(this)}
+                          setGroupText={this.setGroupText.bind(this)}
+                          setGroupShare={this.setGroupShare.bind(this)}
+            />
 
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">JSON</h2>
