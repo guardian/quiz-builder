@@ -33,15 +33,21 @@ class ResultGroup extends React.Component {
             'quiz-builder__result-group--error': this.props.isError
         });
         const group = this.props.group;
+
+        let downHtml = null;
+
+        if (group.get('minScore') > 0) {
+            downHtml = <button key="down_button" className="quiz-builder__min-score-button" onClick={this.onDown.bind(this)}>
+                {down}
+            </button>;
+        }
         
         return <div className={classes}>
             <div className="quiz-builder__min-score-buttons">
                 <button className="quiz-builder__min-score-button" onClick={this.onUp.bind(this)}>
                     {up}
                 </button>
-                <button className="quiz-builder__min-score-button" onClick={this.onDown.bind(this)}>
-                    {down}
-                </button>
+                {downHtml}
             </div>
             <div className="quiz-builder__min-score">{group.get('minScore')}</div>
             <div className="quiz-builder__result-group-inner">

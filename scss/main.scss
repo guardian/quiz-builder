@@ -283,7 +283,7 @@ $min-score-col-width: 40px;
     padding: 0 5px;
     display: block;
 
-    svg {
-        
+    path:first-of-type {
+        fill: $neutral-2;
     }
 }
