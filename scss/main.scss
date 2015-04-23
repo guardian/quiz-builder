@@ -1,4 +1,3 @@
-
 $guardian-brand: #005689;
 $guardian-brand-light: #94b1ca;
 $guardian-brand-dark: #00456e;
@@ -265,4 +264,26 @@ $min-score-col-width: 40px;
 .quiz-builder__error-message {
     font-size: 18px;
     color: $error;
+}
+
+.quiz-builder__min-score-buttons {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 10px;
+
+    .quiz-builder__result-group:hover & {
+        display: block;
+    }
+}
+
+.quiz-builder__min-score-button {
+    background-color: transparent;
+    border: 0;
+    padding: 0 5px;
+    display: block;
+
+    svg {
+        
+    }
 }

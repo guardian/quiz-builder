@@ -1,6 +1,6 @@
 import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
-import {close} from './svgs.jsx!';
+import {close, up, down} from './svgs.jsx!';
 import classnames from 'classnames';
 import min from 'lodash-node/modern/math/min';
 import map from 'lodash-node/modern/collection/map';
@@ -18,6 +18,14 @@ class ResultGroup extends React.Component {
     onChangeShare(event) {
         this.props.setShare(event.target.value);
     }
+
+    onUp() {
+        console.log("Up");
+    }
+
+    onDown() {
+        console.log("Down");
+    }
     
     render() {
         const classes = classnames({
@@ -27,6 +35,14 @@ class ResultGroup extends React.Component {
         const group = this.props.group;
         
         return <div className={classes}>
+            <div className="quiz-builder__min-score-buttons">
+                <button className="quiz-builder__min-score-button" onClick={this.onUp.bind(this)}>
+                    {up}
+                </button>
+                <button className="quiz-builder__min-score-button" onClick={this.onDown.bind(this)}>
+                    {down}
+                </button>
+            </div>
             <div className="quiz-builder__min-score">{group.get('minScore')}</div>
             <div className="quiz-builder__result-group-inner">
                 <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeText.bind(this)} value={group.get('title')} placeholder="Enter message text here ..." />
@@ -47,9 +63,7 @@ export default class ResultGroups extends React.Component {
                                                 setShare={this.props.setGroupShare(index)}
                                                 remove={this.props.removeGroup.bind(null, index)}
                                                 isError={group.get('minScore') > this.props.numberOfQuestions} />)
-            .toJS();
-
-        
+            .toJS();        
         
         let errors = [];
 
