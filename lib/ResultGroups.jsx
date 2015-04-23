@@ -37,6 +37,7 @@ export default class ResultGroups extends React.Component {
             .map((group, index) => <ResultGroup key={index} group={group} isError={group.get('minScore') > this.props.numberOfQuestions} />);
 
         const hasError = some(this.props.groups.toJS(), group => group.minScore > this.props.numberOfQuestions);
+        const isSingle = this.props.numberOfQuestions === 1;
         
         let groupsHtml;
 
@@ -44,7 +45,7 @@ export default class ResultGroups extends React.Component {
             if (hasError) {
                 groupsHtml = [
                     <p key="error" className="quiz-builder__error-message">
-                        Some messages require a score higher than is possible given there are only {this.props.numberOfQuestions} questions.
+                        Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
                     </p>
                 ].concat(groups);
             } else {
