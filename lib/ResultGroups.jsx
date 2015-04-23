@@ -56,8 +56,7 @@ export default class ResultGroups extends React.Component {
             if (hasError) {
                 groupsHtml = [
                     <p key="error" className="quiz-builder__error-message">
-                        Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} 
-                        only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
+                        Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
                     </p>
                 ].concat(groups);
             } else {
