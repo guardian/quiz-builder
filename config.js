@@ -17,15 +17,16 @@ System.config({
   "map": {
     "babel": "npm:babel-core@5.1.10",
     "babel-runtime": "npm:babel-runtime@5.1.10",
+    "bean": "github:fat/bean@1.0.14",
     "bonzo": "github:ded/bonzo@2.0.0",
     "classnames": "npm:classnames@1.2.0",
     "core-js": "npm:core-js@0.8.3",
-    "bean": "github:fat/bean@1.0.14",
     "immutable": "github:facebook/immutable-js@3.7.2",
     "jsonschema": "npm:jsonschema@1.0.1",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
     "lodash-node": "npm:lodash-node@3.7.0",
+    "node-uuid": "npm:node-uuid@1.4.3",
     "qwery": "github:ded/qwery@4.0.0",
     "react": "npm:react@0.13.1",
     "reqwest": "github:ded/reqwest@1.1.5",
@@ -36,7 +37,7 @@ System.config({
       "assert": "npm:assert@1.3.0"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
-      "buffer": "npm:buffer@3.1.2"
+      "buffer": "npm:buffer@3.2.1"
     },
     "github:jspm/nodelibs-constants@0.1.0": {
       "constants-browserify": "npm:constants-browserify@0.0.1"
@@ -133,6 +134,11 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:buffer@3.1.2": {
+      "base64-js": "npm:base64-js@0.0.8",
+      "ieee754": "npm:ieee754@1.1.4",
+      "is-array": "npm:is-array@1.0.1"
+    },
+    "npm:buffer@3.2.1": {
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
@@ -317,6 +323,9 @@ System.config({
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:node-uuid@1.4.3": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
     "npm:once@1.3.1": {
       "wrappy": "npm:wrappy@1.0.1"

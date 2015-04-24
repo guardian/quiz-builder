@@ -10,6 +10,7 @@ import JSONViewer from './JSONViewer.jsx!';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';
+import uuid from 'node-uuid';
 
 export default class QuizBuilder extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ export default class QuizBuilder extends React.Component {
 
         this.state = Immutable.fromJS({
             quiz: {
+                id: uuid.v4(),
                 questions: [],
                 resultGroups: []
             }

@@ -13,6 +13,7 @@
       "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
       "lodash": "npm:lodash@^3.7.0",
       "lodash-node": "npm:lodash-node@^3.7.0",
+      "node-uuid": "npm:node-uuid@^1.4.3",
       "react": "npm:react@^0.13.1",
       "reqwest": "github:ded/reqwest@^1.1.5"
     },
