@@ -19,6 +19,11 @@ export default class QuizBuilder extends React.Component {
         this.state = Immutable.fromJS({
             quiz: {
                 id: uuid.v4(),
+                header: {
+                    titleText: ""
+                },
+                type: "list",
+                defaultColumns: 1,
                 questions: [],
                 resultGroups: []
             }
@@ -206,6 +211,13 @@ export default class QuizBuilder extends React.Component {
         ));
     }
 
+    onChangeTitle(event) {
+        this.updateQuiz(quiz => quiz.set(
+            'title',
+            event.target.value
+        ));
+    }
+
     loadFromJSON() {
         try {
             const userJson = prompt("Enter JSON here");
@@ -260,6 +272,11 @@ export default class QuizBuilder extends React.Component {
         
         return <div className="quiz-builder">
 
+            <section className="quiz-builder__section quiz-builder__section--meta">
+                <label for="title" className="quiz-builder__input-label">Title</label>
+                <input id="title" className="quiz-builder__text-input" value={quiz.get('title')} onChange={this.onChangeTitle.bind(this)} />
+            </section>
+        
             <section className="quiz-builder__section">
                 <h2 className="quiz-builder__section-title">Questions</h2>
         
