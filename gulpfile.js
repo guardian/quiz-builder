@@ -6,27 +6,18 @@ var gulp = require('gulp'),
     s3 = require('gulp-s3');
 
 gulp.task('default', function () {
-    gulp.watch('scss/**/*.scss', ['sass']);
+    gulp.watch('./static/scss/**/*.scss', ['sass']);
 });
 
 gulp.task('sass', function () {
-    gulp.src('./scss/*.scss')
+    gulp.src('./static/scss/*.scss')
         .pipe(sass())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./css'));
+        .pipe(gulp.dest('./static/css'));
 });
 
 gulp.task('build', ['sass'], shell.task([
-    'rm -Rf target',
-    'mkdir target',
-    'jspm bundle-sfx lib/bootstrap target/app.js',
-    'cp -r ./css target/',
-    'cp build.html target/index.html'
+    'mkdir -p target',
+    'jspm bundle-sfx static/js/bootstrap target/app.js',
+    'cp -r ./static/css target/'
 ]));
-
-gulp.task('deploy', ['build'], function () {
-    var aws = JSON.parse(fs.readFileSync('./aws.json'));
-    
-    gulp.src('./target/**')
-        .pipe(s3(aws));
-});
