@@ -11,5 +11,7 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   ws,
-  "com.amazonaws" % "aws-java-sdk" % "1.9.32"
+  "com.amazonaws" % "aws-java-sdk" % "1.9.32",
+  "com.gu" %% "pan-domain-auth-core" % "0.2.6",
+  "com.gu" %% "pan-domain-auth-play" % "0.2.6"
 )
