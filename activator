@@ -4,6 +4,11 @@
 ###  Helper methods for BASH scripts ###
 ###  ------------------------------- ###
 
+if [ -e ./auth.sh ]
+then
+    . ./auth.sh
+fi
+
 realpath () {
 (
   TARGET_FILE="$1"
