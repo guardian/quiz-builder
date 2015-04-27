@@ -21,3 +21,7 @@ gulp.task('build', ['sass'], shell.task([
     'jspm bundle-sfx static/js/bootstrap public/javascripts/app.js',
     'cp -r ./static/css/* public/stylesheets/'
 ]));
+
+gulp.task('watch-build', function () {
+    gulp.watch(['./static/scss/**/*.scss', './static/lib/**/*.*'], ['build']);
+});
