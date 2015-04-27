@@ -1,6 +1,6 @@
 logs
-project/project
-project/target
+/project/project
+/project/target
 target
 tmp
 .history
@@ -21,3 +21,5 @@ dist
 /static/css/main.css
 /target/*
 aws.json
+/public/stylesheets/*
+/public/javascripts/*
