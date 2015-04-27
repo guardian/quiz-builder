@@ -1,9 +1,3 @@
-/RUNNING_PID
-/logs/
-/project/*-shim.sbt
-/project/project/
-/project/target/
-/target/
 /jspm_packages
 /node_modules
 /static/css/main.css
