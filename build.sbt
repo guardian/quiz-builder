@@ -10,5 +10,6 @@ libraryDependencies ++= Seq(
   jdbc,
   anorm,
   cache,
-  ws
+  ws,
+  "com.amazonaws" % "aws-java-sdk" % "1.9.32"
 )
