@@ -225,8 +225,8 @@ export default class QuizBuilder extends React.Component {
     }
 
     onChangeTitle(event) {
-        this.updateQuiz(quiz => quiz.set(
-            'title',
+        this.updateQuiz(quiz => quiz.updateIn(
+            ['header', 'titleText'],
             event.target.value
         ));
     }
@@ -264,7 +264,7 @@ export default class QuizBuilder extends React.Component {
             return <div key="quiz_builder" className="quiz-builder">
                 <section className="quiz-builder__section quiz-builder__section--meta">
                     <label htmlFor="title" className="quiz-builder__input-label">Title</label>
-                    <input id="title" className="quiz-builder__text-input" value={quiz.get('title')} onChange={this.onChangeTitle.bind(this)} />
+                <input id="title" className="quiz-builder__text-input" value={quiz.get('header').get('titleText')} onChange={this.onChangeTitle.bind(this)} />
                 </section>
 
                 <section className="quiz-builder__section">
