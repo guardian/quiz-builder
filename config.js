@@ -23,6 +23,7 @@ System.config({
     "core-js": "npm:core-js@0.8.3",
     "ded/bonzo": "github:ded/bonzo@2.0.0",
     "ded/qwery": "github:ded/qwery@4.0.0",
+    "reqwest": "github:ded/reqwest@1.1.5",
     "facebook/immutable-js": "github:facebook/immutable-js@3.7.2",
     "fat/bean": "github:fat/bean@1.0.14",
     "immutable": "github:facebook/immutable-js@3.7.2",
