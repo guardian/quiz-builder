@@ -11,7 +11,7 @@ export class App extends React.Component {
             <div className="quiz-builder">
                 <h1 className="quiz-builder__header">Guardian Quiz Builder</h1>
 
-                <RouteHandler />
+                <RouteHandler {...this.props} />
             </div>
         );
     }

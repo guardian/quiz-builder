@@ -6,6 +6,8 @@ import {routes} from './Routes.jsx!';
 
 const el = qwery('.js-quiz-builder-placeholder')[0];
 
-Router.run(routes, Router.HistoryLocation, function (Handler) {
-    React.render(React.createElement(Handler, null), document.body);
+Router.run(routes, Router.HistoryLocation, function (Handler, state) {
+    React.render(React.createElement(Handler, {
+        params: state.params
+    }), document.body);
 });
