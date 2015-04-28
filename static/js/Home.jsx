@@ -1,12 +1,17 @@
 import React from 'react';
 import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
+import Router from 'react-router';
+
+const {Link} = Router;
 
 class QuizListing extends React.Component {
     render() {
         const {quiz} = this.props;
         
-        return <li data-id={quiz.id}>{quiz.title}</li>;
+        return <li>
+            <Link to={`/quizzes/${quiz.id}`}>{quiz.title}</Link>
+        </li>;
     }
 }
 
