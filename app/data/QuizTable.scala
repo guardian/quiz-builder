@@ -65,9 +65,9 @@ object QuizTable {
     }
   }
 
-  def create(id: String, createdBy: String, quiz: Quiz) = {
+  def create(createdBy: String, quiz: Quiz) = {
     dynamoDbClient.putItemFuture(new PutItemRequest().withTableName(TableName).withItem(Map(
-      "id" -> new AttributeValue().withS(id),
+      "id" -> new AttributeValue().withS(quiz.id),
       "title" -> new AttributeValue().withS(quiz.header.titleText),
       "createdAt" -> new AttributeValue().withN(DateTime.now.getMillis.toString),
       "createdBy" -> new AttributeValue().withS(createdBy),

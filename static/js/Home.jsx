@@ -2,6 +2,7 @@ import React from 'react';
 import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
+import NewQuizForm from './NewQuizForm.jsx!';
 
 const {Link} = Router;
 
@@ -59,7 +60,7 @@ export default class Home extends React.Component {
         }
         
         return <div>
-            <p>Welcome ... </p>
+            <NewQuizForm />
             {listings}
         </div>;
     }

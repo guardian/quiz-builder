@@ -1,10 +1,11 @@
 package controllers
 
-import _root_.data.QuizTable
+import _root_.data.{Quiz, QuizTable}
 import play.api._
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
+import utils.UUID
 
 object Application extends Controller {
   def launchApp(ignoredParam: String) = Action {
@@ -27,6 +28,21 @@ object Application extends Controller {
 
         case None => NotFound(s"Could not find quiz with id $id")
       }
+    }
+  }
+
+  def createQuiz() = Action.async(parse.json[CreateQuizRequest]) { request =>
+    val id = UUID.next()
+    // TODO: fix
+    val username = "robert.berry@guardian.co.uk"
+
+    QuizTable.create(username, Quiz.empty(
+      id,
+      request.body.title,
+      request.body.`type`,
+      request.body.defaultColumns
+    )) map { response =>
+      Ok(Json.toJson(CreateQuizResponse(id)))
     }
   }
 }

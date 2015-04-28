@@ -23,7 +23,6 @@ System.config({
     "core-js": "npm:core-js@0.8.3",
     "ded/bonzo": "github:ded/bonzo@2.0.0",
     "ded/qwery": "github:ded/qwery@4.0.0",
-    "reqwest": "github:ded/reqwest@1.1.5",
     "facebook/immutable-js": "github:facebook/immutable-js@3.7.2",
     "fat/bean": "github:fat/bean@1.0.14",
     "immutable": "github:facebook/immutable-js@3.7.2",
@@ -36,6 +35,7 @@ System.config({
     "react": "npm:react@0.13.2",
     "react-router": "npm:react-router@0.13.2",
     "reqwest": "github:ded/reqwest@1.1.5",
+    "fetch": "npm:whatwg-fetch@0.7.0",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.1"
     },

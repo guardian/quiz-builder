@@ -49,6 +49,15 @@ case class ResultGroup(title: String, share: String, minScore: Int)
 
 object Quiz {
   implicit val jsonFormat = Json.format[Quiz]
+
+  def empty(id: String, title: String, quizType: QuizType, columns: Option[Int]) = Quiz(
+    id,
+    QuizHeader(title),
+    quizType,
+    columns,
+    Nil,
+    Nil
+  )
 }
 
 case class Quiz(

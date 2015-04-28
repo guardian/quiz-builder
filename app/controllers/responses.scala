@@ -21,3 +21,11 @@ private [controllers] case class GetQuizResponse(
   updatedAt: Option[DateTime],
   quiz: Quiz
 )
+
+private [controllers] object CreateQuizResponse {
+  implicit val jsonWrites = Json.writes[CreateQuizResponse]
+}
+
+private [controllers] case class CreateQuizResponse(
+  id: String
+)

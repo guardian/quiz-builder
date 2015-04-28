@@ -17,7 +17,8 @@
       "node-uuid": "npm:node-uuid@^1.4.3",
       "react": "npm:react@^0.13.1",
       "react-router": "npm:react-router@^0.13.2",
-      "reqwest": "github:ded/reqwest@^1.1.5"
+      "reqwest": "github:ded/reqwest@^1.1.5",
+      "whatwg-fetch": "npm:whatwg-fetch@^0.7.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.0.12",
