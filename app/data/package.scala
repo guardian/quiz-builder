@@ -16,7 +16,15 @@ package object data {
       map.get(k).flatMap(v => Option(v.getS))
 
     def getDateTime(k: String): Option[DateTime] =
-      map.get(k).flatMap(v => Try(v.getN.toInt).toOption).map(n => new DateTime(n))
+      map.get(k).flatMap({ v =>
+        val x = Try(v.getN.toLong)
+
+        x.failed foreach {
+          error => println(error)
+        }
+
+        x.toOption
+      }).map(n => new DateTime(n))
 
     def getJson(k: String) = getString(k).flatMap(s => Try(Json.parse(s)).toOption)
 

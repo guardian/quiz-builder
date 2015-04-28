@@ -2,6 +2,7 @@ package data
 
 import awswrappers.dynamodb._
 import com.amazonaws.services.dynamodbv2.model.{PutItemRequest, GetItemRequest, AttributeValue, ScanRequest}
+import conf.Config
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import scala.collection.JavaConverters._
@@ -9,6 +10,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 object QuizTable {
   object Entry {
+    implicit val jsonWrites = Json.writes[Entry]
+
     def fromAttributeValueMap(xs: Map[String, AttributeValue]) = {
       for {
         id <- xs.getString("id")
@@ -37,7 +40,7 @@ object QuizTable {
     quiz: Option[Quiz]
   )
 
-  val TableName = "Quizzes"
+  val TableName = Config.dynamodb.tablePrefix.getOrElse("") + "Quizzes"
 
   def list() = {
     dynamoDbClient.scanFuture(new ScanRequest()
@@ -45,9 +48,9 @@ object QuizTable {
       .withLimit(10)
       .withAttributesToGet("id", "title", "createdAt", "createdBy", "updatedBy", "updatedAt")
     ) map { result =>
-      result.getItems.asScala.toSeq map { item =>
+      (result.getItems.asScala.toSeq map { item =>
         Entry.fromAttributeValueMap(item.asScala.toMap)
-      }
+      }).flatten
     }
   }
 
