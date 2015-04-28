@@ -9,7 +9,7 @@ export class App extends React.Component {
     render() {
         return (
             <div className="quiz-builder">
-                <h1 className="quiz-builder__header">Guardian Quiz Builder</h1>
+                <h1 className="quiz-builder__header"><Link to="/">Guardian Quiz Builder</Link></h1>
 
                 <RouteHandler {...this.props} />
             </div>
