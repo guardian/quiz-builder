@@ -1,11 +1,14 @@
 package controllers
 
 import _root_.data.{Quiz, QuizTable}
+import org.joda.time.DateTime
 import play.api._
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import utils.UUID
+
+import scala.concurrent.Future
 
 object Application extends Controller {
   def launchApp(ignoredParam: String) = Action {
@@ -43,6 +46,19 @@ object Application extends Controller {
       request.body.defaultColumns
     )) map { response =>
       Ok(Json.toJson(CreateQuizResponse(id)))
+    }
+  }
+
+  def updateQuiz(id: String) = Action.async(parse.json[UpdateQuizRequest]) { request =>
+    val username = "robert.berry@guardian.co.uk"
+    val updatedAt = DateTime.now
+
+    if (id != request.body.quiz.id) {
+      Future.successful(BadRequest("Mismatched quiz IDs"))
+    } else {
+      QuizTable.update(username, updatedAt, request.body.quiz) map { _ =>
+        Ok(Json.toJson(UpdateQuizResponse(updatedAt)))
+      }
     }
   }
 }

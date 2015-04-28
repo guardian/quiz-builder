@@ -8,6 +8,7 @@ GET     /logout                     controllers.Login.logout
 
 # API
 GET     /quizzes.json               controllers.Application.listQuizzes
+POST    /quizzes/:id.json           controllers.Application.updateQuiz(id)
 GET     /quizzes/:id.json           controllers.Application.getQuiz(id)
 POST    /quizzes.json               controllers.Application.createQuiz()
 

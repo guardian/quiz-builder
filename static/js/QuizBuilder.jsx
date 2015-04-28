@@ -5,12 +5,14 @@ import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
 import max from 'lodash-node/modern/math/max';
+import debounce from 'lodash-node/modern/function/debounce';
 import reqwest from 'reqwest';
 import ReorderableList from './ReorderableList.jsx!';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';
 import uuid from 'node-uuid';
+import {postJson} from './utils';
 
 export default class QuizBuilder extends React.Component {
     constructor(props) {
@@ -19,7 +21,8 @@ export default class QuizBuilder extends React.Component {
         this.state = Immutable.fromJS({
             id: props.params.quizId,
             quiz: null,
-            isLoaded: false
+            isLoaded: false,
+            lastUpdated: null
         });
     }
 
@@ -35,7 +38,8 @@ export default class QuizBuilder extends React.Component {
                     this.state = Immutable.fromJS({
                         id: quizId,
                         isLoaded: true,
-                        quiz: response.quiz
+                        quiz: response.quiz,
+                        lastUpdated: response.updatedAt || response.createdAt
                     });
                     this.forceUpdate();
                 }
@@ -48,8 +52,23 @@ export default class QuizBuilder extends React.Component {
 
         if (nextState !== this.state) {
             this.state = nextState;
+            this.queueUpdate();
             this.forceUpdate();
         }
+    }
+
+    queueUpdate() {
+        if (!this._queueUpdate) {
+            this._queueUpdate = debounce((function () {
+                const id = this.state.get('id');
+                
+                postJson(`/quizzes/${id}.json`, {
+                    quiz: this.state.get('quiz').toJS()
+                }).then(json => this.state.set('lastUpdated', json.updatedAt));
+            }).bind(this), 3000);
+        }
+
+        this._queueUpdate();
     }
 
     updateQuiz(f) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import 'fetch';
+import {postJson} from './utils';
 
 export default class NewQuizForm extends React.Component {
     constructor(props) {
@@ -18,14 +18,7 @@ export default class NewQuizForm extends React.Component {
     }
 
     onSubmit() {
-        fetch('/quizzes.json', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(this.state)
-        }).then(response => response.json()).then(json => {
+        postJson('/quizzes.json', this.state).then(json => {
             this.context.router.transitionTo(`/quizzes/${json.id}`);
         });
     }

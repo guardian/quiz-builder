@@ -1,7 +1,7 @@
 package data
 
 import awswrappers.dynamodb._
-import com.amazonaws.services.dynamodbv2.model.{PutItemRequest, GetItemRequest, AttributeValue, ScanRequest}
+import com.amazonaws.services.dynamodbv2.model._
 import conf.Config
 import org.joda.time.DateTime
 import play.api.libs.json.Json
@@ -78,13 +78,20 @@ object QuizTable {
     ).asJava))
   }
 
-  def update(id: String, updatedBy: String, quiz: Quiz) = {
-    dynamoDbClient.putItemFuture(new PutItemRequest().withTableName(TableName).withItem(Map(
-      "id" -> new AttributeValue().withS(id),
-      "title" -> new AttributeValue().withS(quiz.header.titleText),
-      "updatedAt" -> new AttributeValue().withN(DateTime.now.getMillis.toString),
-      "updatedBy" -> new AttributeValue().withS(updatedBy),
-      "quiz" -> new AttributeValue().withS(Json.stringify(Json.toJson(quiz)))
+  def update(updatedBy: String, updatedAt: DateTime, quiz: Quiz) = {
+    def setTo(value: AttributeValue) =
+      new AttributeValueUpdate().withAction(AttributeAction.PUT).withValue(value)
+
+    dynamoDbClient.updateItemFuture(new UpdateItemRequest()
+      .withTableName(TableName)
+      .withKey(Map(
+        "id" -> new AttributeValue().withS(quiz.id)
+      ).asJava)
+      .withAttributeUpdates(Map(
+      "title" -> setTo(new AttributeValue().withS(quiz.header.titleText)),
+      "updatedAt" -> setTo(new AttributeValue().withN(updatedAt.getMillis.toString)),
+      "updatedBy" -> setTo(new AttributeValue().withS(updatedBy)),
+      "quiz" -> setTo(new AttributeValue().withS(Json.stringify(Json.toJson(quiz))))
     ).asJava))
   }
 }

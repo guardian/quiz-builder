@@ -1,3 +1,5 @@
+import 'fetch';
+
 export function nthLetter(n) {
     return 'abcdefghijklmnopqrstuvwxyz'[n];
 }
@@ -28,4 +30,15 @@ export function on(f) {
             return 0;
         }
     }
+}
+
+export function postJson(url, json) {
+    return fetch(url, {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(json)
+    }).then(response => response.json());
 }
