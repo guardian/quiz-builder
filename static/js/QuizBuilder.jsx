@@ -7,7 +7,6 @@ import some from 'lodash-node/modern/collection/some';
 import max from 'lodash-node/modern/math/max';
 import reqwest from 'reqwest';
 import ReorderableList from './ReorderableList.jsx!';
-import JSONViewer from './JSONViewer.jsx!';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';
@@ -231,29 +230,6 @@ export default class QuizBuilder extends React.Component {
             event.target.value
         ));
     }
-
-    loadFromJSON() {
-        try {
-            const userJson = prompt("Enter JSON here");
-
-            if (userJson) {
-                const json = JSON.parse(userJson);
-                const result = validate(json);
-                
-                if (!result.valid) {
-                    throw null;
-                }
-                
-                this.state = Immutable.fromJS({
-                    quiz: json
-                });
-                this.reSortGroups()
-                this.forceUpdate();
-            }
-        } catch (error) {
-            alert("Bad JSON format, could not load.");
-        }
-    }
     
     render() {
         if (this.state.get('isLoaded')) {
@@ -309,12 +285,6 @@ export default class QuizBuilder extends React.Component {
                               setGroupText={this.setGroupText.bind(this)}
                               setGroupShare={this.setGroupShare.bind(this)}
                 />
-
-                <section className="quiz-builder__section">
-                    <h2 className="quiz-builder__section-title">JSON</h2>
-                    <JSONViewer data={json} />
-                    <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
-                </section>
             </div>;
         } else {
             return <p key="loading">Loading ... </p>;
