@@ -5,6 +5,7 @@ import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
 import max from 'lodash-node/modern/math/max';
+import reqwest from 'reqwest';
 import ReorderableList from './ReorderableList.jsx!';
 import JSONViewer from './JSONViewer.jsx!';
 import Question from './Question.jsx!';
@@ -17,19 +18,32 @@ export default class QuizBuilder extends React.Component {
         super(props);
 
         this.state = Immutable.fromJS({
-            quiz: {
-                id: props.params.quizId,
-                header: {
-                    titleText: ""
-                },
-                type: "list",
-                defaultColumns: 1,
-                questions: [],
-                resultGroups: []
-            }
+            id: props.params.quizId,
+            quiz: null,
+            isLoaded: false
         });
     }
 
+    componentDidMount() {
+        const quizId = this.state.get('id');
+        
+        reqwest({
+            url: `/quizzes/${quizId}.json`,
+            method: 'get',
+            type: 'json',
+            success: response => {
+                if (React.findDOMNode(this)) {
+                    this.state = Immutable.fromJS({
+                        id: quizId,
+                        isLoaded: true,
+                        quiz: response.quiz
+                    });
+                    this.forceUpdate();
+                }
+            }
+        });
+    }
+    
     updateState(f) {
         const nextState = f(this.state);
 
@@ -242,65 +256,68 @@ export default class QuizBuilder extends React.Component {
     }
     
     render() {
-        const quiz = this.state.get('quiz');
-        let questions = quiz.get('questions')
-            .map((question, i) => <Question question={question} 
-                 key={`question_${i + 1}`} 
-                 index={i} 
-                 onClose={this.deleteQuestion(i)} 
-                 setText={this.setQuestionText(i)}
-                 setAnswerText={this.setAnswerText(i)}
-                 setAnswerCorrect={this.setAnswerCorrect(i)}
-                 setRevealText={this.setRevealText(i)}
-                 setImageUrl={this.setQuestionImageUrl(i)}
-                 setAnswerImageUrl={this.setAnswerImageUrl(i)}
-                 removeAnswer={this.removeAnswer(i)}
-                 reorder={this.reorderAnswers(i)}
-                 addAnswer={this.addAnswer(i)} />)
-            .toJS();
-        const json = quiz.toJS();
-        
-        let questionsHtml;
+        if (this.state.get('isLoaded')) {
+            const quiz = this.state.get('quiz');
+            let questions = quiz.get('questions')
+                .map((question, i) => <Question question={question} 
+                     key={`question_${i + 1}`} 
+                     index={i} 
+                     onClose={this.deleteQuestion(i)} 
+                     setText={this.setQuestionText(i)}
+                     setAnswerText={this.setAnswerText(i)}
+                     setAnswerCorrect={this.setAnswerCorrect(i)}
+                     setRevealText={this.setRevealText(i)}
+                     setImageUrl={this.setQuestionImageUrl(i)}
+                     setAnswerImageUrl={this.setAnswerImageUrl(i)}
+                     removeAnswer={this.removeAnswer(i)}
+                     reorder={this.reorderAnswers(i)}
+                     addAnswer={this.addAnswer(i)} />)
+                .toJS();
+            const json = quiz.toJS();
 
-        if (questions.length > 0) {
-            questionsHtml = <div className="quiz-builder__questions">
-                <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
+            let questionsHtml;
+
+            if (questions.length > 0) {
+                questionsHtml = <div className="quiz-builder__questions">
+                    <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
+                </div>;
+            } else {
+                questionsHtml = <p>Add some questions to get started.</p>
+            }
+            
+            return <div key="quiz_builder" className="quiz-builder">
+                <section className="quiz-builder__section quiz-builder__section--meta">
+                    <label for="title" className="quiz-builder__input-label">Title</label>
+                    <input id="title" className="quiz-builder__text-input" value={quiz.get('title')} onChange={this.onChangeTitle.bind(this)} />
+                </section>
+
+                <section className="quiz-builder__section">
+                    <h2 className="quiz-builder__section-title">Questions</h2>
+
+                    {questionsHtml}
+
+                    <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
+                    <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
+                </section>
+
+                <ResultGroups groups={quiz.get('resultGroups')}
+                              increaseMinScore={this.increaseGroupMinScore.bind(this)}
+                              decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
+                              numberOfQuestions={questions.length}
+                              addGroup={this.addGroup.bind(this)}
+                              removeGroup={this.removeGroup.bind(this)}
+                              setGroupText={this.setGroupText.bind(this)}
+                              setGroupShare={this.setGroupShare.bind(this)}
+                />
+
+                <section className="quiz-builder__section">
+                    <h2 className="quiz-builder__section-title">JSON</h2>
+                    <JSONViewer data={json} />
+                    <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
+                </section>
             </div>;
         } else {
-            questionsHtml = <p>Add some questions to get started.</p>
+            return <p key="loading">Loading ... </p>;
         }
-        
-        return <div className="quiz-builder">
-
-            <section className="quiz-builder__section quiz-builder__section--meta">
-                <label for="title" className="quiz-builder__input-label">Title</label>
-                <input id="title" className="quiz-builder__text-input" value={quiz.get('title')} onChange={this.onChangeTitle.bind(this)} />
-            </section>
-        
-            <section className="quiz-builder__section">
-                <h2 className="quiz-builder__section-title">Questions</h2>
-        
-                {questionsHtml}
-
-                <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
-                <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
-            </section>
-
-            <ResultGroups groups={quiz.get('resultGroups')}
-                          increaseMinScore={this.increaseGroupMinScore.bind(this)}
-                          decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
-                          numberOfQuestions={questions.length}
-                          addGroup={this.addGroup.bind(this)}
-                          removeGroup={this.removeGroup.bind(this)}
-                          setGroupText={this.setGroupText.bind(this)}
-                          setGroupShare={this.setGroupShare.bind(this)}
-            />
-
-            <section className="quiz-builder__section">
-                <h2 className="quiz-builder__section-title">JSON</h2>
-                <JSONViewer data={json} />
-                <button className="quiz-builder__button" onClick={this.loadFromJSON.bind(this)}>Load from JSON</button>
-            </section>
-        </div>;
     }
 }

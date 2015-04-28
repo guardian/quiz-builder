@@ -16,4 +16,17 @@ object Application extends Controller {
       Ok(Json.toJson(ListQuizzesResponse(entries)))
     }
   }
+
+  def getQuiz(id: String) = Action.async {
+    QuizTable.get(id) map { response =>
+      (for {
+        entry <- response
+        quiz <- entry.quiz
+      } yield GetQuizResponse(entry.createdBy, entry.createdAt, entry.updatedBy, entry.updatedAt, quiz)) match {
+        case Some(reply) => Ok(Json.toJson(reply))
+
+        case None => NotFound(s"Could not find quiz with id $id")
+      }
+    }
+  }
 }

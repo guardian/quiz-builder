@@ -55,7 +55,12 @@ object QuizTable {
   }
 
   def get(id: String) = {
-    dynamoDbClient.getItemFuture(new GetItemRequest().withTableName(TableName)) map { result =>
+    dynamoDbClient.getItemFuture(new GetItemRequest()
+      .withTableName(TableName)
+      .withKey(Map(
+        "id" -> new AttributeValue().withS(id)
+      ).asJava)
+    ) map { result =>
       Entry.fromAttributeValueMap(result.getItem.asScala.toMap)
     }
   }
