@@ -15,6 +15,7 @@
       "lodash-node": "npm:lodash-node@^3.7.0",
       "node-uuid": "npm:node-uuid@^1.4.3",
       "react": "npm:react@^0.13.1",
+      "react-router": "npm:react-router@^0.13.2",
       "reqwest": "github:ded/reqwest@^1.1.5"
     },
     "devDependencies": {

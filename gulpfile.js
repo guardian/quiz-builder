@@ -23,5 +23,5 @@ gulp.task('build', ['sass'], shell.task([
 ]));
 
 gulp.task('watch-build', function () {
-    gulp.watch(['./static/scss/**/*.scss', './static/lib/**/*.*'], ['build']);
+    gulp.watch(['./static/scss/**/*.scss', './static/js/**/*.*'], ['build']);
 });

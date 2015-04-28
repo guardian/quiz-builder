@@ -2,14 +2,16 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                           controllers.Application.index
-
 # Authentication
 GET     /oauthCallback              controllers.Login.oauthCallback
 GET     /logout                     controllers.Login.logout
 
-GET     /quizzes                    controllers.Application.listQuizzes
+# API
+GET     /quizzes.json               controllers.Application.listQuizzes
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# App (play routing is stupid)
+GET     /                           controllers.Application.launchApp(ignoredParam: String = "")
+GET     /*ignore                    controllers.Application.launchApp(ignore)

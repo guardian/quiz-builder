@@ -32,7 +32,8 @@ System.config({
     "lodash-node": "npm:lodash-node@3.7.0",
     "node-uuid": "npm:node-uuid@1.4.3",
     "qwery": "github:ded/qwery@4.0.0",
-    "react": "npm:react@0.13.1",
+    "react": "npm:react@0.13.2",
+    "react-router": "npm:react-router@0.13.2",
     "reqwest": "github:ded/reqwest@1.1.5",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.1"
@@ -137,15 +138,13 @@ System.config({
       "parse-asn1": "npm:parse-asn1@2.0.0",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:buffer@3.1.2": {
-      "base64-js": "npm:base64-js@0.0.8",
-      "ieee754": "npm:ieee754@1.1.4",
-      "is-array": "npm:is-array@1.0.1"
-    },
     "npm:buffer@3.2.1": {
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
+    },
+    "npm:classnames@1.1.4": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:classnames@1.2.0": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
@@ -381,13 +380,20 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
+    "npm:react-router@0.13.2": {
+      "classnames": "npm:classnames@1.1.4",
+      "object-assign": "npm:object-assign@2.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "qs": "npm:qs@2.4.1",
+      "react": "npm:react@0.13.2"
+    },
     "npm:react-tools@0.13.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "commoner": "npm:commoner@0.10.1",
       "jstransform": "npm:jstransform@10.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:react@0.13.1": {
+    "npm:react@0.13.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "envify": "npm:envify@3.4.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
