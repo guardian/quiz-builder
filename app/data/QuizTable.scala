@@ -61,7 +61,10 @@ object QuizTable {
         "id" -> new AttributeValue().withS(id)
       ).asJava)
     ) map { result =>
-      Entry.fromAttributeValueMap(result.getItem.asScala.toMap)
+      for {
+        item <- Option(result.getItem)
+        entry <- Entry.fromAttributeValueMap(item.asScala.toMap)
+      } yield entry
     }
   }
 
