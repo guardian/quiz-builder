@@ -10,9 +10,12 @@ class QuizListing extends React.Component {
     render() {
         const {quiz} = this.props;
         
-        return <li>
-            <Link to={`/quizzes/${quiz.id}`}>{quiz.title}</Link>
-        </li>;
+        return (
+            <Link className="list-group-item" to={`/quizzes/${quiz.id}`}>
+                <h4 className="list-group-item-heading">{quiz.title}</h4>
+                <p className="list-group-item-text">Created by {quiz.createdBy}</p>
+            </Link>
+        );
     }
 }
 
@@ -49,12 +52,12 @@ export default class Home extends React.Component {
         let listings = null;
 
         if (this.state.quizzes) {
-            listings = <ul key="listings">
+            listings = <div key="listings" className="list-group">
                 {map(
                     this.state.quizzes, 
                     (quiz, i) => <QuizListing key={i} quiz={quiz} />
                 )}
-            </ul>;
+            </div>;
         } else if (!this.state.isLoaded) {
             listings = <p key="spinner">Spinner here</p>;
         }

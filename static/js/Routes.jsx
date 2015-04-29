@@ -9,9 +9,28 @@ export class App extends React.Component {
     render() {
         return (
             <div className="quiz-builder">
-                <h1 className="quiz-builder__header"><Link to="/">Guardian Quiz Builder</Link></h1>
+                <nav className="navbar navbar-inverse navbar-static-top">
+                    <div className="container">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                            <Link className="navbar-brand" to="/">Guardian Quiz Builder</Link>
+                        </div>
+                        <div id="navbar" className="navbar-collapse collapse">
+                            <ul className="nav navbar-nav">
+                                <li><Link to="/">Home</Link></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
 
-                <RouteHandler {...this.props} />
+                <div className="container">
+                    <RouteHandler {...this.props} />
+                </div>
             </div>
         );
     }

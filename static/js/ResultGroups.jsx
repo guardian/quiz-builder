@@ -87,17 +87,17 @@ export default class ResultGroups extends React.Component {
             const isSingle = this.props.numberOfQuestions === 1;
 
             errors.push(
-                <li key="error_too_high" className="quiz-builder__error-message">
+                <div key="error_too_high" className="alert alert-danger">
                     Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
-                </li>
+                </div>
             );
         }
 
         if (some(values(minScoreCounts), (count) => count > 1)) {
             errors.push(
-                <li key="error_duplicates" className="quiz-builder__error-message">
+                <div key="error_duplicates" className="alert alert-danger">
                     Duplicate messages exist for the same scores.
-                </li>
+                </div>
             );
         }
 
@@ -105,16 +105,15 @@ export default class ResultGroups extends React.Component {
 
         if (minMinScore !== Infinity && minMinScore > 0) {
             errors.push(
-                <li key="error_no_zero" className="quiz-builder__error-message">
+                <div key="error_no_zero" className="alert alert-danger">
                     You do not have messaging for when a user scores less than {minMinScore}.
-                </li>
+                </div>
             );
         }
 
         let errorsHtml = (errors.length > 0) ? <ul>{errors}</ul> : null;
 
         return <section className="quiz-builder__section">
-                <h2 className="quiz-builder__section-title">Messaging</h2>
                 <button className="quiz-builder__button" onClick={this.props.addGroup}>Add group</button>
                 {errorsHtml}
                 {groups}

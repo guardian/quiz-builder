@@ -5,6 +5,7 @@ import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
 import max from 'lodash-node/modern/math/max';
+import capitalize from 'lodash-node/modern/string/capitalize';
 import debounce from 'lodash-node/modern/function/debounce';
 import reqwest from 'reqwest';
 import ReorderableList from './ReorderableList.jsx!';
@@ -13,6 +14,14 @@ import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';
 import uuid from 'node-uuid';
 import {postJson} from './utils';
+import Router from 'react-router';
+
+const {Link} = Router;
+
+const contexts = [
+    'questions',
+    'responses'
+];
 
 export default class QuizBuilder extends React.Component {
     constructor(props) {
@@ -22,7 +31,8 @@ export default class QuizBuilder extends React.Component {
             id: props.params.quizId,
             quiz: null,
             isLoaded: false,
-            lastUpdated: null
+            lastUpdated: null,
+            context: 'questions'
         });
     }
 
@@ -39,7 +49,8 @@ export default class QuizBuilder extends React.Component {
                         id: quizId,
                         isLoaded: true,
                         quiz: response.quiz,
-                        lastUpdated: response.updatedAt || response.createdAt
+                        lastUpdated: response.updatedAt || response.createdAt,
+                        context: 'questions'
                     });
                     this.forceUpdate();
                 }
@@ -249,62 +260,112 @@ export default class QuizBuilder extends React.Component {
             event.target.value
         ));
     }
+
+    setContext(context, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        
+        this.updateState(state => state.set('context', context));
+    }
+
+    renderTabs() {
+        const isActive = (context) => this.state.get('context') === context;
+        const className = (context) => isActive(context) ? "active" : null;
+        
+        return (
+            <ul className="nav nav-pills">
+                {
+                    map(contexts, context => 
+                        <li role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{capitalize(context)}</a></li>
+                    )
+                }
+            </ul>
+        );
+    }
+
+    renderQuestions() {
+        const quiz = this.state.get('quiz');
+        
+        let questions = quiz.get('questions').map((question, i) => 
+            <Question question={question} 
+                      key={`question_${i + 1}`} 
+                      index={i} 
+                      onClose={this.deleteQuestion(i)} 
+                      setText={this.setQuestionText(i)}
+                      setAnswerText={this.setAnswerText(i)}
+                      setAnswerCorrect={this.setAnswerCorrect(i)}
+                      setRevealText={this.setRevealText(i)}
+                      setImageUrl={this.setQuestionImageUrl(i)}
+                      setAnswerImageUrl={this.setAnswerImageUrl(i)}
+                      removeAnswer={this.removeAnswer(i)}
+                      reorder={this.reorderAnswers(i)}
+                      addAnswer={this.addAnswer(i)} />
+        ).toJS();
+
+
+
+        let questionsHtml;
+
+        if (questions.length > 0) {
+            questionsHtml = <div className="quiz-builder__questions">
+                <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
+            </div>;
+        } else {
+            questionsHtml = <p>Add some questions to get started.</p>
+        }
+
+        return (
+            <section key="questions" className="quiz-builder__section">
+                {questionsHtml}
+
+                <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
+                <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
+            </section>
+        );
+    }
+
+    renderResponses() {
+        const quiz = this.state.get('quiz');
+
+        return (
+            <ResultGroups groups={quiz.get('resultGroups')}
+                          increaseMinScore={this.increaseGroupMinScore.bind(this)}
+                          decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
+                          numberOfQuestions={quiz.get('questions').size}
+                          addGroup={this.addGroup.bind(this)}
+                          removeGroup={this.removeGroup.bind(this)}
+                          setGroupText={this.setGroupText.bind(this)}
+                          setGroupShare={this.setGroupShare.bind(this)}
+            />
+        );
+    }
     
     render() {
         if (this.state.get('isLoaded')) {
-            const quiz = this.state.get('quiz');
-            let questions = quiz.get('questions')
-                .map((question, i) => <Question question={question} 
-                     key={`question_${i + 1}`} 
-                     index={i} 
-                     onClose={this.deleteQuestion(i)} 
-                     setText={this.setQuestionText(i)}
-                     setAnswerText={this.setAnswerText(i)}
-                     setAnswerCorrect={this.setAnswerCorrect(i)}
-                     setRevealText={this.setRevealText(i)}
-                     setImageUrl={this.setQuestionImageUrl(i)}
-                     setAnswerImageUrl={this.setAnswerImageUrl(i)}
-                     removeAnswer={this.removeAnswer(i)}
-                     reorder={this.reorderAnswers(i)}
-                     addAnswer={this.addAnswer(i)} />)
-                .toJS();
-            const json = quiz.toJS();
-
-            let questionsHtml;
-
-            if (questions.length > 0) {
-                questionsHtml = <div className="quiz-builder__questions">
-                    <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
-                </div>;
-            } else {
-                questionsHtml = <p>Add some questions to get started.</p>
-            }
+            const context = this.state.get('context');
+            const title = this.state.getIn(['quiz', 'header', 'titleText']);
+            const inner = (context === 'questions') ? 
+                          this.renderQuestions() : 
+                          this.renderResponses();
             
-            return <div key="quiz_builder" className="quiz-builder">
-                <section className="quiz-builder__section quiz-builder__section--meta">
-                    <label htmlFor="title" className="quiz-builder__input-label">Title</label>
-                <input id="title" className="quiz-builder__text-input" value={quiz.get('header').get('titleText')} onChange={this.onChangeTitle.bind(this)} />
-                </section>
+            return (
+                <div key="quiz_builder" className="quiz-builder">
+                    <ol className="breadcrumb">
+                        <li><Link to="/">Home</Link></li>
+                        <li className="active">{title}</li>
+                    </ol>
 
-                <section className="quiz-builder__section">
-                    <h2 className="quiz-builder__section-title">Questions</h2>
+                    <section className="quiz-builder__section quiz-builder__section--meta">
+                        <label htmlFor="title" className="quiz-builder__input-label">Title</label>
+                        <input id="title" className="quiz-builder__text-input" value={title} onChange={this.onChangeTitle.bind(this)} />
+                    </section>
 
-                    {questionsHtml}
+                    {this.renderTabs()}
 
-                    <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
-                    <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
-                </section>
-
-                <ResultGroups groups={quiz.get('resultGroups')}
-                              increaseMinScore={this.increaseGroupMinScore.bind(this)}
-                              decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
-                              numberOfQuestions={questions.length}
-                              addGroup={this.addGroup.bind(this)}
-                              removeGroup={this.removeGroup.bind(this)}
-                              setGroupText={this.setGroupText.bind(this)}
-                              setGroupShare={this.setGroupShare.bind(this)}
-                />
-            </div>;
+                    {inner}
+                </div>
+            );
         } else {
             return <p key="loading">Loading ... </p>;
         }
