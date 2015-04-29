@@ -33,24 +33,24 @@ export default class NewQuizForm extends React.Component {
                     <li><Link to="/">Home</Link></li>
                     <li className="active">New quiz</li>
                 </ol>
-                <div className="panel panel-default">                    
-                    <div className="panel-heading">New Quiz</div>
 
-                    <div className="input-group input-group-lg">
-                        <span className="input-group-addon" id="new-quiz-title">Title</span>
-                        <input type="text"
-                               aria-describedby="new-quiz-title"
-                               className="form-control"
-                               value={this.state.title} 
-                               onChange={this.onChangeTitle.bind(this)} />
-                    </div>
+                <div className="input-group input-group-lg">
+                    <span className="input-group-addon" id="new-quiz-title">Title</span>
+                    <input type="text"
+                           aria-describedby="new-quiz-title"
+                           className="form-control"
+                           value={this.state.title} 
+                           onChange={this.onChangeTitle.bind(this)} />
+                </div>
 
-
+                <div className="form-group">
                     <label forHtml="quizType" className="quiz-builder__input-label">Quiz Type</label>
                     <select id="type" className="quiz-builder__select" value={this.state.type}>
                         <option>list</option>
                     </select>
+                </div>
 
+                <div className="form-group">
                     <button type="button" className="btn btn-default" onClick={this.onSubmit.bind(this)}>Create quiz</button>
                 </div>
             </div>

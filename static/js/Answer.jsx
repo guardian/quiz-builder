@@ -52,7 +52,11 @@ export default class Answer extends React.Component {
             <div className={classes}>
                 <div className="row">
                     <div className="col-md-10">
-                        <input className="form-control" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+                        <div className="input-group">
+                            <span className="input-group-addon" 
+                                  id="basic-addon1">{nthLetter(this.props.index)}</span>
+                            <input className="form-control" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+                        </div>
                     </div>
                     <div className="col-md-2" style={{textAlign: 'right'}}>
                         <div className="btn-group" role="group">
