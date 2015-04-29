@@ -55,7 +55,7 @@ export default class Answer extends React.Component {
                         <input className="form-control" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="col-md-2">
-                        <div className="btn-toolbar" style={{textAlign: 'right'}} role="toolbar">
+                        <div className="btn-group" role="group" style={{textAlign: 'right'}}>
                             {setCorrect}
                             <button type="button" 
                                     className="btn btn-default" 

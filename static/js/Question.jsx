@@ -42,11 +42,10 @@ export default class Question extends React.Component {
             
         return (
             <div className="panel panel-default">
-                <div className="panel-heading">Question {this.props.index + 1}.</div>
                 <div className="panel-body">
                     <div className="form-group">
                         <div className="input-group input-group-lg">
-                            <span className="input-group-addon">Question</span>
+                            <span className="input-group-addon">Question {this.props.index + 1}.</span>
                             <input className="form-control" 
                                    value={question.get('question')} 
                                    placeholder="Enter question text here..." 
