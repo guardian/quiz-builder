@@ -30,11 +30,12 @@ export default class Answer extends React.Component {
         });
         const icon = isCorrect ? tick : cross;
 
-        const setCorrect = !isCorrect && (
+        const setCorrect = (
             <button type="button"
                     key="set_correct"
                     className="btn btn-default"
                     aria-label="Set Correct"
+                    disabled={isCorrect ? "disabled" : ""}
                     onClick={this.props.setCorrect}>
                 <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
             </button>
@@ -54,7 +55,7 @@ export default class Answer extends React.Component {
                         <input className="form-control" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
                     </div>
                     <div className="col-md-2">
-                        <div className="btn-toolbar" role="toolbar">
+                        <div className="btn-toolbar" style={{textAlign: 'right'}} role="toolbar">
                             {setCorrect}
                             <button type="button" 
                                     className="btn btn-default" 
