@@ -42,11 +42,14 @@ export default class Answer extends React.Component {
         );
 
         const revealText = isCorrect && (
-            <ElasticTextArea className="quiz-builder__reveal-text" 
-                             value={this.props.revealText} 
-                             placeholder="Enter reveal text here..." 
-                             onChange={this.handleRevealChange.bind(this)} />
-            );
+            <div className="input-group" style={{marginTop: '10px'}}>
+                <span className="input-group-addon">Reveal text</span>
+                <input className="form-control" 
+                       value={this.props.revealText} 
+                       placeholder="Enter reveal text here..." 
+                       onChange={this.handleRevealChange.bind(this)} />
+            </div>
+        );
         
         return (
             <div className={classes}>
@@ -55,8 +58,13 @@ export default class Answer extends React.Component {
                         <div className="input-group">
                             <span className="input-group-addon" 
                                   id="basic-addon1">{nthLetter(this.props.index)}</span>
-                            <input className="form-control" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+                            <input className="form-control" 
+                                   value={answerText}
+                                   placeholder="Enter answer text here..." 
+                                   onChange={this.handleChange.bind(this)} />
                         </div>
+
+                        {revealText}
                     </div>
                     <div className="col-md-2" style={{textAlign: 'right'}}>
                         <div className="btn-group" role="group">
@@ -65,7 +73,8 @@ export default class Answer extends React.Component {
                                     className="btn btn-default" 
                                     onClick={this.props.removeAnswer}
                                     aria-label="Delete">
-                                <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                <span className="glyphicon glyphicon-trash" 
+                                      aria-hidden="true"></span>
                             </button>
                         </div>
                     </div>
