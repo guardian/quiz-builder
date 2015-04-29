@@ -2,7 +2,6 @@ import React from 'react';
 import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
-import NewQuizForm from './NewQuizForm.jsx!';
 
 const {Link} = Router;
 
@@ -52,19 +51,31 @@ export default class Home extends React.Component {
         let listings = null;
 
         if (this.state.quizzes) {
-            listings = <div key="listings" className="list-group">
-                {map(
-                    this.state.quizzes, 
-                    (quiz, i) => <QuizListing key={i} quiz={quiz} />
-                )}
+            listings = <div className="panel panel-default" key="listings">
+                <div className="panel-heading">Saved quizzes</div>
+                <div className="list-group">
+                    {map(
+                        this.state.quizzes, 
+                        (quiz, i) => <QuizListing key={i} quiz={quiz} />
+                     )}
+                </div>
             </div>;
         } else if (!this.state.isLoaded) {
             listings = <p key="spinner">Spinner here</p>;
         }
         
-        return <div>
-            <NewQuizForm />
-            {listings}
-        </div>;
+        return (
+            <div>
+               <div className="jumbotron">
+                   <h1>Welcome!</h1>
+
+                   <p>Let's build a quiz thing!</p>
+
+                   <p><Link className="btn btn-primary btn-lg" to="/new-quiz" role="button">New quiz</Link></p>
+               </div>
+                
+               {listings}
+            </div>
+        );
     }
 }

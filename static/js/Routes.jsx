@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import QuizBuilder from './QuizBuilder.jsx!';
 import Home from './Home.jsx!';
+import NewQuizForm from './NewQuizForm.jsx!';
 
 const {DefaultRoute, Link, Route, RouteHandler} = Router;
 
@@ -24,6 +25,9 @@ export class App extends React.Component {
                             <ul className="nav navbar-nav">
                                 <li><Link to="/">Home</Link></li>
                             </ul>
+                            <ul className="nav navbar-nav">
+                                <li><Link to="/new-quiz">New quiz</Link></li>
+                            </ul>
                         </div>
                     </div>
                 </nav>
@@ -39,6 +43,7 @@ export class App extends React.Component {
 export const routes = (
     <Route handler={App} path="/">
         <DefaultRoute handler={Home} />
+        <Route name="new-quiz" path="/new-quiz" handler={NewQuizForm} />
         <Route name="quizzes" path="/quizzes/:quizId" handler={QuizBuilder} />
     </Route>
 );

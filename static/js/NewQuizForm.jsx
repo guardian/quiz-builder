@@ -1,5 +1,8 @@
 import React from 'react';
 import {postJson} from './utils';
+import Router from 'react-router';
+
+const {Link} = Router;
 
 export default class NewQuizForm extends React.Component {
     constructor(props) {
@@ -25,18 +28,31 @@ export default class NewQuizForm extends React.Component {
     
     render() {
         return (
-            <div className="quiz-builder__section quiz-builder__section--meta">
-                <h2>New quiz</h2>
+            <div>
+                <ol className="breadcrumb">
+                    <li><Link to="/">Home</Link></li>
+                    <li className="active">New quiz</li>
+                </ol>
+                <div className="panel panel-default">                    
+                    <div className="panel-heading">New Quiz</div>
 
-                <label forHtml="title" className="quiz-builder__input-label">Title</label>
-                <input id="title" className="quiz-builder__text-input" value={this.state.title} onChange={this.onChangeTitle.bind(this)} />
+                    <div className="input-group input-group-lg">
+                        <span className="input-group-addon" id="new-quiz-title">Title</span>
+                        <input type="text"
+                               aria-describedby="new-quiz-title"
+                               className="form-control"
+                               value={this.state.title} 
+                               onChange={this.onChangeTitle.bind(this)} />
+                    </div>
 
-                <label forHtml="quizType" className="quiz-builder__input-label">Quiz Type</label>
-                <select id="type" className="quiz-builder__select" value={this.state.type}>
-                    <option>list</option>
-                </select>
-            
-                <button onClick={this.onSubmit.bind(this)}>Create quiz</button>
+
+                    <label forHtml="quizType" className="quiz-builder__input-label">Quiz Type</label>
+                    <select id="type" className="quiz-builder__select" value={this.state.type}>
+                        <option>list</option>
+                    </select>
+
+                    <button type="button" className="btn btn-default" onClick={this.onSubmit.bind(this)}>Create quiz</button>
+                </div>
             </div>
         );
     }

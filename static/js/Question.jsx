@@ -47,7 +47,7 @@ export default class Question extends React.Component {
 
 
             <div className="quiz-builder__answers">
-            <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
+                <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
             </div>
 
             <button className="quiz-builder__button" onClick={this.props.addAnswer}>Add answer</button>
