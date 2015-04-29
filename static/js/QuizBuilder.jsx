@@ -355,12 +355,19 @@ export default class QuizBuilder extends React.Component {
                         <li className="active">{title}</li>
                     </ol>
 
-                    <section className="quiz-builder__section quiz-builder__section--meta">
-                        <label htmlFor="title" className="quiz-builder__input-label">Title</label>
-                        <input id="title" className="quiz-builder__text-input" value={title} onChange={this.onChangeTitle.bind(this)} />
-                    </section>
-
-                    {this.renderTabs()}
+                    <div className="form-group">
+                        <div className="input-group input-group-lg">
+                            <span className="input-group-addon">Title</span>
+                            <input id="title" 
+                                   className="form-control"
+                                   value={title} 
+                                   onChange={this.onChangeTitle.bind(this)} />
+                        </div>
+                    </div>
+                    
+                    <div className="form-group">
+                        {this.renderTabs()}
+                    </div>
 
                     {inner}
                 </div>
