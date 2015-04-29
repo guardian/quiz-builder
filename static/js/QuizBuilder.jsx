@@ -317,8 +317,16 @@ export default class QuizBuilder extends React.Component {
             <section key="questions" className="quiz-builder__section">
                 {questionsHtml}
 
-                <button className="quiz-builder__button" onClick={this.addQuestion.bind(this)}>New question</button> &nbsp;
-                <button className="quiz-builder__button" onClick={this.shuffleAnswers.bind(this)}>Shuffle answers</button>
+                <div className="btn-toolbar" role="toolbar">
+                    <button className="btn btn-default" 
+                            onClick={this.addQuestion.bind(this)}>
+                        New question
+                    </button>
+                    <button className="btn btn-default"
+                            onClick={this.shuffleAnswers.bind(this)}>
+                        Shuffle answers
+                    </button>
+                </div>
             </section>
         );
     }
