@@ -52,7 +52,7 @@ export default class Answer extends React.Component {
         );
         
         return (
-            <div className={classes}>
+            <li className={classes}>
                 <div className="row">
                     <div className="col-md-10">
                         <div className="input-group">
@@ -79,7 +79,7 @@ export default class Answer extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </li>
         );
     }
 }

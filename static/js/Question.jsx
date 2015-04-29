@@ -54,10 +54,9 @@ export default class Question extends React.Component {
                     </div>
 
                     <div className="form-group">
-                        <ReorderableList className="list-group"
-                                         onReorder={this.props.reorder} 
-                                         components={answers} 
-                                         context="answer" />
+                        <ul className="list-group">
+                            {answers}
+                        </ul>
                     </div>
                     
                     <div className="btn-toolbar" role="toolbar">
