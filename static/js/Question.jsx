@@ -40,19 +40,25 @@ export default class Question extends React.Component {
             ).toJS()
         }
             
-        return <div className="quiz-builder__question">
-            <h2 className="quiz-builder__question-number">Question {this.props.index + 1}.</h2>
-            <ElasticTextArea className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
-            <input className="quiz-builder__image-url" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
+        return (
+            <div className="panel panel-default">
+                <div className="panel-heading">Question {this.props.index + 1}.</div>
+                <div className="panel-body">
+                    <ElasticTextArea className="quiz-builder__question-text" value={question.get('question')} placeholder="Enter question text here..." onChange={this.handleQuestionTextChange.bind(this)} />
+                    <input className="quiz-builder__image-url" value={question.get('imageUrl')} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
 
 
-            <div className="quiz-builder__answers">
-                <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
+                    <div className="quiz-builder__answers">
+                        <ReorderableList onReorder={this.props.reorder} components={answers} context="answer" />
+                    </div>
+
+                    <div className="btn-toolbar" role="toolbar">
+                        <button type="button" className="btn btn-default" onClick={this.props.addAnswer}>Add answer</button>
+
+                        <button type="button" className="btn btn-default" onClick={this.props.onClose}>Delete question</button>
+                    </div>
+                </div>
             </div>
-
-            <button className="quiz-builder__button" onClick={this.props.addAnswer}>Add answer</button>
-
-            <button className="quiz-builder__question-close" onClick={this.props.onClose}>{close(18)}</button>
-        </div>;
+        );
     }
 }

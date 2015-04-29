@@ -24,21 +24,38 @@ export default class Answer extends React.Component {
         const letter = nthLetter(this.props.index);
         const isCorrect = answer.get('correct');
         const classes = classnames({
-            'quiz-builder__answer': true,
-            'quiz-builder__answer--correct': isCorrect
+            'panel': true,
+            'panel-success': isCorrect,
+            'panel-danger': !isCorrect
         });
         const icon = isCorrect ? tick : cross;
 
-        const header = isCorrect ? <span>{icon} {letter}.</span> : <button className="quiz-builder__correct-toggle" onClick={this.props.setCorrect}>{icon} {letter}.</button>;
+        const header = <span>{icon} {letter}.</span>;
+
+        const setCorrect = !isCorrect &&
+            <button type="button"
+                    key="set_correct"
+                    className="btn btn-default"
+                    onClick={this.props.setCorrect}>Set correct</button>;
 
         const revealText = isCorrect && <ElasticTextArea className="quiz-builder__reveal-text" value={this.props.revealText} placeholder="Enter reveal text here..." onChange={this.handleRevealChange.bind(this)} />;
         
-        return <div className={classes}>
-            <h4 className="quiz-builder__answer-letter">{header}</h4>
-            <ElasticTextArea className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
-            <input className="quiz-builder__image-url" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
-            {revealText}
-            <button className="quiz-builder__answer-close" onClick={this.props.removeAnswer}>{close(16)}</button>
-        </div>;
+        return (
+            <div className={classes}>
+                <div className="panel-heading">{header}</div>
+                <div className="panel-body">
+                    <ElasticTextArea className="quiz-builder__answer-text" value={answerText} placeholder="Enter answer text here..." onChange={this.handleChange.bind(this)} />
+                    <input className="quiz-builder__image-url" value={imageUrl} placeholder="Enter image url here..." onChange={this.handleImageUrlChange.bind(this)} />
+                    {revealText}
+
+                    <div className="btn-toolbar" role="toolbar">
+                        {setCorrect}
+                        <button type="button" 
+                                className="btn btn-default" 
+                                onClick={this.props.removeAnswer}>Delete answer</button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 }

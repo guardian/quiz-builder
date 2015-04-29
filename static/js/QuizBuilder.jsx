@@ -277,7 +277,7 @@ export default class QuizBuilder extends React.Component {
             <ul className="nav nav-pills">
                 {
                     map(contexts, context => 
-                        <li role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{capitalize(context)}</a></li>
+                        <li key={context} role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{capitalize(context)}</a></li>
                     )
                 }
             </ul>
@@ -303,8 +303,6 @@ export default class QuizBuilder extends React.Component {
                       addAnswer={this.addAnswer(i)} />
         ).toJS();
 
-
-
         let questionsHtml;
 
         if (questions.length > 0) {
@@ -329,7 +327,8 @@ export default class QuizBuilder extends React.Component {
         const quiz = this.state.get('quiz');
 
         return (
-            <ResultGroups groups={quiz.get('resultGroups')}
+            <ResultGroups key="result_groups"
+                          groups={quiz.get('resultGroups')}
                           increaseMinScore={this.increaseGroupMinScore.bind(this)}
                           decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
                           numberOfQuestions={quiz.get('questions').size}
