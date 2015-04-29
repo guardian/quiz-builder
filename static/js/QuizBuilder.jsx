@@ -272,12 +272,14 @@ export default class QuizBuilder extends React.Component {
     renderTabs() {
         const isActive = (context) => this.state.get('context') === context;
         const className = (context) => isActive(context) ? "active" : null;
+        const nQuestions = this.state.getIn(['quiz', 'questions']).size;
+        const title = (context) => context === 'questions' ? `Questions (${nQuestions})` : capitalize(context);
         
         return (
             <ul className="nav nav-pills">
                 {
                     map(contexts, context => 
-                        <li key={context} role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{capitalize(context)}</a></li>
+                        <li key={context} role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{title(context)}</a></li>
                     )
                 }
             </ul>
@@ -306,9 +308,7 @@ export default class QuizBuilder extends React.Component {
         let questionsHtml;
 
         if (questions.length > 0) {
-            questionsHtml = <div className="quiz-builder__questions">
-                <ReorderableList onReorder={this.reorder.bind(this)} components={questions} context="question" />
-            </div>;
+            questionsHtml = questions;
         } else {
             questionsHtml = <p>Add some questions to get started.</p>
         }
