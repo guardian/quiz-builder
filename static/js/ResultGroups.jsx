@@ -30,34 +30,24 @@ class ResultGroup extends React.Component {
     }
     
     render() {
-        const classes = classnames({
-            'quiz-builder__result-group': true,
-            'quiz-builder__result-group--error': this.props.isError
-        });
         const group = this.props.group;
-
-        let downHtml = null;
-
-        if (group.get('minScore') > 0) {
-            downHtml = <button key="down_button" className="quiz-builder__min-score-button" onClick={this.onDown.bind(this)}>
-                {down}
-            </button>;
-        }
         
-        return <div className={classes}>
-            <div className="quiz-builder__min-score-buttons">
-                <button className="quiz-builder__min-score-button" onClick={this.onUp.bind(this)}>
-                    {up}
-                </button>
-                {downHtml}
-            </div>
-            <div className="quiz-builder__min-score">{group.get('minScore')}</div>
+        return <li className="list-group-item">
+            <span className="badge">{group.get('minScore')}</span>
             <div className="quiz-builder__result-group-inner">
-                <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeText.bind(this)} value={group.get('title')} placeholder="Enter message text here ..." />
+                <div className="form-group">
+                    <div className="input-group input-group-lg">
+                        <span className="input-group-addon">Response</span>
+                        <input className="form-control" 
+                               onChange={this.onChangeText.bind(this)}
+                               value={group.get('title')} 
+                               placeholder="Enter message text here ..." />
+                    </div>
+                </div>
                 <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
                 <button className="quiz-builder__answer-close" onClick={this.removeGroup.bind(this)}>{close(16)}</button>
             </div>
-        </div>;
+        </li>;
     }
 }
 
@@ -70,16 +60,14 @@ export default class ResultGroups extends React.Component {
         const isError = (minScore) =>
             minScore > this.props.numberOfQuestions || minScoreCounts[minScore] > 1;
         
-        const groups = this.props.groups
-            .map((group, index) => <ResultGroup key={index} 
-                                                group={group}
-                                                increaseMinScore={this.props.increaseMinScore.bind(null, index)} 
-                                                decreaseMinScore={this.props.decreaseMinScore.bind(null, index)}
-                                                setText={this.props.setGroupText(index)}
-                                                setShare={this.props.setGroupShare(index)}
-                                                remove={this.props.removeGroup.bind(null, index)}
-                                                isError={isError(group.get('minScore'))} />)
-            .toJS();        
+        const groups = this.props.groups.map((group, index) =>
+            <ResultGroup key={index} 
+                         group={group}
+                         setText={this.props.setGroupText(index)}
+                         setShare={this.props.setGroupShare(index)}
+                         remove={this.props.removeGroup.bind(null, index)}
+                         isError={isError(group.get('minScore'))} />
+        ).toJS();
         
         let errors = [];
 
@@ -111,12 +99,16 @@ export default class ResultGroups extends React.Component {
             );
         }
 
-        let errorsHtml = (errors.length > 0) ? <ul>{errors}</ul> : null;
+        let errorsHtml = (errors.length > 0) ? <div key="errors">{errors}</div> : null;
 
-        return <section className="quiz-builder__section">
-                <button className="quiz-builder__button" onClick={this.props.addGroup}>Add group</button>
+        return (
+            <div>
                 {errorsHtml}
-                {groups}
-            </section>;
+
+                <ul className="list-group">
+                    {groups}
+                </ul>
+            </div>
+        );
     }
 }
