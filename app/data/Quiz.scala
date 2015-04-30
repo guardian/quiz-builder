@@ -56,7 +56,13 @@ object Quiz {
     quizType,
     columns,
     Nil,
-    Nil
+    Seq(
+      ResultGroup(
+        "Well done!",
+        s"I got _/_ in '$title'",
+        0
+      )
+    )
   )
 }
 

@@ -35,22 +35,26 @@ class ResultGroup extends React.Component {
         const group = this.props.group;
         
         return (
-            <li className="list-group-item">
-                <span className="badge">{group.get('minScore')}</span>
-                <div className="form-group">
-                    <div className="input-group">
-                        <span className="input-group-addon">Response</span>
-                        <input className="form-control" 
-                               onChange={this.onChangeText.bind(this)}
-                               value={group.get('title')} 
-                               placeholder="Enter message text here ..." />
-                    </div>
-                </div>
+            <li className="list-group-item list-group-item-info">
+                <div className="row">
+                    <div className="col-xs-1"><h3>{group.get('minScore')}</h3></div>
+                    <div className="col-xs-11">
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon">Response</span>
+                                <input className="form-control" 
+                                       onChange={this.onChangeText.bind(this)}
+                                       value={group.get('title')} 
+                                       placeholder="Enter message text here ..." />
+                            </div>
+                        </div>
 
-                <div className="form-group">
-                    <div className="input-group">
-                        <span className="input-group-addon">Share text</span>
-                        <input className="form-control" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon">Share text</span>
+                                <input className="form-control" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -62,9 +66,7 @@ class DittoGroup extends React.Component {
     render() {
         return (
             <li key={`ditto_${this.props.score}`} className="list-group-item">
-                <span className="badge">{this.props.score}</span>
-
-                Ditto.
+                <h4>{this.props.score}</h4>
             </li>
         );
     }
