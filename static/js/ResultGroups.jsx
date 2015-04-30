@@ -1,12 +1,14 @@
 import React from 'react';
 import ElasticTextArea from './ElasticTextArea';
-import {close, up, down} from './svgs.jsx!';
 import classnames from 'classnames';
 import countBy from 'lodash-node/modern/collection/countBy';
 import min from 'lodash-node/modern/math/min';
+import max from 'lodash-node/modern/math/max'
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
+import zipObject from 'lodash-node/modern/array/zipObject';
 import values from 'lodash-node/modern/object/values';
+import range from 'lodash-node/modern/utility/range';
 
 class ResultGroup extends React.Component {
     removeGroup() {
@@ -32,11 +34,11 @@ class ResultGroup extends React.Component {
     render() {
         const group = this.props.group;
         
-        return <li className="list-group-item">
-            <span className="badge">{group.get('minScore')}</span>
-            <div className="quiz-builder__result-group-inner">
+        return (
+            <li className="list-group-item">
+                <span className="badge">{group.get('minScore')}</span>
                 <div className="form-group">
-                    <div className="input-group input-group-lg">
+                    <div className="input-group">
                         <span className="input-group-addon">Response</span>
                         <input className="form-control" 
                                onChange={this.onChangeText.bind(this)}
@@ -44,32 +46,35 @@ class ResultGroup extends React.Component {
                                placeholder="Enter message text here ..." />
                     </div>
                 </div>
-                <ElasticTextArea className="quiz-builder__answer-text" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
-                <button className="quiz-builder__answer-close" onClick={this.removeGroup.bind(this)}>{close(16)}</button>
-            </div>
-        </li>;
+
+                <div className="form-group">
+                    <div className="input-group">
+                        <span className="input-group-addon">Share text</span>
+                        <input className="form-control" onChange={this.onChangeShare.bind(this)} value={group.get('share')} placeholder="Enter share text here ..." />
+                    </div>
+                </div>
+            </li>
+        );
     }
 }
 
-export default class ResultGroups extends React.Component {    
+class DittoGroup extends React.Component {
     render() {
+        return (
+            <li key={`ditto_${this.props.score}`} className="list-group-item">
+                <span className="badge">{this.props.score}</span>
+
+                Ditto.
+            </li>
+        );
+    }
+}
+
+export default class ResultGroups extends React.Component {
+    renderErrors() {
         const jsGroups = this.props.groups.toJS();
-
         const minScoreCounts = countBy(jsGroups, 'minScore');
-
-        const isError = (minScore) =>
-            minScore > this.props.numberOfQuestions || minScoreCounts[minScore] > 1;
-        
-        const groups = this.props.groups.map((group, index) =>
-            <ResultGroup key={index} 
-                         group={group}
-                         setText={this.props.setGroupText(index)}
-                         setShare={this.props.setGroupShare(index)}
-                         remove={this.props.removeGroup.bind(null, index)}
-                         isError={isError(group.get('minScore'))} />
-        ).toJS();
-        
-        let errors = [];
+        const errors = [];
 
         if (some(jsGroups, group => group.minScore > this.props.numberOfQuestions)) {
             const isSingle = this.props.numberOfQuestions === 1;
@@ -89,7 +94,7 @@ export default class ResultGroups extends React.Component {
             );
         }
 
-        const minMinScore = min(map(jsGroups, g => g.minScore));
+        const minMinScore = min(this.scores());
 
         if (minMinScore !== Infinity && minMinScore > 0) {
             errors.push(
@@ -99,11 +104,37 @@ export default class ResultGroups extends React.Component {
             );
         }
 
-        let errorsHtml = (errors.length > 0) ? <div key="errors">{errors}</div> : null;
+        return errors;
+    }
+
+    scores() {
+        return this.props.groups.map(g => g.get('minScore')).toJS();
+    }
+    
+    render() {
+        const jsGroups = this.props.groups.toJS();
+        const groupsByMinScore = zipObject(this.props.groups.map((group, index) =>
+            [
+                group.get('minScore'),
+                (
+                    <ResultGroup key={`group_${index}`}
+                                 group={group}
+                                 setText={this.props.setGroupText(index)}
+                                 setShare={this.props.setGroupShare(index)}
+                                 remove={this.props.removeGroup.bind(null, index)} />
+                )
+            ]
+        ).toJS());
+
+        const scores = this.scores();
+        const maxMinScore = scores.length > 0 ? max(scores) : 0;
+        const groups = map(range(Math.max(maxMinScore, this.props.numberOfQuestions) + 1), (n) => {
+            return groupsByMinScore[n] || <DittoGroup score={n} />;
+        });
 
         return (
             <div>
-                {errorsHtml}
+                {this.renderErrors()}
 
                 <ul className="list-group">
                     {groups}
