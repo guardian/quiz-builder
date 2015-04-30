@@ -11,6 +11,7 @@ GET     /quizzes.json               controllers.Application.listQuizzes
 POST    /quizzes/:id.json           controllers.Application.updateQuiz(id)
 GET     /quizzes/:id.json           controllers.Application.getQuiz(id)
 POST    /quizzes.json               controllers.Application.createQuiz()
+POST    /quizzes/:id/delete.json    controllers.Application.deleteQuiz(id)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -42,3 +42,9 @@ export function postJson(url, json) {
         body: JSON.stringify(json)
     }).then(response => response.json());
 }
+
+export function postNothing(url) {
+    return fetch(url, {
+        method: 'post'
+    });
+}

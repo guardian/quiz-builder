@@ -49,6 +49,12 @@ object Application extends Controller {
     }
   }
 
+  def deleteQuiz(id: String) = Action.async { request =>
+    QuizTable.delete(id) map { response =>
+      Ok(Json.obj())
+    }
+  }
+
   def updateQuiz(id: String) = Action.async(parse.json[UpdateQuizRequest]) { request =>
     val username = "robert.berry@guardian.co.uk"
     val updatedAt = DateTime.now

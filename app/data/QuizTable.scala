@@ -68,6 +68,12 @@ object QuizTable {
     }
   }
 
+  def delete(id: String) = {
+    dynamoDbClient.deleteItemFuture(new DeleteItemRequest().withTableName(TableName).withKey(Map(
+      "id" -> new AttributeValue().withS(id)
+    ).asJava))
+  }
+
   def create(createdBy: String, quiz: Quiz) = {
     dynamoDbClient.putItemFuture(new PutItemRequest().withTableName(TableName).withItem(Map(
       "id" -> new AttributeValue().withS(quiz.id),

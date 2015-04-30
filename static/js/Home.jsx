@@ -3,12 +3,19 @@ import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
 import moment from 'moment';
+import {postNothing} from './utils';
 
 const {Link} = Router;
 
 class QuizListing extends React.Component {
     onDelete(event) {
-
+        const {quiz} = this.props;
+        
+        if (confirm(`Are you sure you want to delete '${quiz.title}'`)) {
+            postNothing(`/quizzes/${quiz.id}/delete.json`).then(() => {
+                this.props.refreshListing();
+            });
+        }
     }
     
     render() {
@@ -70,8 +77,8 @@ export default class Home extends React.Component {
             isLoaded: false
         };
     }
-    
-    componentDidMount() {
+
+    refreshListing() {
         reqwest({
             url: '/quizzes.json',
             method: 'get',
@@ -87,7 +94,11 @@ export default class Home extends React.Component {
                     });
                 }
             }
-        });
+        }); 
+   }
+    
+    componentDidMount() {
+        this.refreshListing();
     }
     
     render() {
@@ -105,7 +116,11 @@ export default class Home extends React.Component {
                     <tbody>
                     {map(
                         this.state.quizzes, 
-                        (quiz, i) => <QuizListing key={i} quiz={quiz} />
+                        (quiz, i) => (
+                            <QuizListing key={i}
+                                         quiz={quiz} 
+                                         refreshListing={this.refreshListing.bind(this)} />
+                        )
                      )}
                     </tbody>
                 </table>
