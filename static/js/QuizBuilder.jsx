@@ -8,7 +8,6 @@ import max from 'lodash-node/modern/math/max';
 import capitalize from 'lodash-node/modern/string/capitalize';
 import debounce from 'lodash-node/modern/function/debounce';
 import reqwest from 'reqwest';
-import ReorderableList from './ReorderableList.jsx!';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import validate from './schema';

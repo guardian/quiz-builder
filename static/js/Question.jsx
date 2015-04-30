@@ -1,6 +1,4 @@
 import React from 'react';
-import {close} from './svgs.jsx!';
-import ReorderableList from './ReorderableList.jsx!';
 import Answer from './Answer.jsx!';
 
 export default class Question extends React.Component {
