@@ -86,7 +86,12 @@ class DittoGroup extends React.Component {
             <li className={listClass(this.props.isBlue)}>
                 <div className="row">
                     <div className="col-xs-11">
-                        <h4>{this.props.score}</h4>
+                        <h4>
+                            <img className="arrow-previous" 
+                                 src="/assets/images/arrow.png" 
+                                 role="presentation" />
+                            {this.props.score}
+                        </h4>
                     </div>
                     <div className="col-xs-1 text-right">
                         <button type="button"
