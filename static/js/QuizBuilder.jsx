@@ -23,6 +23,10 @@ const contexts = [
     'responses'
 ];
 
+function sortByScore(groups) {
+    return groups.sort(on(group => -group.get('minScore')));
+}
+
 export default class QuizBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -89,18 +93,18 @@ export default class QuizBuilder extends React.Component {
     reSortGroups() {
         this.updateQuiz(quiz => quiz.update(
             'resultGroups',
-            groups => groups.sort(on(group => -group.get('minScore')))
+            sortByScore
         ));
     }
 
-    addGroup() {
+    addGroup(minScore) {
         this.updateQuiz(state => state.update(
             'resultGroups',
-            groups => groups.unshift(Immutable.fromJS({
+            groups => sortByScore(groups.unshift(Immutable.fromJS({
                 title: '',
                 share: '',
-                minScore: groups.size > 0 ? max(map(groups.toJS(), (g) => g.minScore)) + 1 : 0
-            }))
+                minScore: minScore
+            })))
         ));
     }
     
@@ -228,22 +232,6 @@ export default class QuizBuilder extends React.Component {
         ));
     }
 
-    decreaseGroupMinScore(index) {
-        this.updateQuiz(quiz => quiz.updateIn(
-            ['resultGroups', index, 'minScore'],
-            score => score - 1
-        ));
-        this.reSortGroups();
-    }
-
-    increaseGroupMinScore(index) {
-        this.updateQuiz(quiz => quiz.updateIn(
-            ['resultGroups', index, 'minScore'],
-            score => score + 1
-        ));
-        this.reSortGroups();
-    }
-
     shuffleAnswers() {
         this.updateQuiz(quiz => quiz.update(
             'questions',
@@ -279,7 +267,9 @@ export default class QuizBuilder extends React.Component {
             <ul className="nav nav-pills">
                 {
                     map(contexts, context => 
-                        <li key={context} role="presentation" className={className(context)}><a href="#" onClick={this.setContext.bind(this, context)}>{title(context)}</a></li>
+                        <li key={context} role="presentation" className={className(context)}>
+                            <a href="#" onClick={this.setContext.bind(this, context)}>{title(context)}</a>
+                        </li>
                     )
                 }
             </ul>
@@ -337,8 +327,6 @@ export default class QuizBuilder extends React.Component {
         return (
             <ResultGroups key="result_groups"
                           groups={quiz.get('resultGroups')}
-                          increaseMinScore={this.increaseGroupMinScore.bind(this)}
-                          decreaseMinScore={this.decreaseGroupMinScore.bind(this)}
                           numberOfQuestions={quiz.get('questions').size}
                           addGroup={this.addGroup.bind(this)}
                           removeGroup={this.removeGroup.bind(this)}

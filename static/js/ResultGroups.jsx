@@ -10,6 +10,14 @@ import zipObject from 'lodash-node/modern/array/zipObject';
 import values from 'lodash-node/modern/object/values';
 import range from 'lodash-node/modern/utility/range';
 
+function listClass(isBlue) {
+    return classnames({
+        'list-group-item': true,
+        'list-group-item-info': isBlue,
+        'list-group-item-warning': !isBlue
+    });
+}
+
 class ResultGroup extends React.Component {
     removeGroup() {
         this.props.remove();
@@ -22,23 +30,28 @@ class ResultGroup extends React.Component {
     onChangeShare(event) {
         this.props.setShare(event.target.value);
     }
-
-    onUp() {
-        this.props.increaseMinScore();
-    }
-
-    onDown() {
-        this.props.decreaseMinScore();
-    }
     
     render() {
         const group = this.props.group;
+        const minScore = group.get('minScore');
+
+        let buttonsHtml;
+
+        if (minScore > 0) {
+            buttonsHtml = (
+                <button type="button"
+                        className="btn btn-default"
+                        onClick={this.removeGroup.bind(this)}>
+                    <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+            );
+        }
         
         return (
-            <li className="list-group-item list-group-item-info">
+            <li className={listClass(this.props.isBlue)}>
                 <div className="row">
-                    <div className="col-xs-1"><h3>{group.get('minScore')}</h3></div>
-                    <div className="col-xs-11">
+                    <div className="col-xs-1"><h3>{minScore}</h3></div>
+                    <div className="col-xs-10">
                         <div className="form-group">
                             <div className="input-group">
                                 <span className="input-group-addon">Response</span>
@@ -56,6 +69,7 @@ class ResultGroup extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className="col-xs-1 text-right">{buttonsHtml}</div>
                 </div>
             </li>
         );
@@ -63,10 +77,26 @@ class ResultGroup extends React.Component {
 }
 
 class DittoGroup extends React.Component {
+    addGroup(event) {
+        event.preventDefault();
+        this.props.addGroup(this.props.score);
+    }
+    
     render() {
         return (
-            <li key={`ditto_${this.props.score}`} className="list-group-item">
-                <h4>{this.props.score}</h4>
+            <li key={`ditto_${this.props.score}`} className={listClass(this.props.isBlue)}>
+                <div className="row">
+                    <div className="col-xs-11">
+                        <h4>{this.props.score}</h4>
+                    </div>
+                    <div className="col-xs-1 text-right">
+                        <button type="button"
+                                className="btn btn-default"
+                                onClick={this.addGroup.bind(this)}>
+                            <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
             </li>
         );
     }
@@ -118,25 +148,40 @@ export default class ResultGroups extends React.Component {
         const groupsByMinScore = zipObject(this.props.groups.map((group, index) =>
             [
                 group.get('minScore'),
-                (
-                    <ResultGroup key={`group_${index}`}
-                                 group={group}
-                                 setText={this.props.setGroupText(index)}
-                                 setShare={this.props.setGroupShare(index)}
-                                 remove={this.props.removeGroup.bind(null, index)} />
-                )
+                [group, index]
             ]
         ).toJS());
 
         const scores = this.scores();
         const maxMinScore = scores.length > 0 ? max(scores) : 0;
+
+        let isBlue = false;
+        
         const groups = map(range(Math.max(maxMinScore, this.props.numberOfQuestions) + 1), (n) => {
-            return groupsByMinScore[n] || <DittoGroup score={n} />;
+            if (n in groupsByMinScore) {
+                isBlue = !isBlue;
+                const [group, index] = groupsByMinScore[n];
+
+                return (
+                    <ResultGroup key={`group_${index}`}
+                                 group={group}
+                                 setText={this.props.setGroupText(index)}
+                                 setShare={this.props.setGroupShare(index)}
+                                 isBlue={isBlue}
+                                 remove={this.props.removeGroup.bind(null, index)} />
+                );
+            } else {
+                return (
+                    <DittoGroup score={n} isBlue={isBlue} addGroup={this.props.addGroup} />
+                );
+            }
         });
 
         return (
             <div>
-                {this.renderErrors()}
+                <div>
+                    {this.renderErrors()}
+                </div>
 
                 <ul className="list-group">
                     {groups}
