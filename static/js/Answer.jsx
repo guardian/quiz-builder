@@ -1,5 +1,4 @@
 import classnames from 'classnames';
-import ElasticTextArea from './ElasticTextArea';
 import {close, tick, cross} from './svgs.jsx!';
 import {nthLetter} from './utils';
 import React from 'react';

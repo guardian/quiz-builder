@@ -47,8 +47,7 @@ export default class NewQuizForm extends React.Component {
 
                 <div className="form-group">
                     <select id="type" className="form-control" value={this.state.type}>
-                        <option value="list">Knowledge quiz (list)</option>
-                        <option value="list">Knowledge quiz (squares)</option>
+                        <option value="list">Standard quiz</option>
                         <option value="list">Personality quiz</option>
                     </select>
                 </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import ElasticTextArea from './ElasticTextArea';
 import classnames from 'classnames';
 import countBy from 'lodash-node/modern/collection/countBy';
 import min from 'lodash-node/modern/math/min';
@@ -84,7 +83,7 @@ class DittoGroup extends React.Component {
     
     render() {
         return (
-            <li key={`ditto_${this.props.score}`} className={listClass(this.props.isBlue)}>
+            <li className={listClass(this.props.isBlue)}>
                 <div className="row">
                     <div className="col-xs-11">
                         <h4>{this.props.score}</h4>
@@ -163,7 +162,7 @@ export default class ResultGroups extends React.Component {
                 const [group, index] = groupsByMinScore[n];
 
                 return (
-                    <ResultGroup key={`group_${index}`}
+                    <ResultGroup key={`group_${n}_result_group`}
                                  group={group}
                                  setText={this.props.setGroupText(index)}
                                  setShare={this.props.setGroupShare(index)}
@@ -172,7 +171,7 @@ export default class ResultGroups extends React.Component {
                 );
             } else {
                 return (
-                    <DittoGroup score={n} isBlue={isBlue} addGroup={this.props.addGroup} />
+                    <DittoGroup key={`group_${n}`} score={n} isBlue={isBlue} addGroup={this.props.addGroup} />
                 );
             }
         });
