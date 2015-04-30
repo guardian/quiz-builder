@@ -26,8 +26,7 @@ export default class Answer extends React.Component {
             'list-group-item-success': isCorrect,
             'list-group-item--danger': !isCorrect
         });
-        const icon = isCorrect ? tick : cross;
-
+        
         const setCorrect = (
             <button type="button"
                     key="set_correct"
