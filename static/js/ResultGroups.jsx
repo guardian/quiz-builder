@@ -41,7 +41,7 @@ class ResultGroup extends React.Component {
                 <button type="button"
                         className="btn btn-default"
                         onClick={this.removeGroup.bind(this)}>
-                    <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 </button>
             );
         }
