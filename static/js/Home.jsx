@@ -2,18 +2,61 @@ import React from 'react';
 import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
+import moment from 'moment';
 
 const {Link} = Router;
 
 class QuizListing extends React.Component {
+    onDelete(event) {
+
+    }
+    
     render() {
         const {quiz} = this.props;
+
+        const renderEvent = (key, by, at) => {
+            const atDate = new Date(at);
+
+            return (
+                <div key={key}>
+                    {by}<br />
+                    <datetime time={atDate.toISOString()}>
+                        {moment(atDate).fromNow()}
+                    </datetime>
+                </div>
+            );
+        };
+
+        const updatedHtml = ('updatedBy' in quiz) && renderEvent(
+            'updated',
+            quiz.updatedBy,
+            quiz.updatedAt
+        );
         
         return (
-            <Link className="list-group-item" to={`/quizzes/${quiz.id}`}>
-                <h4 className="list-group-item-heading">{quiz.title}</h4>
-                <p className="list-group-item-text">Created by {quiz.createdBy}</p>
-            </Link>
+            <tr>
+                <td>
+                    <Link to={`/quizzes/${quiz.id}`}>
+                         <span className="h4">{quiz.title}</span>
+                    </Link>
+                </td>
+                <td>
+                    {renderEvent('created', quiz.createdBy, quiz.createdAt)}
+                </td>
+                <td>
+                    {updatedHtml}
+                </td>
+                <td>
+                    <Link className="btn btn-default" to={`/quizzes/${quiz.id}`}>
+                        <span className="glyphicon glyphicon-pencil"></span>
+                    </Link>
+                    <button type="button"
+                            className="btn btn-default"
+                            onClick={this.onDelete.bind(this)}>
+                        <span className="glyphicon glyphicon-trash"></span>
+                    </button>
+                </td>
+            </tr>
         );
     }
 }
@@ -52,13 +95,20 @@ export default class Home extends React.Component {
 
         if (this.state.quizzes) {
             listings = <div className="panel panel-default" key="listings">
-                <div className="panel-heading">Saved quizzes</div>
-                <div className="list-group">
+                <table className="table">
+                    <thead>
+                        <th>Title</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
                     {map(
                         this.state.quizzes, 
                         (quiz, i) => <QuizListing key={i} quiz={quiz} />
                      )}
-                </div>
+                    </tbody>
+                </table>
             </div>;
         } else if (!this.state.isLoaded) {
             listings = <p key="spinner">Spinner here</p>;
@@ -71,7 +121,11 @@ export default class Home extends React.Component {
 
                    <p>Let's build a quiz thing!</p>
 
-                   <p><Link className="btn btn-primary btn-lg" to="/new-quiz" role="button">New quiz</Link></p>
+                   <p>
+                       <Link className="btn btn-primary btn-lg" to="/new-quiz" role="button">
+                           New quiz
+                       </Link>
+                   </p>
                </div>
                 
                {listings}

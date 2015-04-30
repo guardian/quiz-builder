@@ -25,17 +25,18 @@ System.config({
     "ded/qwery": "github:ded/qwery@4.0.0",
     "facebook/immutable-js": "github:facebook/immutable-js@3.7.2",
     "fat/bean": "github:fat/bean@1.0.14",
+    "fetch": "npm:whatwg-fetch@0.7.0",
     "immutable": "github:facebook/immutable-js@3.7.2",
     "jsonschema": "npm:jsonschema@1.0.1",
     "jsx": "github:floatdrop/plugin-jsx@1.1.0",
     "lodash": "npm:lodash@3.7.0",
     "lodash-node": "npm:lodash-node@3.7.0",
+    "moment": "npm:moment@2.10.2",
     "node-uuid": "npm:node-uuid@1.4.3",
     "qwery": "github:ded/qwery@4.0.0",
     "react": "npm:react@0.13.2",
     "react-router": "npm:react-router@0.13.2",
     "reqwest": "github:ded/reqwest@1.1.5",
-    "fetch": "npm:whatwg-fetch@0.7.0",
     "github:floatdrop/plugin-jsx@1.1.0": {
       "react-tools": "npm:react-tools@0.13.1"
     },
@@ -326,6 +327,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:moment@2.10.2": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:node-uuid@1.4.3": {
