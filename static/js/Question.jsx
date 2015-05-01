@@ -24,17 +24,17 @@ export default class Question extends React.Component {
         let answers;
 
         if (answersData.size > 0) {
-            answers = answersData.map((answer, index) =>
-                         <Answer answer={answer}
-                                 index={index}
-                                 key={`answer_${index + 1}`}
-                                 setText={this.props.setAnswerText(index)}
-                                 setCorrect={this.props.setAnswerCorrect.bind(null, index)}
-                                 setReveal={this.props.setRevealText}
-                                 removeAnswer={this.props.removeAnswer.bind(null, index)}
-                                 setImageUrl={this.props.setAnswerImageUrl(index)}
-                                 revealText={question.get('more')} />
-            ).toJS()
+            answers = answersData.map((answer, index) => (
+                <Answer answer={answer}
+                        index={index}
+                        key={`answer_${index + 1}`}
+                        setText={this.props.setAnswerText(index)}
+                        setCorrect={this.props.setAnswerCorrect.bind(null, index)}
+                        setReveal={this.props.setRevealText}
+                        removeAnswer={this.props.removeAnswer.bind(null, index)}
+                        setImageUrl={this.props.setAnswerImageUrl(index)}
+                        revealText={question.get('more')} />
+            )).toJS()
         }
             
         return (

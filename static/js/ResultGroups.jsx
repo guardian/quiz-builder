@@ -108,16 +108,17 @@ class DittoGroup extends React.Component {
 
 export default class ResultGroups extends React.Component {
     renderErrors() {
-        const jsGroups = this.props.groups.toJS();
+        const numberOfQuestions = this.numberOfQuestions();
+        const jsGroups = this.groups().toJS();
         const minScoreCounts = countBy(jsGroups, 'minScore');
         const errors = [];
 
-        if (some(jsGroups, group => group.minScore > this.props.numberOfQuestions)) {
-            const isSingle = this.props.numberOfQuestions === 1;
+        if (some(jsGroups, group => group.minScore > numberOfQuestions)) {
+            const isSingle = numberOfQuestions === 1;
 
             errors.push(
                 <div key="error_too_high" className="alert alert-danger">
-                    Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {this.props.numberOfQuestions} question{isSingle ? '' : 's'}.
+                    Some messages require a score higher than is possible given there {isSingle ? 'is' : 'are'} only {numberOfQuestions} question{isSingle ? '' : 's'}.
                 </div>
             );
         }
@@ -143,17 +144,24 @@ export default class ResultGroups extends React.Component {
         return errors;
     }
 
+    numberOfQuestions() {
+        return this.props.quiz.get('questions').size;
+    }
+
+    groups() {
+        return this.props.quiz.get('resultGroups');
+    }
+    
     scores() {
-        return this.props.groups.map(g => g.get('minScore')).toJS();
+        return this.props.quiz.get('resultGroups').map(g => g.get('minScore')).toJS();
     }
     
     render() {
-        const jsGroups = this.props.groups.toJS();
-        const groupsByMinScore = zipObject(this.props.groups.map((group, index) =>
-            [
-                group.get('minScore'),
-                [group, index]
-            ]
+        const groups = this.groups();
+        const numberOfQuestions = this.numberOfQuestions();
+        const jsGroups = groups.toJS();
+        const groupsByMinScore = zipObject(groups.map((group, index) =>
+            [group.get('minScore'), [group, index]]
         ).toJS());
 
         const scores = this.scores();
@@ -161,7 +169,7 @@ export default class ResultGroups extends React.Component {
 
         let isBlue = false;
         
-        const groups = map(range(Math.max(maxMinScore, this.props.numberOfQuestions) + 1), (n) => {
+        const groupsHtml = map(range(Math.max(maxMinScore, numberOfQuestions) + 1), (n) => {
             if (n in groupsByMinScore) {
                 isBlue = !isBlue;
                 const [group, index] = groupsByMinScore[n];
@@ -188,7 +196,7 @@ export default class ResultGroups extends React.Component {
                 </div>
 
                 <ul className="list-group">
-                    {groups}
+                    {groupsHtml}
                 </ul>
             </div>
         );

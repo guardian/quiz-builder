@@ -3,8 +3,10 @@ import Router from 'react-router';
 import QuizBuilder from './QuizBuilder.jsx!';
 import Home from './Home.jsx!';
 import NewQuizForm from './NewQuizForm.jsx!';
+import Questions from './Questions.jsx!';
+import ResultGroups from './ResultGroups.jsx!';
 
-const {DefaultRoute, Link, Route, RouteHandler} = Router;
+const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
 
 export class App extends React.Component {
     render() {
@@ -44,6 +46,10 @@ export const routes = (
     <Route handler={App} path="/">
         <DefaultRoute handler={Home} />
         <Route name="new-quiz" path="/new-quiz" handler={NewQuizForm} />
-        <Route name="quizzes" path="/quizzes/:quizId" handler={QuizBuilder} />
+        <Route name="quizzes" path="/quizzes/:quizId" handler={QuizBuilder}>
+            <Route name="responses" path="responses" handler={ResultGroups} />
+            <Route name="questions" path="questions" handler={Questions} />
+            <DefaultRoute handler={Questions} />
+        </Route>
     </Route>
 );

@@ -15,7 +15,7 @@ import uuid from 'node-uuid';
 import {postJson} from './utils';
 import Router from 'react-router';
 
-const {Link} = Router;
+const {Redirect, RouteHandler, Link} = Router;
 
 const contexts = [
     'questions',
@@ -256,7 +256,14 @@ export default class QuizBuilder extends React.Component {
         this.updateState(state => state.set('context', context));
     }
 
+    handlerKey() {
+        const {router} = this.context;
+        console.log(router);
+    }
+    
     renderTabs() {
+        this.handlerKey();
+        const id = this.state.get('id');
         const isActive = (context) => this.state.get('context') === context;
         const className = (context) => isActive(context) ? "active" : null;
         const nQuestions = this.state.getIn(['quiz', 'questions']).size;
@@ -264,84 +271,22 @@ export default class QuizBuilder extends React.Component {
         
         return (
             <ul className="nav nav-pills">
-                {
-                    map(contexts, context => 
-                        <li key={context} role="presentation" className={className(context)}>
-                            <a href="#" onClick={this.setContext.bind(this, context)}>{title(context)}</a>
-                        </li>
-                    )
-                }
+                {map(contexts, context => 
+                    <li key={context} role="presentation" className={className(context)}>
+                        <Link to={`/quizzes/${id}/${context}`} onClick={this.setContext.bind(this, context)}>
+                            {title(context)}
+                        </Link>
+                    </li>
+                 )}
             </ul>
-        );
-    }
-
-    renderQuestions() {
-        const quiz = this.state.get('quiz');
-        
-        let questions = quiz.get('questions').map((question, i) => 
-            <Question question={question} 
-                      key={`question_${i + 1}`} 
-                      index={i} 
-                      onClose={this.deleteQuestion(i)} 
-                      setText={this.setQuestionText(i)}
-                      setAnswerText={this.setAnswerText(i)}
-                      setAnswerCorrect={this.setAnswerCorrect(i)}
-                      setRevealText={this.setRevealText(i)}
-                      setImageUrl={this.setQuestionImageUrl(i)}
-                      setAnswerImageUrl={this.setAnswerImageUrl(i)}
-                      removeAnswer={this.removeAnswer(i)}
-                      reorder={this.reorderAnswers(i)}
-                      addAnswer={this.addAnswer(i)} />
-        ).toJS();
-
-        let questionsHtml;
-
-        if (questions.length > 0) {
-            questionsHtml = questions;
-        } else {
-            questionsHtml = <p>Add some questions to get started.</p>
-        }
-
-        return (
-            <section key="questions" className="quiz-builder__section">
-                {questionsHtml}
-
-                <div className="btn-toolbar" role="toolbar">
-                    <button className="btn btn-default" 
-                            onClick={this.addQuestion.bind(this)}>
-                        New question
-                    </button>
-                    <button className="btn btn-default"
-                            onClick={this.shuffleAnswers.bind(this)}>
-                        Shuffle answers
-                    </button>
-                </div>
-            </section>
-        );
-    }
-
-    renderResponses() {
-        const quiz = this.state.get('quiz');
-
-        return (
-            <ResultGroups key="result_groups"
-                          groups={quiz.get('resultGroups')}
-                          numberOfQuestions={quiz.get('questions').size}
-                          addGroup={this.addGroup.bind(this)}
-                          removeGroup={this.removeGroup.bind(this)}
-                          setGroupText={this.setGroupText.bind(this)}
-                          setGroupShare={this.setGroupShare.bind(this)}
-            />
         );
     }
     
     render() {
         if (this.state.get('isLoaded')) {
+            const quiz = this.state.get('quiz');
             const context = this.state.get('context');
             const title = this.state.getIn(['quiz', 'header', 'titleText']);
-            const inner = (context === 'questions') ? 
-                          this.renderQuestions() : 
-                          this.renderResponses();
             
             return (
                 <div key="quiz_builder" className="quiz-builder">
@@ -360,15 +305,31 @@ export default class QuizBuilder extends React.Component {
                         </div>
                     </div>
                     
-                    <div className="form-group">
-                        {this.renderTabs()}
-                    </div>
+                    <div className="form-group">{this.renderTabs()}</div>
 
-                    {inner}
+                    <RouteHandler quiz={quiz}
+                        setGroupText={this.setGroupText.bind(this)}
+                        setGroupShare={this.setGroupShare.bind(this)}
+                        removeGroup={this.removeGroup.bind(this)}
+                        deleteQuestion={this.deleteQuestion.bind(this)}
+                        setQuestionText={this.setQuestionText.bind(this)}
+                        setAnswerText={this.setAnswerText.bind(this)}
+                        setAnswerCorrect={this.setAnswerCorrect.bind(this)}
+                        setRevealText={this.setRevealText.bind(this)}
+                        setQuestionImageUrl={this.setQuestionImageUrl.bind(this)}
+                        setAnswerImageUrl={this.setAnswerImageUrl.bind(this)}
+                        removeAnswer={this.removeAnswer.bind(this)}
+                        reorderAnswers={this.reorderAnswers.bind(this)}
+                        addQuestion={this.addQuestion.bind(this)}
+                        addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );
         } else {
             return <p key="loading">Loading ... </p>;
         }
     }
+}
+
+QuizBuilder.contextTypes = {
+    router: React.PropTypes.func
 }
