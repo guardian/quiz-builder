@@ -79,7 +79,7 @@ export default class QuizBuilder extends React.Component {
                 postJson(`/quizzes/${id}.json`, {
                     quiz: this.state.get('quiz').toJS()
                 }).then(json => this.state.set('lastUpdated', json.updatedAt));
-            }).bind(this), 3000);
+            }).bind(this), 1000);
         }
 
         this._queueUpdate();

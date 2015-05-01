@@ -56,14 +56,18 @@ export default class Question extends React.Component {
                         </ul>
                     </div>
                     
-                    <div className="btn-toolbar" role="toolbar">
+                    <div className="btn-toolbar text-right" role="toolbar">
                         <button type="button" 
                                 className="btn btn-default"
-                                onClick={this.props.addAnswer}>Add answer</button>
+                                onClick={this.props.addAnswer}>
+                            <span className="glyphicon glyphicon-plus"></span>
+                        </button>
 
                         <button type="button" 
                                 className="btn btn-default" 
-                                onClick={this.props.onClose}>Delete question</button>
+                                onClick={this.props.onClose}>
+                            <span className="glyphicon glyphicon-trash"></span>
+                        </button>
                     </div>
                 </div>
             </div>
