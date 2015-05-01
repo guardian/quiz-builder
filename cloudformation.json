@@ -63,13 +63,11 @@
         },
         "VpcId": {
             "Description": "ID of the VPC onto which to launch the application",
-            "Type": "AWS::EC2::VPC::Id",
-            "Default": "vpc-5dddcb3f"
+            "Type": "AWS::EC2::VPC::Id"
         },
         "VpcSubnets" : {
             "Description": "Subnets to use in VPC",
-            "Type": "CommaDelimitedList",
-            "Default": "subnet-af1844e9, subnet-baffc2ce, subnet-75859517"
+            "Type": "CommaDelimitedList"
         },
         "AmiId": {
           "Description": "Custom AMI to use for instances, created using Packer",
@@ -78,22 +76,6 @@
     },
 
     "Resources": {
-        "GuardianAccessSecurityGroup" : {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "VpcId": { "Ref": "VpcId" },
-                "GroupDescription": "SSH access from Guardian network",
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "CidrIp": "77.91.248.0/21"
-                    }
-                ]
-            }
-        },
-
         "LoadBalancer": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
@@ -204,8 +186,7 @@
                 "KeyName": {"Ref": "KeyName"},
                 "ImageId": {"Ref": "AmiId"},
                 "SecurityGroups": [
-                    {"Ref": "InstanceSecurityGroup"},
-                    {"Ref": "GuardianAccessSecurityGroup"},
+                    {"Ref": "InstanceSecurityGroup"}
                 ],
                 "AssociatePublicIpAddress": "True",
                 "InstanceType": {"Ref": "InstanceType"},
