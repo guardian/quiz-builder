@@ -30,7 +30,7 @@ export default class QuizBuilder extends React.Component {
         super(props);
 
         this.state = Immutable.fromJS({
-            id: props.params.quizId,
+           id: props.params.quizId,
             quiz: null,
             isLoaded: false,
             lastUpdated: null,
@@ -241,7 +241,7 @@ export default class QuizBuilder extends React.Component {
     }
 
     onChangeTitle(event) {
-        this.updateQuiz(quiz => quiz.updateIn(
+        this.updateQuiz(quiz => quiz.setIn(
             ['header', 'titleText'],
             event.target.value
         ));

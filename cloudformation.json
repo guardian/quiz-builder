@@ -1,0 +1,282 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Quiz Builder app",
+    "Parameters": {
+        "Name": {
+            "Description": "The name given to the autoscaling group",
+            "Type": "String"
+        },
+        "KeyName": {
+            "Description": "The EC2 Key Pair to allow SSH access to the instances",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "Stage": {
+            "Description": "Environment name",
+            "Type": "String",
+            "AllowedValues": [ "CODE", "PROD" ]
+        },
+        "InstanceType": {
+            "Description": "EC2 instance type",
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": [
+                "t2.micro",
+                "t2.small",
+                "t2.medium",
+                "m3.medium",
+                "m3.large",
+                "m3.xlarge",
+                "m3.2xlarge",
+                "c3.large",
+                "c3.xlarge",
+                "c3.2xlarge",
+                "c3.4xlarge",
+                "c3.8xlarge",
+                "g2.2xlarge",
+                "r3.large",
+                "r3.xlarge",
+                "r3.2xlarge",
+                "r3.4xlarge",
+                "r3.8xlarge",
+                "i2.xlarge",
+                "i2.2xlarge",
+                "i2.4xlarge",
+                "i2.8xlarge",
+                "hs1.8xlarge"
+            ],
+            "ConstraintDescription": "must be a valid EC2 instance type."
+        },
+        "MaxInstances" : {
+        	"Description": "Maximum number of instances. This should be double the desired capacity.",
+        	"Type": "Number",
+        	"Default": 2
+        },
+        "MinInstances" : {
+        	"Description": "Minimum number of instances",
+        	"Type": "Number",
+        	"Default": 1
+        },
+        "DesiredCapacity" : {
+        	"Description": "Desired number of instances.",
+        	"Type": "Number",
+        	"Default": 1
+        },
+        "VpcId": {
+            "Description": "ID of the VPC onto which to launch the application",
+            "Type": "AWS::EC2::VPC::Id",
+            "Default": "vpc-5dddcb3f"
+        },
+        "VpcSubnets" : {
+            "Description": "Subnets to use in VPC",
+            "Type": "CommaDelimitedList",
+            "Default": "subnet-af1844e9, subnet-baffc2ce, subnet-75859517"
+        },
+        "AmiId": {
+          "Description": "Custom AMI to use for instances, created using Packer",
+          "Type": "String"
+        }
+    },
+
+    "Resources": {
+        "GuardianAccessSecurityGroup" : {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "VpcId": { "Ref": "VpcId" },
+                "GroupDescription": "SSH access from Guardian network",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "77.91.248.0/21"
+                    }
+                ]
+            }
+        },
+
+        "LoadBalancer": {
+            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+            "Properties": {
+                "Listeners": [{
+                    "LoadBalancerPort": "80",
+                    "InstancePort": "9000",
+                    "Protocol": "HTTP"
+                }],
+                "CrossZone": "true",
+                "HealthCheck": {
+                    "Target": "HTTP:9000/_healthcheck",
+                    "HealthyThreshold": "2",
+                    "UnhealthyThreshold": "10",
+                    "Interval": "30",
+                    "Timeout": "10"
+                },
+                "Subnets": { "Ref": "VpcSubnets" },
+                "SecurityGroups": [
+                    { "Ref": "LoadBalancerSecurityGroup" }
+                ]
+            }
+        },
+
+        "AutoscalingGroup": {
+            "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "Properties": {
+                "AvailabilityZones": { "Fn::GetAZs": "" },
+                "LaunchConfigurationName": { "Ref": "LaunchConfig" },
+                "MinSize": {"Ref": "MinInstances"},
+                "MaxSize": {"Ref": "MaxInstances"},
+                "DesiredCapacity": {"Ref": "DesiredCapacity"},
+                "HealthCheckType": "ELB",
+                "HealthCheckGracePeriod": 300,
+                "LoadBalancerNames": [ {"Ref": "LoadBalancer"} ],
+                "Tags": [
+                    {
+                        "Key": "Stage",
+                        "Value": { "Ref": "Stage" },
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Stack",
+                        "Value": "frontend",
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "App",
+                        "Value": "quiz-builder",
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Role",
+                        "Value": "quiz-builder",
+                        "PropagateAtLaunch": "true"
+                    },
+                    {
+                        "Key": "Mainclass",
+                        "Value": "quiz-builder",
+                        "PropagateAtLaunch": "true"
+                    }
+                ],
+                "VPCZoneIdentifier": {
+                    "Ref": "VpcSubnets"
+                }
+            }
+        },
+
+        "DistributionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [ {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "ec2.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    } ]
+                },
+                "Path": "/",
+                "Policies": [ {
+                    "PolicyName": "root",
+
+                    "PolicyDocument": {
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": "ec2:DescribeTags",
+                                "Resource": "*"
+                            }
+                        ]
+                    }
+                } ]
+            }
+        },
+
+        "DistributionInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [ {"Ref": "DistributionRole"} ]
+            }
+        },
+        
+        "LaunchConfig": {
+            "Type": "AWS::AutoScaling::LaunchConfiguration",
+            "Properties": {
+                "KeyName": {"Ref": "KeyName"},
+                "ImageId": {"Ref": "AmiId"},
+                "SecurityGroups": [
+                    {"Ref": "InstanceSecurityGroup"},
+                    {"Ref": "GuardianAccessSecurityGroup"},
+                ],
+                "AssociatePublicIpAddress": "True",
+                "InstanceType": {"Ref": "InstanceType"},
+                "IamInstanceProfile": {"Ref": "DistributionInstanceProfile"},
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": ["", [
+                            "#!/bin/bash -ev\n"
+
+
+                        ]]
+                    }
+                }
+            }
+        },
+
+        "LoadBalancerSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "VpcId": { "Ref": "VpcId" },
+                "GroupDescription": "Open up HTTP access to load balancer",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "9000",
+                        "ToPort": "9000",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        },
+
+        "InstanceSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "VpcId": { "Ref": "VpcId" },
+                "GroupDescription": "Open up HTTP access to load balancer",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "9000",
+                        "ToPort": "9000",
+                        "SourceSecurityGroupId": {
+                            "Ref": "LoadBalancerSecurityGroup"
+                        }
+                    }
+                ],
+
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "443",
+                        "ToPort": "443",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        }
+    }
+}
