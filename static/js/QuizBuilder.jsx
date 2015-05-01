@@ -256,15 +256,16 @@ export default class QuizBuilder extends React.Component {
         this.updateState(state => state.set('context', context));
     }
 
-    handlerKey() {
+    tabKey() {
         const {router} = this.context;
-        console.log(router);
+        const routes = router.getCurrentRoutes();
+        return routes[routes.length - 1].name;
     }
     
     renderTabs() {
-        this.handlerKey();
         const id = this.state.get('id');
-        const isActive = (context) => this.state.get('context') === context;
+        const currentContext = this.tabKey() || 'questions';
+        const isActive = (context) => context === currentContext;
         const className = (context) => isActive(context) ? "active" : null;
         const nQuestions = this.state.getIn(['quiz', 'questions']).size;
         const title = (context) => context === 'questions' ? `Questions (${nQuestions})` : capitalize(context);
@@ -321,6 +322,8 @@ export default class QuizBuilder extends React.Component {
                         removeAnswer={this.removeAnswer.bind(this)}
                         reorderAnswers={this.reorderAnswers.bind(this)}
                         addQuestion={this.addQuestion.bind(this)}
+                        addGroup={this.addGroup.bind(this)}
+                        shuffleAnswers={this.shuffleAnswers.bind(this)}
                         addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );
