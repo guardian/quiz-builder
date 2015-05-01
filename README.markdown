@@ -57,7 +57,3 @@ gulp deploy
 ```
 
 will build the app and upload it to S3.
-
-## See it in action!
-
-http://aws-frontend-quiz-builder.s3-website-eu-west-1.amazonaws.com/
