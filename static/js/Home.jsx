@@ -43,7 +43,7 @@ class QuizListing extends React.Component {
         return (
             <tr>
                 <td>
-                    <Link to={`/quizzes/${quiz.id}`}>
+                    <Link to={`/quizzes/${quiz.id}/questions`}>
                          <span className="h4">{quiz.title}</span>
                     </Link>
                 </td>
@@ -54,7 +54,7 @@ class QuizListing extends React.Component {
                     {updatedHtml}
                 </td>
                 <td>
-                    <Link className="btn btn-default" to={`/quizzes/${quiz.id}`}>
+                    <Link className="btn btn-default" to={`/quizzes/${quiz.id}/questions`}>
                         <span className="glyphicon glyphicon-pencil"></span>
                     </Link>
                     <button type="button"

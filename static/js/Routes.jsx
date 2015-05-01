@@ -49,7 +49,6 @@ export const routes = (
         <Route name="quizzes" path="/quizzes/:quizId" handler={QuizBuilder}>
             <Route name="responses" path="responses" handler={ResultGroups} />
             <Route name="questions" path="questions" handler={Questions} />
-            <DefaultRoute handler={Questions} />
         </Route>
     </Route>
 );
