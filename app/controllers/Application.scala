@@ -1,8 +1,8 @@
 package controllers
 
 import _root_.data.{Quiz, QuizTable}
+import auth.AuthActions
 import org.joda.time.DateTime
-import play.api._
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -10,18 +10,18 @@ import utils.UUID
 
 import scala.concurrent.Future
 
-object Application extends Controller {
-  def launchApp(ignoredParam: String) = Action {
+object Application extends Controller with AuthActions {
+  def launchApp(ignoredParam: String) = AuthAction {
     Ok(views.html.index())
   }
 
-  def listQuizzes = Action.async {
+  def listQuizzes = AuthAction.async {
     QuizTable.list() map { entries =>
       Ok(Json.toJson(ListQuizzesResponse(entries)))
     }
   }
 
-  def getQuiz(id: String) = Action.async {
+  def getQuiz(id: String) = AuthAction.async {
     QuizTable.get(id) map { response =>
       (for {
         entry <- response
@@ -34,10 +34,9 @@ object Application extends Controller {
     }
   }
 
-  def createQuiz() = Action.async(parse.json[CreateQuizRequest]) { request =>
+  def createQuiz() = AuthAction.async(parse.json[CreateQuizRequest]) { request =>
     val id = UUID.next()
-    // TODO: fix
-    val username = "robert.berry@guardian.co.uk"
+    val username = request.user.email
 
     QuizTable.create(username, Quiz.empty(
       id,
@@ -49,14 +48,14 @@ object Application extends Controller {
     }
   }
 
-  def deleteQuiz(id: String) = Action.async { request =>
+  def deleteQuiz(id: String) = AuthAction.async { request =>
     QuizTable.delete(id) map { response =>
       Ok(Json.obj())
     }
   }
 
-  def updateQuiz(id: String) = Action.async(parse.json[UpdateQuizRequest]) { request =>
-    val username = "robert.berry@guardian.co.uk"
+  def updateQuiz(id: String) = AuthAction.async(parse.json[UpdateQuizRequest]) { request =>
+    val username = request.user.email
     val updatedAt = DateTime.now
 
     if (id != request.body.quiz.id) {

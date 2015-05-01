@@ -20,6 +20,13 @@ object Config {
     val host = config.getString("host").get
   }
 
+  object googleauth {
+    val antiForgeryKey = config.getString("googleauth.anti_forgery_key")
+    val clientId = config.getString("googleauth.client_id")
+    val clientSecret = config.getString("googleauth.client_secret")
+    val redirectHost = config.getString("googleauth.redirect_host")
+  }
+
   object dynamodb {
     val awsKeyId = config.getString("dynamo_db.aws_key")
     val awsSecret = config.getString("dynamo_db.aws_secret")

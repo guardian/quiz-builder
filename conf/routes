@@ -3,7 +3,9 @@
 # ~~~~
 
 # Authentication
-GET     /oauthCallback              controllers.Login.oauthCallback
+GET     /oauth2callback             controllers.Login.oauth2Callback
+GET     /loginAction                controllers.Login.loginAction
+GET     /login                      controllers.Login.login
 GET     /logout                     controllers.Login.logout
 
 # API
