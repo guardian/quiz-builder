@@ -10,7 +10,6 @@ import debounce from 'lodash-node/modern/function/debounce';
 import reqwest from 'reqwest';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
-import validate from './schema';
 import uuid from 'node-uuid';
 import {postJson} from './utils';
 import Router from 'react-router';
