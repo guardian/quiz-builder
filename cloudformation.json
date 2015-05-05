@@ -130,11 +130,6 @@
                         "Key": "Role",
                         "Value": "quiz-builder",
                         "PropagateAtLaunch": "true"
-                    },
-                    {
-                        "Key": "Mainclass",
-                        "Value": "quiz-builder",
-                        "PropagateAtLaunch": "true"
                     }
                 ],
                 "VPCZoneIdentifier": {
