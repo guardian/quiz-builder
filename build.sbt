@@ -14,8 +14,6 @@ doc in Compile <<= target.map(_ / "none")
 
 name in Universal := normalizedName.value
 
-riffRaffArtifactPublishPath := normalizedName.value
-
 riffRaffPackageType := (dist in Universal).value
 
 libraryDependencies ++= Seq(
