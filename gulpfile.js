@@ -2,8 +2,7 @@ var gulp = require('gulp'),
     fs = require('fs'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
-    shell = require('gulp-shell'),
-    s3 = require('gulp-s3');
+    shell = require('gulp-shell');
 
 gulp.task('default', function () {
     gulp.watch('./static/scss/**/*.scss', ['sass']);
