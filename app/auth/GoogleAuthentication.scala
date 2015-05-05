@@ -15,7 +15,7 @@ object GoogleAuthentication {
     config.redirectHost.getOrElse("http://localhost:9000") + "/oauth2callback",
     Some("guardian.co.uk"),
     Some(Duration.standardHours(1)),
-    true
+    enforceValidity = false
   )
 }
 
