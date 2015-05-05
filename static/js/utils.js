@@ -1,4 +1,4 @@
-import 'fetch';
+import reqwest from 'reqwest';
 
 export function nthLetter(n) {
     return 'abcdefghijklmnopqrstuvwxyz'[n];
@@ -33,18 +33,26 @@ export function on(f) {
 }
 
 export function postJson(url, json) {
-    return fetch(url, {
+    return reqwest({
+        url: url,
         method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(json)
-    }).then(response => response.json());
+        type: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(json)
+    });
+}
+
+export function getJson(url) {
+    return reqwest({
+        url: url,
+        method: 'get',
+        type: 'json'
+    });
 }
 
 export function postNothing(url) {
-    return fetch(url, {
+    return reqwest({
+        url: url,
         method: 'post'
     });
 }

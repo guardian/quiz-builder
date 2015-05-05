@@ -27,11 +27,21 @@ object Login extends Controller with AuthActions {
     }
   }
 
+  def sessionDump = Action { implicit request =>
+    Ok(request.session.data.toString())
+  }
+
   def oauth2Callback = Action.async { implicit request =>
     val session = request.session
+
+    println(session)
+    println(request.queryString)
+
     session.get(AntiForgeryKey) match {
       case None =>
-        Future.successful(Redirect(routes.Login.login()).flashing("error" -> "Anti forgery token missing in session"))
+        Future.successful(Redirect(routes.Login.login())
+          .withNewSession
+          .flashing("error" -> "Anti forgery token missing in session"))
       case Some(token) =>
         GoogleAuth.validatedUserIdentity(googleAuthConfig, token).map { identity =>
           // We store the URL a user was trying to get to in the LOGIN_ORIGIN_KEY in AuthAction

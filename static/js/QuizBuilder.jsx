@@ -11,7 +11,7 @@ import reqwest from 'reqwest';
 import Question from './Question.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import uuid from 'node-uuid';
-import {postJson} from './utils';
+import {postJson, getJson} from './utils';
 import Router from 'react-router';
 
 const {Redirect, RouteHandler, Link} = Router;
@@ -41,21 +41,16 @@ export default class QuizBuilder extends React.Component {
     componentDidMount() {
         const quizId = this.state.get('id');
         
-        reqwest({
-            url: `/quizzes/${quizId}.json`,
-            method: 'get',
-            type: 'json',
-            success: response => {
-                if (React.findDOMNode(this)) {
-                    this.state = Immutable.fromJS({
-                        id: quizId,
-                        isLoaded: true,
-                        quiz: response.quiz,
-                        lastUpdated: response.updatedAt || response.createdAt,
-                        context: 'questions'
-                    });
-                    this.forceUpdate();
-                }
+        getJson(`/quizzes/${quizId}.json`).then(response => {
+            if (React.findDOMNode(this)) {
+                this.state = Immutable.fromJS({
+                    id: quizId,
+                    isLoaded: true,
+                    quiz: response.quiz,
+                    lastUpdated: response.updatedAt || response.createdAt,
+                    context: 'questions'
+                });
+                this.forceUpdate();
             }
         });
     }
@@ -334,4 +329,4 @@ export default class QuizBuilder extends React.Component {
 
 QuizBuilder.contextTypes = {
     router: React.PropTypes.func
-}
+};

@@ -1,9 +1,8 @@
 import React from 'react';
-import reqwest from 'reqwest';
 import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
 import moment from 'moment';
-import {postNothing} from './utils';
+import {postNothing, getJson} from './utils';
 import userInfo from './userInfo';
 
 const {Link} = Router;
@@ -80,20 +79,15 @@ export default class Home extends React.Component {
     }
 
     refreshListing() {
-        reqwest({
-            url: '/quizzes.json',
-            method: 'get',
-            type: 'json',
-            success: (response) => {
-                // not sure if this is the correct thing to check,
-                // but isMounted is deprecated and the React docs
-                // don't explain what else to use.
-                if (React.findDOMNode(this)) {
-                    this.setState({
-                        isLoaded: true,
-                        quizzes: response.quizzes
-                    });
-                }
+        getJson('/quizzes.json').then((response) => {
+            // not sure if this is the correct thing to check,
+            // but isMounted is deprecated and the React docs
+            // don't explain what else to use.
+            if (React.findDOMNode(this)) {
+                this.setState({
+                    isLoaded: true,
+                    quizzes: response.quizzes
+                });
             }
         }); 
    }

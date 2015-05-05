@@ -1,18 +1,18 @@
 package auth
 
-import com.gu.googleauth.{GoogleAuthConfig, Actions}
+import com.gu.googleauth.{UserIdentity, GoogleAuthConfig, Actions}
 import conf.Config.{googleauth => config}
 import org.joda.time.Duration
-import play.api.mvc.Call
+import play.api.mvc.{Result, RequestHeader, Call}
 import controllers.routes
 
 object GoogleAuthentication {
-  val AntiForgeryKey = config.antiForgeryKey.get
+  val AntiForgeryKey = config.antiForgeryKey.getOrElse("antiForgeryToken")
 
   val googleAuthConfig = GoogleAuthConfig(
     config.clientId.get,
     config.clientSecret.get,
-    config.redirectHost.getOrElse("http://localhost:9000") + "/oauth2callback",
+    config.redirectHost.getOrElse("http://localhost:9000/oauth2callback"),
     Some("guardian.co.uk"),
     Some(Duration.standardHours(1)),
     enforceValidity = false
@@ -21,5 +21,6 @@ object GoogleAuthentication {
 
 trait AuthActions extends Actions {
   def loginTarget: Call = routes.Login.loginAction()
+
   val authConfig = GoogleAuthentication.googleAuthConfig
 }

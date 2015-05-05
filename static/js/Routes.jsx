@@ -32,6 +32,10 @@ export class App extends React.Component {
                             <p className="navbar-text navbar-right">
                                 Signed in as {userInfo.name}
                             </p>
+
+                            <div className="navbar-right">
+                                
+                            </div>
                         </div>
                     </div>
                 </nav>
