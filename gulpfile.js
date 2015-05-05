@@ -17,7 +17,8 @@ gulp.task('sass', function () {
 });
 
 gulp.task('build', ['sass'], shell.task([
-    'mkdir -p target',
+    'mkdir -p public/javascripts',
+    'mkdir -p public/stylesheets',
     'jspm bundle-sfx static/js/bootstrap public/javascripts/app.js',
     'cp -r ./static/css/* public/stylesheets/'
 ]));
