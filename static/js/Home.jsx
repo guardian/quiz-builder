@@ -4,6 +4,7 @@ import map from 'lodash-node/modern/collection/map';
 import Router from 'react-router';
 import moment from 'moment';
 import {postNothing} from './utils';
+import userInfo from './userInfo';
 
 const {Link} = Router;
 
@@ -132,9 +133,9 @@ export default class Home extends React.Component {
         return (
             <div>
                <div className="jumbotron">
-                   <h1>Welcome!</h1>
+                   <h1>Welcome, {userInfo.name}!</h1>
 
-                   <p>Let's build a quiz thing!</p>
+                   <p>Let's build a quiz!</p>
 
                    <p>
                        <Link className="btn btn-primary btn-lg" to="/new-quiz" role="button">

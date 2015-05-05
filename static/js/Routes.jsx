@@ -5,6 +5,7 @@ import Home from './Home.jsx!';
 import NewQuizForm from './NewQuizForm.jsx!';
 import Questions from './Questions.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
+import userInfo from './userInfo';
 
 const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
 
@@ -26,10 +27,11 @@ export class App extends React.Component {
                         <div id="navbar" className="navbar-collapse collapse">
                             <ul className="nav navbar-nav">
                                 <li><Link to="/">Home</Link></li>
-                            </ul>
-                            <ul className="nav navbar-nav">
                                 <li><Link to="/new-quiz">New quiz</Link></li>
                             </ul>
+                            <p className="navbar-text navbar-right">
+                                Signed in as {userInfo.name}
+                            </p>
                         </div>
                     </div>
                 </nav>
