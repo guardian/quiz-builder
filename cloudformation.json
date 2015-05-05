@@ -68,10 +68,6 @@
         "VpcSubnets" : {
             "Description": "Subnets to use in VPC",
             "Type": "CommaDelimitedList"
-        },
-        "AmiId": {
-          "Description": "Custom AMI to use for instances, created using Packer",
-          "Type": "String"
         }
     },
 
@@ -179,7 +175,7 @@
             "Type": "AWS::AutoScaling::LaunchConfiguration",
             "Properties": {
                 "KeyName": {"Ref": "KeyName"},
-                "ImageId": {"Ref": "AmiId"},
+                "ImageId": "ami-a6f34cd1",
                 "SecurityGroups": [
                     {"Ref": "InstanceSecurityGroup"}
                 ],
@@ -191,7 +187,36 @@
                         "Fn::Join": ["", [
                             "#!/bin/bash -ev\n"
 
-                            
+                            "apt-get -y update",
+                            "apt-get -y install language-pack-en openjdk-8-jre-headless unzip",
+
+                            "adduser --system --home /quiz-builder --disabled-password quiz-builder",
+
+                            {"Fn::Join": ["/", [
+                                "wget https://s3-eu-west-1.amazonaws.com",
+                                {"Fn::Join": ["-", [
+                                    { "Ref" : "Stack" }, "dist"
+                                ]]},
+                                { "Ref" : "Stack" },
+                                { "Ref" : "Stage" },
+                                "quiz-builder/quiz-builder.conf --directory-prefix=/etc/init"]
+                                         ]},
+
+                            {"Fn::Join": ["/", [
+                                "wget https://s3-eu-west-1.amazonaws.com",
+                                {"Fn::Join":["-", [
+                                    { "Ref" : "Stack" }, "dist"
+                                ]]},
+                                { "Ref" : "Stack" },
+                                { "Ref" : "Stage" },
+                                "quiz-builder/quiz-builder.zip --directory-prefix=/status"]
+                                         ]},
+
+                            "unzip -d /quiz-builder /quiz-builder/quiz-builder.zip",
+
+                            "chown -R quiz-builder /quiz-builder/",
+
+                            "start status-app"
                         ]]
                     }
                 }
