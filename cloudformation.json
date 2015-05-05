@@ -60,14 +60,6 @@
         	"Description": "Desired number of instances.",
         	"Type": "Number",
         	"Default": 1
-        },
-        "VpcId": {
-            "Description": "ID of the VPC onto which to launch the application",
-            "Type": "AWS::EC2::VPC::Id"
-        },
-        "VpcSubnets" : {
-            "Description": "Subnets to use in VPC",
-            "Type": "CommaDelimitedList"
         }
     },
 
@@ -75,6 +67,7 @@
         "LoadBalancer": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
+                "AvailabilityZones" : { "Fn::GetAZs" : "" },
                 "Listeners": [{
                     "LoadBalancerPort": "80",
                     "InstancePort": "9000",
@@ -84,14 +77,10 @@
                 "HealthCheck": {
                     "Target": "HTTP:9000/_healthcheck",
                     "HealthyThreshold": "2",
-                    "UnhealthyThreshold": "10",
-                    "Interval": "30",
-                    "Timeout": "10"
-                },
-                "Subnets": { "Ref": "VpcSubnets" },
-                "SecurityGroups": [
-                    { "Ref": "LoadBalancerSecurityGroup" }
-                ]
+                    "UnhealthyThreshold": "2",
+                    "Interval": "10",
+                    "Timeout": "5"
+                }
             }
         },
 
@@ -127,10 +116,7 @@
                         "Value": "quiz-builder",
                         "PropagateAtLaunch": "true"
                     }
-                ],
-                "VPCZoneIdentifier": {
-                    "Ref": "VpcSubnets"
-                }
+                ]
             }
         },
 
@@ -179,13 +165,12 @@
                 "SecurityGroups": [
                     {"Ref": "InstanceSecurityGroup"}
                 ],
-                "AssociatePublicIpAddress": "True",
                 "InstanceType": {"Ref": "InstanceType"},
                 "IamInstanceProfile": {"Ref": "DistributionInstanceProfile"},
                 "UserData": {
                     "Fn::Base64": {
                         "Fn::Join": ["", [
-                            "#!/bin/bash -ev\n"
+                            "#!/bin/bash -ev\n",
 
                             "apt-get -y update",
                             "apt-get -y install language-pack-en openjdk-8-jre-headless unzip",
@@ -193,24 +178,16 @@
                             "adduser --system --home /quiz-builder --disabled-password quiz-builder",
 
                             {"Fn::Join": ["/", [
-                                "wget https://s3-eu-west-1.amazonaws.com",
-                                {"Fn::Join": ["-", [
-                                    { "Ref" : "Stack" }, "dist"
-                                ]]},
-                                { "Ref" : "Stack" },
+                                "wget https://s3-eu-west-1.amazonaws.com/aws-frontend-artifacts",
                                 { "Ref" : "Stage" },
-                                "quiz-builder/quiz-builder.conf --directory-prefix=/etc/init"]
-                                         ]},
+                                "quiz-builder/quiz-builder.conf --directory-prefix=/etc/init"]]
+                            },
 
                             {"Fn::Join": ["/", [
-                                "wget https://s3-eu-west-1.amazonaws.com",
-                                {"Fn::Join":["-", [
-                                    { "Ref" : "Stack" }, "dist"
-                                ]]},
-                                { "Ref" : "Stack" },
+                                "wget https://s3-eu-west-1.amazonaws.com/aws-frontend-artifacts",
                                 { "Ref" : "Stage" },
-                                "quiz-builder/quiz-builder.zip --directory-prefix=/status"]
-                                         ]},
+                                "quiz-builder/quiz-builder.zip --directory-prefix=/status"]]
+                            },
 
                             "unzip -d /quiz-builder /quiz-builder/quiz-builder.zip",
 
@@ -223,58 +200,17 @@
             }
         },
 
-        "LoadBalancerSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "VpcId": { "Ref": "VpcId" },
-                "GroupDescription": "Open up HTTP access to load balancer",
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "80",
-                        "ToPort": "80",
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ],
-                "SecurityGroupEgress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "9000",
-                        "ToPort": "9000",
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ]
-            }
-        },
-
         "InstanceSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "VpcId": { "Ref": "VpcId" },
                 "GroupDescription": "Open up HTTP access to load balancer",
                 "SecurityGroupIngress": [
                     {
                         "IpProtocol": "tcp",
                         "FromPort": "9000",
                         "ToPort": "9000",
-                        "SourceSecurityGroupId": {
-                            "Ref": "LoadBalancerSecurityGroup"
-                        }
-                    }
-                ],
-
-                "SecurityGroupEgress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "80",
-                        "ToPort": "80",
-                        "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "443",
-                        "ToPort": "443",
-                        "CidrIp": "0.0.0.0/0"
+                        "SourceSecurityGroupName": "amazon-elb-sg",
+                        "SourceSecurityGroupOwnerId": "amazon-elb"
                     }
                 ]
             }

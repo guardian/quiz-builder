@@ -2,6 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Management
+GET     /_healthcheck               controllers.Healthcheck.healthcheck
+
 # Authentication
 GET     /oauth2callback             controllers.Login.oauth2Callback
 GET     /loginAction                controllers.Login.loginAction
