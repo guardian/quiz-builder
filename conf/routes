@@ -2,8 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-OPTIONS /*url                       controllers.Cors.options(url)
-
 # Authentication
 GET     /oauth2callback             controllers.Login.oauth2Callback
 GET     /loginAction                controllers.Login.loginAction

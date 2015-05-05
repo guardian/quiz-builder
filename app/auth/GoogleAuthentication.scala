@@ -1,9 +1,9 @@
 package auth
 
-import com.gu.googleauth.{UserIdentity, GoogleAuthConfig, Actions}
+import com.gu.googleauth.{GoogleAuthConfig, Actions}
 import conf.Config.{googleauth => config}
 import org.joda.time.Duration
-import play.api.mvc.{Result, RequestHeader, Call}
+import play.api.mvc.Call
 import controllers.routes
 
 object GoogleAuthentication {
