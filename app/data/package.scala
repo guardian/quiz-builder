@@ -1,7 +1,6 @@
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClient
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import conf.Config.dynamodb.awsCredentials
 import grizzled.slf4j.Logging
 import org.joda.time.DateTime
 import play.api.libs.json.{Format, Json}
@@ -10,7 +9,7 @@ import scala.util.Try
 
 package object data extends Logging {
   val dynamoDbClient: AmazonDynamoDBAsyncClient =
-    new AmazonDynamoDBAsyncClient(awsCredentials).withRegion(Regions.EU_WEST_1)
+    new AmazonDynamoDBAsyncClient().withRegion(Regions.EU_WEST_1)
 
   implicit class RichAttributeMap(map: Map[String, AttributeValue]) {
     def getString(k: String): Option[String] =

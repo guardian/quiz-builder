@@ -36,6 +36,23 @@
         	"Description": "Desired number of instances.",
         	"Type": "Number",
         	"Default": 1
+        },
+        "DynamoDBTablePrefix": {
+            "Description": "Prefix for DynamoDB table name",
+            "Type": "String",
+            "Default": "QuizBuilder_"
+        },
+        "GoogleClientId": {
+            "Description": "Google Auth API client ID",
+            "Type": "String"
+        },
+        "GoogleClientSecret": {
+            "Description": "Google Auth API client secret",
+            "Type": "String"
+        },
+        "GoogleRedirectHost": {
+            "Description": "Google Auth API redirect url",
+            "Type": "String"
         }
     },
 
@@ -96,6 +113,32 @@
             }
         },
 
+        "DynamoDBTablePolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "QuizBuilderDynamoDBPolicy",
+                "PolicyDocument": {
+                    "Statement": [ {
+                        "Action": [
+                            "dynamodb:*"
+                        ],
+                        "Effect": "Allow",
+                        "Resource": { "Fn::Join": [":", [
+                            "arn:aws:dynamodb", 
+                            {"Ref": "AWS::Region"}, 
+                            {"Ref": "AWS::AccountId"},
+                            {"Fn::Join": ["", [
+                                "table/",
+                                {"Ref": "DynamoDBTablePrefix"},
+                                "*"
+                            ]]}
+                        ]] }
+                    }]
+                },
+                "Roles": [ { "Ref": "DistributionRole" } ]
+            }
+        },
+
         "DistributionRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -108,20 +151,7 @@
                         "Action": [ "sts:AssumeRole" ]
                     } ]
                 },
-                "Path": "/",
-                "Policies": [ {
-                    "PolicyName": "root",
-
-                    "PolicyDocument": {
-                        "Statement": [
-                            {
-                                "Effect": "Allow",
-                                "Action": "ec2:DescribeTags",
-                                "Resource": "*"
-                            }
-                        ]
-                    }
-                } ]
+                "Path": "/"
             }
         },
 
@@ -145,8 +175,8 @@
                 "IamInstanceProfile": {"Ref": "DistributionInstanceProfile"},
                 "UserData": {
                     "Fn::Base64": {
-                        "Fn::Join": ["", [
-                            "#!/bin/bash -ev\n",
+                        "Fn::Join": ["\n", [
+                            "#!/bin/bash -ev",
 
                             "apt-get -y update",
                             "apt-get -y install language-pack-en openjdk-8-jre-headless unzip",
@@ -165,6 +195,26 @@
                                 "quiz-builder/quiz-builder.zip --directory-prefix=/status"]]
                             },
 
+                            {"Fn::Join": ["", [
+                                "export DYNAMO_DB_TABLE_PREFIX=",
+                                {"Ref": "DynamoDBTablePrefix"}
+                            ]]},
+
+                            {"Fn::Join": ["", [
+                                "export GOOGLE_CLIENT_ID=",
+                                {"Ref": "GoogleClientId"}
+                            ]]},
+
+                            {"Fn::Join": ["", [
+                                "export GOOGLE_CLIENT_SECRET=",
+                                {"Ref": "GoogleClientSecret"}
+                            ]]},
+
+                            {"Fn::Join": ["", [
+                                "export GOOGLE_REDIRECT_HOST=",
+                                {"Ref": "GoogleRedirectHost"}
+                            ]]},
+                            
                             "unzip -d /quiz-builder /quiz-builder/quiz-builder.zip",
 
                             "chown -R quiz-builder /quiz-builder/",
