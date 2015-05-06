@@ -6,17 +6,25 @@ import org.joda.time.Duration
 import play.api.mvc.Call
 import controllers.routes
 
-object GoogleAuthentication {
-  val AntiForgeryKey = config.antiForgeryKey.getOrElse("antiForgeryToken")
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
-  val googleAuthConfig = GoogleAuthConfig(
-    config.clientId.get,
-    config.clientSecret.get,
-    config.redirectHost.getOrElse("http://localhost:9000/oauth2callback"),
+object GoogleAuthentication {
+  val AntiForgeryKey = "antiForgeryToken"
+
+  val googleAuthConfig = Await.result(for {
+    clientId <- config.clientId
+    secret <- config.clientSecret
+    redirectHost <- config.redirectHost
+  } yield GoogleAuthConfig(
+    clientId.get,
+    secret.get,
+    redirectHost.get,
     Some("guardian.co.uk"),
     Some(Duration.standardHours(1)),
     enforceValidity = false
-  )
+  ), 10.seconds)
 }
 
 trait AuthActions extends Actions {

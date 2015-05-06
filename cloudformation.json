@@ -192,7 +192,7 @@
                             {"Fn::Join": ["/", [
                                 "wget https://s3-eu-west-1.amazonaws.com/aws-frontend-artifacts",
                                 { "Ref" : "Stage" },
-                                "quiz-builder/quiz-builder.zip --directory-prefix=/status"]]
+                                "quiz-builder/quiz-builder.zip --directory-prefix=/quiz-builder"]]
                             },
 
                             {"Fn::Join": ["", [
@@ -219,7 +219,7 @@
 
                             "chown -R quiz-builder /quiz-builder/",
 
-                            "start status-app"
+                            "start quiz-builder"
                         ]]
                     }
                 }
@@ -235,8 +235,13 @@
                         "IpProtocol": "tcp",
                         "FromPort": "9000",
                         "ToPort": "9000",
-                        "SourceSecurityGroupName": "amazon-elb-sg",
-                        "SourceSecurityGroupOwnerId": "amazon-elb"
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
                     }
                 ]
             }
