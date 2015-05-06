@@ -60,7 +60,6 @@ export default class QuizBuilder extends React.Component {
 
         if (nextState !== this.state) {
             this.state = nextState;
-            this.queueUpdate();
             this.forceUpdate();
         }
     }
@@ -80,7 +79,13 @@ export default class QuizBuilder extends React.Component {
     }
 
     updateQuiz(f) {
+        const previousState = this.state;
+
         this.updateState(state => state.update('quiz', f));
+
+        if (this.state !== previousState) {
+            this.queueUpdate();
+        }
     }
 
     reSortGroups() {
