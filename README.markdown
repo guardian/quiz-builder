@@ -2,7 +2,7 @@
 
 Tool for building Guardian quiz JSON.
 
-## Dependencies
+## Static Dependencies
 
 You will need NPM installed.
 
@@ -15,45 +15,44 @@ jspm install
 
 ## Development
 
-Run the watch task for the SCSS in one terminal:
+Come up with a prefix for your DynamoDB tables (e.g. `QuizBuilderDev_`). Create `auth.sh` in this directory and add
+the line
 
-```bash
-gulp
+```
+export DYNAMO_DB_TABLE_PREFIX=QuizBuilderDev_
 ```
 
-Run a web server in another:
+Create a config table with that prefix (e.g. `QuizBuilderDev_Config`) and populate it with credentials for your Google
+Auth set up:
 
-```bash
-python -m SimpleHTTPServer
+```
+.________________________________._______________________________________.
+| key                            | value                                 |
+|--------------------------------|---------------------------------------|
+| googleauth.redirect_host       | http://localhost:9000/oauth2callback  |
+| googleauth.client_id           | your client id here                   |
+| googleauth.client_secret       | your secret here                      |
+|________________________________|_______________________________________|
 ```
 
-Then open http://localhost:8000 in your browser.
+Create another table for the quizzes (e.g. `QuizBuilderDev_Quizzes`) - it should have a String hash key called 'id'.
+
+Run the watch task in one terminal:
+
+```bash
+gulp watch-build
+```
+
+Run SBT in another:
+
+```bash
+./activator run
+```
+
+Then open http://localhost:9000 in your browser.
 
 ## Building
 
 ```bash
-gulp build
+./activator dist
 ```
-
-The output is in the `target` folder.
-
-## Deploying
-
-Add aws.json to this folder, with the following:
-
-```json
-{
-    "key": "your aws key",
-    "secret": "your aws secret",
-    "region": "eu-west-1",
-    "bucket": "aws-frontend-quiz-builder"
-}
-```
-
-Now typing
-
-```bash
-gulp deploy
-```
-
-will build the app and upload it to S3.
