@@ -167,7 +167,7 @@
                             "#!/bin/bash -ev",
 
                             "apt-get -y update",
-                            "apt-get -y install language-pack-en openjdk-8-jre-headless unzip",
+                            "apt-get -y install language-pack-en openjdk-7-jre-headless unzip",
 
                             "adduser --system --home /quiz-builder --disabled-password quiz-builder",
 

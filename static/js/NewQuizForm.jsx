@@ -22,7 +22,7 @@ export default class NewQuizForm extends React.Component {
 
     onSubmit() {
         postJson('/quizzes.json', this.state).then(json => {
-            this.context.router.transitionTo(`/quizzes/${json.id}`);
+            this.context.router.transitionTo(`/quizzes/${json.id}/questions`);
         });
     }
     
