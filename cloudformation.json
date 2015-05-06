@@ -41,18 +41,6 @@
             "Description": "Prefix for DynamoDB table name",
             "Type": "String",
             "Default": "QuizBuilder_"
-        },
-        "GoogleClientId": {
-            "Description": "Google Auth API client ID",
-            "Type": "String"
-        },
-        "GoogleClientSecret": {
-            "Description": "Google Auth API client secret",
-            "Type": "String"
-        },
-        "GoogleRedirectHost": {
-            "Description": "Google Auth API redirect url",
-            "Type": "String"
         }
     },
 
@@ -194,26 +182,6 @@
                                 { "Ref" : "Stage" },
                                 "quiz-builder/quiz-builder.zip --directory-prefix=/quiz-builder"]]
                             },
-
-                            {"Fn::Join": ["", [
-                                "export DYNAMO_DB_TABLE_PREFIX=",
-                                {"Ref": "DynamoDBTablePrefix"}
-                            ]]},
-
-                            {"Fn::Join": ["", [
-                                "export GOOGLE_CLIENT_ID=",
-                                {"Ref": "GoogleClientId"}
-                            ]]},
-
-                            {"Fn::Join": ["", [
-                                "export GOOGLE_CLIENT_SECRET=",
-                                {"Ref": "GoogleClientSecret"}
-                            ]]},
-
-                            {"Fn::Join": ["", [
-                                "export GOOGLE_REDIRECT_HOST=",
-                                {"Ref": "GoogleRedirectHost"}
-                            ]]},
                             
                             "unzip -d /quiz-builder /quiz-builder/quiz-builder.zip",
 
