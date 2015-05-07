@@ -9,9 +9,9 @@ export function insertAt(xs, n, x) {
 }
 
 export function move(xs, n, m) {
-    const x = xs.get(n);
+    const xn = xs.get(n);
 
-    return insertAt(xs, m, x).remove(m < n ? n + 1 : n);
+    return insertAt(xs.remove(n), m, xn);
 }
 
 /**

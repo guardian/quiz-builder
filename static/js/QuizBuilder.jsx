@@ -18,6 +18,7 @@ const {Redirect, RouteHandler, Link} = Router;
 
 const contexts = [
     'questions',
+    'reorder',
     'responses'
 ];
 
@@ -308,6 +309,7 @@ export default class QuizBuilder extends React.Component {
                     <div className="form-group">{this.renderTabs()}</div>
 
                     <RouteHandler quiz={quiz}
+                                  reorderQuestions={this.reorder.bind(this)}
                         setGroupText={this.setGroupText.bind(this)}
                         setGroupShare={this.setGroupShare.bind(this)}
                         removeGroup={this.removeGroup.bind(this)}

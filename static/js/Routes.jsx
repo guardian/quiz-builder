@@ -5,6 +5,7 @@ import Home from './Home.jsx!';
 import NewQuizForm from './NewQuizForm.jsx!';
 import Questions from './Questions.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
+import Reorder from './Reorder.jsx!';
 import userInfo from './userInfo';
 
 const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
@@ -32,10 +33,6 @@ export class App extends React.Component {
                             <p className="navbar-text navbar-right">
                                 Signed in as {userInfo.name}
                             </p>
-
-                            <div className="navbar-right">
-                                
-                            </div>
                         </div>
                     </div>
                 </nav>
@@ -55,6 +52,7 @@ export const routes = (
         <Route name="quizzes" path="/quizzes/:quizId" handler={QuizBuilder}>
             <Route name="responses" path="responses" handler={ResultGroups} />
             <Route name="questions" path="questions" handler={Questions} />
+            <Route name="reorder" path="reorder" handler={Reorder} />
         </Route>
     </Route>
 );
