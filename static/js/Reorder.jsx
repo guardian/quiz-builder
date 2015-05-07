@@ -26,6 +26,9 @@ class ReorderItem extends React.Component {
 
     render() {
         const question = this.props.question;
+        const style = {
+            backgroundColor: this.props.isBeingDragged ? "#eeeeee" : "#ffffff"
+        };
 
         return (
             <li draggable="true"
@@ -34,6 +37,7 @@ class ReorderItem extends React.Component {
                 onDragStart={this.onDragStart.bind(this)}
                 onDragOver={this.onDragOver.bind(this)}
                 onDragEnd={this.onDragEnd.bind(this)}
+                style={style}
                 >{question.get('question')}</li>
         );
     }
