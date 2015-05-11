@@ -19,7 +19,8 @@ const {Redirect, RouteHandler, Link} = Router;
 const contexts = [
     'questions',
     'reorder',
-    'responses'
+    'responses',
+    'preview'
 ];
 
 function sortByScore(groups) {

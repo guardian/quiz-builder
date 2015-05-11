@@ -1,0 +1,93 @@
+.quiz__share__cta {
+    padding: 0.5em 0;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.quiz__social--normal {
+    width: 49%;
+}
+
+.quiz__social--major {
+    width: 79%;
+}
+
+.quiz__social--minor {
+    width: 19%;
+}
+
+.quiz__social--question {
+    width: 40px;
+    padding: 2px;
+}
+
+.quiz__social__gap {
+    display: inline-block;
+    width: 2%;
+}
+
+.quiz__social__action {
+    display: inline-block;
+}
+
+.quiz__share-twitter__svg {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iLTIgLTIgMzIgMzIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yMS4zIDEwLjV2LjVjMCA0LjctMy41IDEwLjEtOS45IDEwLjEtMiAwLTMuOC0uNi01LjMtMS42LjMgMCAuNi4xLjguMSAxLjYgMCAzLjEtLjYgNC4zLTEuNS0xLjUgMC0yLjgtMS0zLjMtMi40LjIgMCAuNC4xLjcuMWwuOS0uMWMtMS42LS4zLTIuOC0xLjgtMi44LTMuNS41LjMgMSAuNCAxLjYuNC0uOS0uNi0xLjYtMS43LTEuNi0yLjkgMC0uNi4yLTEuMy41LTEuOCAxLjcgMi4xIDQuMyAzLjYgNy4yIDMuNy0uMS0uMy0uMS0uNS0uMS0uOCAwLTIgMS42LTMuNSAzLjUtMy41IDEgMCAxLjkuNCAyLjUgMS4xLjgtLjEgMS41LS40IDIuMi0uOC0uMy44LS44IDEuNS0xLjUgMS45LjctLjEgMS40LS4zIDItLjUtLjQuNC0xIDEtMS43IDEuNXoiLz48L3N2Zz4=);
+}
+
+.quiz__share-facebook__svg {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iLTIgLTIgMzIgMzIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xNy45IDE0aC0zdjhIMTJ2LThoLTJ2LTIuOWgyVjguN0MxMiA2LjggMTMuMSA1IDE2IDVjMS4yIDAgMiAuMSAyIC4xdjNoLTEuOGMtMSAwLTEuMi41LTEuMiAxLjN2MS44aDNsLS4xIDIuOHoiLz48L3N2Zz4=);
+}
+
+.quiz__share-twitter__outline {
+    background-color: #03b3ee;
+}
+
+.quiz__share-facebook__outline {
+    background-color: #3067a3;
+}
+
+.quiz__share {
+    width: 100%
+}
+
+.quiz__share__question {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    background-color: white;
+    padding: 0.5em;
+    border-radius: 15px;
+}
+
+.quiz__share__outline {
+    display: block;
+    width: 100%;
+    padding: 0;
+}
+
+.quiz__share__svg {
+    vertical-align: central;
+    background-size: 96%;
+    background-position: center;
+    display: inline-block;
+}
+
+.quiz__share__outline__results {
+    height: 50px;
+    border-radius: 25px;
+}
+
+.quiz__share__svg__results {
+    width: 50px;
+    height: 100%;
+}
+
+.quiz__share__outline__question {
+    height: 40px;
+    border-radius: 20px;
+}
+
+.quiz__share__svg__question {
+    width: 40px;
+    height: 40px;
+}

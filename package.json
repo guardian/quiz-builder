@@ -19,6 +19,7 @@
       "react": "npm:react@^0.13.1",
       "react-router": "npm:react-router@^0.13.2",
       "reqwest": "github:ded/reqwest@^1.1.5",
+      "systemjs/plugin-css": "github:systemjs/plugin-css@^0.1.10",
       "whatwg-fetch": "npm:whatwg-fetch@^0.7.0"
     },
     "devDependencies": {

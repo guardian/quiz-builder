@@ -1,0 +1,175 @@
+.quiz {
+    font-family: "Guardian Text Egyptian Web", "Guardian Egyptian Web", Georgia, serif;
+    color: #767676;
+}
+
+.quiz__title {
+    color: #333333; /* neutral-1 */
+}
+
+.quiz__question {
+    margin-bottom: 36px;
+}
+
+.quiz__question-header {
+    color: #333333; /* neutral-1 */
+    display: table;
+    margin-bottom: 10px;
+}
+
+.quiz__question-text {
+    display: table-cell;
+}
+
+.quiz__answer-aggregate {
+    display: block;
+    font-size: 12px;
+    padding: 0.5em 0em;
+}
+
+.quiz__question-number {
+    display: table-cell;
+    font-size: 18px;
+    min-width: 24px;
+    padding-right: 6px;
+    text-align: right;
+}
+
+.quiz__question__answer-row {
+    display: flex;
+}
+
+.quiz__answer {
+    position: relative;
+    display: inline-block;
+    border: none;
+    text-align: left;
+    outline: none;
+    color: #767676; /* neutral-2 */
+    background-color: #f6f6f6; /* neutral-8 */
+    padding: 12px 12px 12px 30px;
+    margin: 3px;
+    flex: 1 1 50%;
+}
+
+.quiz__answer__content {
+    vertical-align: top;
+}
+
+.quiz__answer__image {
+    width: 100%
+}
+
+.quiz__answer__image > img {
+    width: 100%
+}
+
+.quiz__answer--answered {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.quiz__answer--correct, .quiz__question__more {
+    background: #aedfb8;
+    color: #505050;
+}
+
+.quiz__question__more {
+    padding: 12px;
+}
+
+.quiz__answer--chosen,
+.quiz__answer--correct-chosen {
+    background-color: #43B347; /* ??? */
+    color: #ffffff;    
+    opacity: 1;
+}
+
+.quiz__answer--incorrect {
+    color: #bdbdbd; /* neutral-3 */
+}
+
+.quiz__answer--incorrect-chosen {
+    background-color: #BB001A; /* ??? */
+    color: #ffffff;
+    opacity: 1;
+}
+
+.quiz__answer-icon {
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    font-size: 26px;
+    color: #ffffff;
+}
+
+.quiz__answer__more {
+    margin-top: 6px;
+    font-size: 15px;
+    opacity: 0.8;
+}
+
+.quiz__answer__more a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.quiz__answer--correct .quiz__answer__more a {
+    color: #333333;
+    text-decoration: underline;
+}
+
+.quiz__answer--correct-chosen .quiz__answer__more a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.quiz__end-message {
+    border-top: 1px solid #aad8f1; /* news-support-1 */
+    background-color: #f6f6f6; /* neutral-8 */
+    padding: 30px 12px 10px 12px;
+}
+
+.quiz__score-message {
+    font-weight: 500;
+    color: #333333; /* neutral-1 */
+}
+
+.quiz__score {
+    color: #005689;
+    font-size: 48px;
+    margin-left: 4px;
+}
+
+.quiz__end-message__beat {
+    color: #005689;
+    font-size: 48px;
+    margin-left: 4px;
+}
+
+.quiz__bucket-message {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.quiz__answer-icon-svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 3px;
+}
+
+.quiz__share__outline {
+    text-align: center;
+}
+
+.quiz__question__img {
+    width: 100%;
+}
+
+.quiz__image-caption {
+    padding-bottom: 0;
+}
+
+.quiz__image-caption::before {
+    margin-right: 3px;
+}

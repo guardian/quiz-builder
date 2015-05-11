@@ -6,6 +6,7 @@ import NewQuizForm from './NewQuizForm.jsx!';
 import Questions from './Questions.jsx!';
 import ResultGroups from './ResultGroups.jsx!';
 import Reorder from './Reorder.jsx!';
+import Preview from './Preview.jsx!';
 import userInfo from './userInfo';
 
 const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
@@ -53,6 +54,7 @@ export const routes = (
             <Route name="responses" path="responses" handler={ResultGroups} />
             <Route name="questions" path="questions" handler={Questions} />
             <Route name="reorder" path="reorder" handler={Reorder} />
+            <Route name="preview" path="preview" handler={Preview} />
         </Route>
     </Route>
 );
