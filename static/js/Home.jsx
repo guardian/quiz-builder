@@ -8,7 +8,7 @@ import userInfo from './userInfo';
 const {Link} = Router;
 
 class QuizListing extends React.Component {
-    onDelete(event) {
+    onDelete() {
         const {quiz} = this.props;
         
         if (confirm(`Are you sure you want to delete '${quiz.title}'`)) {

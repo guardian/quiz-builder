@@ -310,22 +310,22 @@ export default class QuizBuilder extends React.Component {
 
                     <RouteHandler quiz={quiz}
                                   reorderQuestions={this.reorder.bind(this)}
-                        setGroupText={this.setGroupText.bind(this)}
-                        setGroupShare={this.setGroupShare.bind(this)}
-                        removeGroup={this.removeGroup.bind(this)}
-                        deleteQuestion={this.deleteQuestion.bind(this)}
-                        setQuestionText={this.setQuestionText.bind(this)}
-                        setAnswerText={this.setAnswerText.bind(this)}
-                        setAnswerCorrect={this.setAnswerCorrect.bind(this)}
-                        setRevealText={this.setRevealText.bind(this)}
-                        setQuestionImageUrl={this.setQuestionImageUrl.bind(this)}
-                        setAnswerImageUrl={this.setAnswerImageUrl.bind(this)}
-                        removeAnswer={this.removeAnswer.bind(this)}
-                        reorderAnswers={this.reorderAnswers.bind(this)}
-                        addQuestion={this.addQuestion.bind(this)}
-                        addGroup={this.addGroup.bind(this)}
-                        shuffleAnswers={this.shuffleAnswers.bind(this)}
-                        addAnswer={this.addAnswer.bind(this)} />
+                                  setGroupText={this.setGroupText.bind(this)}
+                                  setGroupShare={this.setGroupShare.bind(this)}
+                                  removeGroup={this.removeGroup.bind(this)}
+                                  deleteQuestion={this.deleteQuestion.bind(this)}
+                                  setQuestionText={this.setQuestionText.bind(this)}
+                                  setAnswerText={this.setAnswerText.bind(this)}
+                                  setAnswerCorrect={this.setAnswerCorrect.bind(this)}
+                                  setRevealText={this.setRevealText.bind(this)}
+                                  setQuestionImageUrl={this.setQuestionImageUrl.bind(this)}
+                                  setAnswerImageUrl={this.setAnswerImageUrl.bind(this)}
+                                  removeAnswer={this.removeAnswer.bind(this)}
+                                  reorderAnswers={this.reorderAnswers.bind(this)}
+                                  addQuestion={this.addQuestion.bind(this)}
+                                  addGroup={this.addGroup.bind(this)}
+                                  shuffleAnswers={this.shuffleAnswers.bind(this)}
+                                  addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );
         } else {

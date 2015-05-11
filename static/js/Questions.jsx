@@ -2,11 +2,18 @@ import React from 'react';
 import Question from './Question.jsx!';
 
 export default class Questions extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showImages: true
+        };
+    }
+
     render() {
         const props = this.props;
-        const quiz = this.props.quiz;
-        
-        let questions = quiz.get('questions').map((question, i) => 
+
+        let questions = props.quiz.get('questions').map((question, i) =>
             <Question question={question} 
                       key={`question_${i + 1}`} 
                       index={i} 
@@ -19,6 +26,7 @@ export default class Questions extends React.Component {
                       setAnswerImageUrl={props.setAnswerImageUrl(i)}
                       removeAnswer={props.removeAnswer(i)}
                       reorder={props.reorderAnswers(i)}
+                      showImages={this.state.showImages}
                       addAnswer={props.addAnswer(i)} />
         ).toJS();
 

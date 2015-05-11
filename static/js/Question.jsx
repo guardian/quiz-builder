@@ -36,19 +36,47 @@ export default class Question extends React.Component {
                         revealText={question.get('more')} />
             )).toJS()
         }
+
+        const questionText = (
+            <div key="question-text" className="form-group">
+                <div className="input-group input-group-lg">
+                    <span className="input-group-addon">Question {this.props.index + 1}.</span>
+                    <input className="form-control"
+                           value={question.get('question')}
+                           placeholder="Enter question text here..."
+                           onChange={this.handleQuestionTextChange.bind(this)} />
+                </div>
+            </div>
+        );
+
+        let formHtml;
+
+        if (this.props.showImages) {
+            formHtml = (
+                <div key="images-and-question-text">
+                    <div className="pull-left" style={{paddingRight: '10px'}}>
+                        <img src={question.get('imageUrl')} alt="" className="img-thumbnail" />
+                    </div>
+
+                    {questionText}
+
+                    <div className="input-group" style={{marginTop: '10px', marginBottom: '15px'}}>
+                        <span className="input-group-addon">Image URL</span>
+                        <input className="form-control"
+                               value={question.get('imageUrl')}
+                               placeholder="Enter image URL here..."
+                               onChange={this.handleImageUrlChange.bind(this)} />
+                    </div>
+                </div>
+            );
+        } else {
+            formHtml = questionText;
+        }
             
         return (
             <div className="panel panel-default">
                 <div className="panel-body">
-                    <div className="form-group">
-                        <div className="input-group input-group-lg">
-                            <span className="input-group-addon">Question {this.props.index + 1}.</span>
-                            <input className="form-control" 
-                                   value={question.get('question')} 
-                                   placeholder="Enter question text here..." 
-                                   onChange={this.handleQuestionTextChange.bind(this)} />
-                        </div>
-                    </div>
+                    {formHtml}
 
                     <div className="form-group">
                         <ul className="list-group">
