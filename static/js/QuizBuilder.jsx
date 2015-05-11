@@ -31,7 +31,7 @@ export default class QuizBuilder extends React.Component {
         super(props);
 
         this.state = Immutable.fromJS({
-           id: props.params.quizId,
+            id: props.params.quizId,
             quiz: null,
             isLoaded: false,
             lastUpdated: null,

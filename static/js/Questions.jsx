@@ -1,13 +1,22 @@
 import React from 'react';
 import Question from './Question.jsx!';
+import some from 'lodash-node/modern/collection/some';
 
 export default class Questions extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            showImages: true
+            showImages: some(props.quiz.get('questions').toJS(), question =>
+                question.imageUrl || some(question.multiChoiceAnswers, answer => answer.imageUrl)
+            )
         };
+    }
+
+    onShowImagesChange(event) {
+        this.setState({
+            showImages: event.target.checked
+        });
     }
 
     render() {
@@ -40,6 +49,14 @@ export default class Questions extends React.Component {
 
         return (
             <div key="questions">
+                <div className="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               checked={this.state.showImages}
+                               onChange={this.onShowImagesChange.bind(this)} /> Show images
+                    </label>
+                </div>
+
                 {questionsHtml}
 
                 <div className="btn-toolbar" role="toolbar">
