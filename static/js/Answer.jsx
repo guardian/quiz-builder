@@ -59,7 +59,7 @@ export default class Answer extends React.Component {
 
         const imageThumbnail = this.props.showImages && (
             <div className="pull-left" style={{paddingRight: '10px'}}>
-                <img src={imageUrl} alt="" className="img-thumbnail" />
+                <img src={imageUrl || "/assets/images/no-image.png"} alt="" className="img-thumbnail" />
             </div>
         );
 

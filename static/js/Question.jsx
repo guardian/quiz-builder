@@ -56,7 +56,7 @@ export default class Question extends React.Component {
             formHtml = (
                 <div key="images-and-question-text">
                     <div className="pull-left" style={{paddingRight: '10px'}}>
-                        <img src={question.get('imageUrl')} alt="" className="img-thumbnail" />
+                        <img src={question.get('imageUrl') || "/assets/images/no-image.png"} alt="" className="img-thumbnail" />
                     </div>
 
                     {questionText}
