@@ -19,7 +19,6 @@ export default class Answer extends React.Component {
         const answer = this.props.answer;
         const answerText = answer.get('answer');
         const imageUrl = answer.get('imageUrl');
-        const letter = nthLetter(this.props.index);
         const isCorrect = answer.get('correct');
         const classes = classnames({
             'list-group-item': true,
@@ -47,11 +46,29 @@ export default class Answer extends React.Component {
                        onChange={this.handleRevealChange.bind(this)} />
             </div>
         );
-        
+
+        const imageUrlField = this.props.showImages && (
+            <div key="image-url-field" className="input-group" style={{marginTop: '10px'}}>
+                <span className="input-group-addon" id="basic-addon1">Image URL</span>
+                <input className="form-control"
+                       value={imageUrl}
+                       placeholder="Enter image URL here..."
+                       onChange={this.handleImageUrlChange.bind(this)} />
+            </div>
+        );
+
+        const imageThumbnail = this.props.showImages && (
+            <div className="pull-left" style={{paddingRight: '10px'}}>
+                <img src={imageUrl} alt="" className="img-thumbnail" />
+            </div>
+        );
+
         return (
             <li className={classes}>
                 <div className="row">
                     <div className="col-md-10">
+                        {imageThumbnail}
+
                         <div className="input-group">
                             <span className="input-group-addon" 
                                   id="basic-addon1">{nthLetter(this.props.index)}</span>
@@ -60,6 +77,8 @@ export default class Answer extends React.Component {
                                    placeholder="Enter answer text here..." 
                                    onChange={this.handleChange.bind(this)} />
                         </div>
+
+                        {imageUrlField}
 
                         {revealText}
                     </div>

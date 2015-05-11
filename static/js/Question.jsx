@@ -33,6 +33,7 @@ export default class Question extends React.Component {
                         setReveal={this.props.setRevealText}
                         removeAnswer={this.props.removeAnswer.bind(null, index)}
                         setImageUrl={this.props.setAnswerImageUrl(index)}
+                        showImages={this.props.showImages}
                         revealText={question.get('more')} />
             )).toJS()
         }
