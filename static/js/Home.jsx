@@ -54,14 +54,18 @@ class QuizListing extends React.Component {
                     {updatedHtml}
                 </td>
                 <td>
-                    <Link className="btn btn-default" to={`/quizzes/${quiz.id}/questions`}>
-                        <span className="glyphicon glyphicon-pencil"></span>
-                    </Link>
-                    <button type="button"
-                            className="btn btn-default"
-                            onClick={this.onDelete.bind(this)}>
-                        <span className="glyphicon glyphicon-trash"></span>
-                    </button>
+                    <div className="btn-toolbar">
+                        <div className="btn-group">
+                            <Link className="btn btn-default" to={`/quizzes/${quiz.id}/questions`}>
+                                <span className="glyphicon glyphicon-pencil"></span>
+                            </Link>
+                            <button type="button"
+                                    className="btn btn-default"
+                                    onClick={this.onDelete.bind(this)}>
+                                <span className="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </div>
+                    </div>
                 </td>
             </tr>
         );
