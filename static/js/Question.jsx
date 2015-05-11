@@ -89,13 +89,13 @@ export default class Question extends React.Component {
                         <button type="button" 
                                 className="btn btn-default"
                                 onClick={this.props.addAnswer}>
-                            <span className="glyphicon glyphicon-plus"></span>
+                            Add answer
                         </button>
 
                         <button type="button" 
                                 className="btn btn-default" 
                                 onClick={this.props.onClose}>
-                            <span className="glyphicon glyphicon-trash"></span>
+                            Delete question
                         </button>
                     </div>
                 </div>
