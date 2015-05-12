@@ -29,6 +29,7 @@ import classnames from 'classnames';
 import {cross, tick} from './svgs.jsx!';
 import {saveResults, getResults} from './scores';
 import {Share} from './social.jsx!'
+import {genSrc, genSrcset, genSrc620} from './images';
 
 const quizTypes = ['knowledge', 'personality'];
 
@@ -137,22 +138,6 @@ function more(question) {
     return any(question.multiChoiceAnswers, (a) => a.more);
 }
 
-function genSrcset(src) {
-
-    const widths = [320, 460, 620],
-          srcId = src.replace(/^.*\/\/media.guim.co.uk\//, '');
-          templ = '//i.guim.co.uk/media/w-{width}/h--/q-95/' + srcId + ' {width}w';
-    return map(widths, function(width) {return templ.replace(/{width}/g, width); }).join(', ');
-}
-
-function genSrc620(src) {
-    return 'http://i.guim.co.uk/media/w-620/h--/q-95/' + src.replace(/^.*\/\/media.guim.co.uk\//, '');
-}
-
-function genSrc(src, width) {
-    return 'http://i.guim.co.uk/media/w-' + width + '/h--/q-95/' + src.replace(/^.*\/\/media.guim.co.uk\//, '');
-}
-
 export class Question extends React.Component {
     isAnswered() {
         return isAnswered(this.props.question);
@@ -171,9 +156,8 @@ export class Question extends React.Component {
               defaultColumns = this.props.defaultColumns,
               moreText = question.more;
 
-        return <div
-                data-link-name={"question " + (this.props.index + 1)}
-                className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
+        return <div data-link-name={"question " + (this.props.index + 1)}
+                    className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
 
             {question.imageUrl ? <img className="quiz__question__img" src={genSrc620(question.imageUrl)} /> : null}
             {question.imageCredit ? <figcaption className="caption caption--main caption--img quiz__image-caption" itemprop="description" dangerouslySetInnerHTML={{__html: question.imageCredit}} /> : null}

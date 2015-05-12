@@ -14,7 +14,16 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/fonts.css")">
 
+        <style type="text/css">
+            /* Normalize styles that Bootstrap overrides */
+            .quiz__question-header,
+            .quiz__answer {
+                font-size: 16px;
+                /*line-height: 24px;*/
+            }
+        </style>
     </head>
     <body>
         @content
