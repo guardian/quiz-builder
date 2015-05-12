@@ -1,5 +1,6 @@
 import React from 'react';
 import Answer from './Answer.jsx!';
+import Thumbnail from './Thumbnail.jsx!';
 
 export default class Question extends React.Component {
     constructor(props) {
@@ -56,7 +57,7 @@ export default class Question extends React.Component {
             formHtml = (
                 <div key="images-and-question-text">
                     <div className="pull-left" style={{paddingRight: '10px'}}>
-                        <img src={question.get('imageUrl') || "/assets/images/no-image.png"} alt="" className="img-thumbnail" />
+                        <Thumbnail src={question.get('imageUrl')} />
                     </div>
 
                     {questionText}
