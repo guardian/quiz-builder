@@ -10,7 +10,7 @@ export default class NewQuizForm extends React.Component {
 
         this.state = {
             title: '',
-            type: 'list',
+            type: 'knowledge',
             defaultColumns: 1
         }
     }
@@ -25,7 +25,12 @@ export default class NewQuizForm extends React.Component {
             this.context.router.transitionTo(`/quizzes/${json.id}/questions`);
         });
     }
-    
+
+    onChangeQuizType(event) {
+        this.state.type = event.target.value;
+        this.forceUpdate();
+    }
+
     render() {
         return (
             <div>
@@ -46,9 +51,9 @@ export default class NewQuizForm extends React.Component {
                 </div>
 
                 <div className="form-group">
-                    <select id="type" className="form-control" value={this.state.type}>
-                        <option value="list">Standard quiz</option>
-                        <option value="list">Personality quiz</option>
+                    <select id="type" className="form-control" value={this.state.type} onChange={this.onChangeQuizType.bind(this)}>
+                        <option value="knowledge">Knowledge quiz</option>
+                        <option value="personality">Personality quiz</option>
                     </select>
                 </div>
 

@@ -5,12 +5,14 @@ import play.api.libs.json._
 object QuizType {
   implicit val jsonFormat = new Format[QuizType] {
     override def writes(o: QuizType): JsValue = o match {
-      case ListQuiz => JsString("list")
+      case KnowledgeQuiz => JsString("knowledge")
+      case PersonalityQuiz => JsString("personality")
     }
 
     override def reads(json: JsValue): JsResult[QuizType] = json match {
       case JsString(s) => s match {
-        case "list" => JsSuccess(ListQuiz)
+        case "knowledge" => JsSuccess(KnowledgeQuiz)
+        case "personality" => JsSuccess(PersonalityQuiz)
         case x => JsError(s"$x is not a valid quiz type")
       }
 
@@ -21,7 +23,8 @@ object QuizType {
 
 sealed trait QuizType
 
-case object ListQuiz extends QuizType
+case object KnowledgeQuiz extends QuizType
+case object PersonalityQuiz extends QuizType
 
 object QuizHeader {
   implicit val jsonFormat = Json.format[QuizHeader]
@@ -53,7 +56,7 @@ object Quiz {
   def empty(id: String, title: String, quizType: QuizType, columns: Option[Int]) = Quiz(
     id,
     QuizHeader(title),
-    quizType,
+    Some(quizType),
     columns,
     Nil,
     Seq(
@@ -69,7 +72,7 @@ object Quiz {
 case class Quiz(
   id: String,
   header: QuizHeader,
-  `type`: QuizType,
+  quizType: Option[QuizType],
   defaultColumns: Option[Int],
   questions: Seq[Question],
   resultGroups: Seq[ResultGroup]
