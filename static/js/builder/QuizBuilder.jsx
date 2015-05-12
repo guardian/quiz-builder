@@ -16,13 +16,6 @@ import Router from 'react-router';
 
 const {Redirect, RouteHandler, Link} = Router;
 
-const contexts = [
-    'questions',
-    'reorder',
-    'responses',
-    'preview'
-];
-
 function sortByScore(groups) {
     return groups.sort(on(group => -group.get('minScore')));
 }
@@ -262,6 +255,24 @@ export default class QuizBuilder extends React.Component {
         const routes = router.getCurrentRoutes();
         return routes[routes.length - 1].name;
     }
+
+    contexts() {
+        if (this.state.getIn(['quiz', 'quizType']) === 'personality') {
+            return [
+                'questions',
+                'reorder',
+                'buckets',
+                'preview'
+            ];
+        } else {
+            return [
+                'questions',
+                'reorder',
+                'responses',
+                'preview'
+            ];
+        }
+    }
     
     renderTabs() {
         const id = this.state.get('id');
@@ -273,7 +284,7 @@ export default class QuizBuilder extends React.Component {
         
         return (
             <ul className="nav nav-pills">
-                {map(contexts, context => 
+                {map(this.contexts(), context =>
                     <li key={context} role="presentation" className={className(context)}>
                         <Link to={`/quizzes/${id}/${context}`} onClick={this.setContext.bind(this, context)}>
                             {title(context)}
