@@ -1,0 +1,22 @@
+@(appUrl: String, json: play.api.libs.json.JsValue)
+@import play.api.libs.json.Json
+'use script';
+define([], function () {
+    function addJS(url) {
+        var head = document.head,
+            script = document.createElement('script');
+
+        script.setAttribute('src', url);
+        script.setAttribute('type', 'text/javascript');
+
+        head.appendChild(script);
+    }
+
+    return {
+        boot: function (el, context, config, mediator) {
+            addJS("@appUrl");
+
+            window._boot_ng_quiz(el, @Txt(Json.stringify(json)), mediator);
+        }
+    };
+});

@@ -36,13 +36,19 @@ object Answer {
   implicit val jsonFormat = Json.format[Answer]
 }
 
-case class Answer(answer: String, imageUrl: Option[String], correct: Boolean)
+case class Answer(answer: String, imageUrl: Option[String], correct: Option[Boolean], buckets: Option[Seq[String]])
 
 object Question {
   implicit val jsonFormat = Json.format[Question]
 }
 
 case class Question(question: String, imageUrl: Option[String], more: Option[String], multiChoiceAnswers: Seq[Answer])
+
+object ResultBucket {
+  implicit val jsonFormat = Json.format[ResultBucket]
+}
+
+case class ResultBucket(id: String, title: String, share: String, youtubeId: Option[String])
 
 object ResultGroup {
   implicit val jsonFormat = Json.format[ResultGroup]
@@ -53,20 +59,33 @@ case class ResultGroup(title: String, share: String, minScore: Int)
 object Quiz {
   implicit val jsonFormat = Json.format[Quiz]
 
-  def empty(id: String, title: String, quizType: QuizType, columns: Option[Int]) = Quiz(
-    id,
-    QuizHeader(title),
-    Some(quizType),
-    columns,
-    Nil,
-    Seq(
-      ResultGroup(
-        "Well done!",
-        s"I got _/_ in '$title'",
-        0
-      )
+  def empty(id: String, title: String, quizType: QuizType, columns: Option[Int]) = quizType match {
+    case PersonalityQuiz => Quiz(
+      id,
+      QuizHeader(title),
+      Some(quizType),
+      columns,
+      Nil,
+      None,
+      Some(Seq.empty)
     )
-  )
+
+    case KnowledgeQuiz => Quiz(
+      id,
+      QuizHeader(title),
+      Some(quizType),
+      columns,
+      Nil,
+      Some(Seq(
+        ResultGroup(
+          "Well done!",
+          s"I got _/_ in '$title'",
+          0
+        )
+      )),
+      None
+    )
+  }
 }
 
 case class Quiz(
@@ -75,5 +94,6 @@ case class Quiz(
   quizType: Option[QuizType],
   defaultColumns: Option[Int],
   questions: Seq[Question],
-  resultGroups: Seq[ResultGroup]
+  resultGroups: Option[Seq[ResultGroup]],
+  resultBuckets: Option[Seq[ResultBucket]]
 )

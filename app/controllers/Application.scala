@@ -20,6 +20,12 @@ object UserInfo {
 case class UserInfo(email: String, name: String)
 
 object Application extends Controller with AuthActions {
+  def boot(id: String) = AuthAction.async {
+    QuizTable.get(id) map { response =>
+      Ok(views.txt.boot(id, Json.toJson(response.get)))
+    }
+  }
+
   def launchApp(ignoredParam: String) = AuthAction { request =>
     Ok(views.html.index(UserInfo.fromUserIdentity(request.user)))
   }

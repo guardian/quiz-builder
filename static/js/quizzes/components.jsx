@@ -227,7 +227,7 @@ export class EndMessageKnowledge extends React.Component {
 
 export class EndMessagePersonality extends React.Component {
     render() {
-        let personality = this.props.personality;
+        const personality = this.props.personality;
 
         return <div className="quiz__end-message">
             <div className="quiz__score-message">

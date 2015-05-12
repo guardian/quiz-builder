@@ -12,7 +12,7 @@ GET     /login                      controllers.Login.login
 GET     /logout                     controllers.Login.logout
 
 # debug
-GET     /dump-session               controllers.Login.sessionDump
+GET     /quizzes/:id/boot.js        controllers.Application.boot(id)
 
 # API
 GET     /quizzes.json               controllers.Application.listQuizzes
