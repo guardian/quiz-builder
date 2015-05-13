@@ -14,18 +14,16 @@ class BucketCheckboxes extends React.Component {
 
     render() {
         return (
-            <div className="form-group">
+            <div className="form-group" style={{paddingTop: '10px'}}>
                 {this.props.buckets.map(bucket =>
                 (
-                    <div className="checkbox" key={bucket.get('id')}>
-                        <label>
-                            <input type="checkbox"
-                                   checked={this.props.hasBucket(bucket.get('id'))}
-                                   onChange={this.onChange(bucket.get('id'))}
-                                />
-                            {bucket.get('title')}
-                        </label>
-                    </div>
+                    <label className="checkbox-inline" key={bucket.get('id')}>
+                        <input type="checkbox"
+                               checked={this.props.hasBucket(bucket.get('id'))}
+                               onChange={this.onChange(bucket.get('id'))}
+                            />
+                        {bucket.get('title')}
+                    </label>
                 )
                 )}
             </div>
