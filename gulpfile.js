@@ -22,6 +22,10 @@ gulp.task('build', ['sass'], shell.task([
     'cp -r ./static/css/* public/stylesheets/'
 ]));
 
+gulp.task('build-quiz', shell.task([
+    'jspm bundle-sfx static/js/quizzes/bootstrap conf/quiz-app.js'
+]));
+
 gulp.task('watch-build', function () {
     gulp.watch(['./static/scss/**/*.scss', './static/js/**/*.*'], ['build']);
 });

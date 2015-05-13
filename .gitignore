@@ -24,3 +24,5 @@ aws.json
 /public/stylesheets/*
 /public/javascripts/*
 auth.sh
+/conf/quiz-app.js
+/conf/quiz-app.js.map
