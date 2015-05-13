@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 import {move, on} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
+import contains from 'lodash-node/modern/collection/contains';
 import some from 'lodash-node/modern/collection/some';
 import without from 'lodash-node/modern/array/without';
 import max from 'lodash-node/modern/math/max';
@@ -120,6 +121,22 @@ export default class QuizBuilder extends React.Component {
         this.updateQuiz(quiz => quiz.update(
             'resultBuckets',
             buckets => buckets.remove(n)
+        ));
+        this.deleteOldBucketReferences();
+    }
+
+    deleteOldBucketReferences() {
+        const validBuckets = this.state.getIn(['quiz', 'resultBuckets']).map(bucket => bucket.get('id')).toJS();
+
+        this.updateQuiz(quiz => quiz.update(
+            'questions',
+            questions => questions.map(question =>
+                question.update('multiChoiceAnswers', answers => answers.map(answer =>
+                    answer.update('buckets', buckets =>
+                        buckets.filter(bucket => contains(validBuckets, bucket))
+                    )
+                ))
+            )
         ))
     }
     
