@@ -7,7 +7,7 @@ export default class Preview extends React.Component {
 
         return (
             <div className="preview">
-                <Quiz {...quizJs} quizType="knowledge" />
+                <Quiz {...quizJs} />
             </div>
         );
     }
