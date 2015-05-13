@@ -328,14 +328,16 @@ export default class QuizBuilder extends React.Component {
                 'questions',
                 'reorder',
                 'buckets',
-                'preview'
+                'preview',
+                'build'
             ];
         } else {
             return [
                 'questions',
                 'reorder',
                 'responses',
-                'preview'
+                'preview',
+                'build'
             ];
         }
     }

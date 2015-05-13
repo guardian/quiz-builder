@@ -8,6 +8,7 @@ import ResultGroups from './ResultGroups.jsx!';
 import Reorder from './Reorder.jsx!';
 import Preview from './Preview.jsx!';
 import Buckets from './Buckets.jsx!';
+import Build from './Build.jsx!';
 import userInfo from './userInfo';
 
 const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
@@ -57,6 +58,7 @@ export const routes = (
             <Route name="reorder" path="reorder" handler={Reorder} />
             <Route name="preview" path="preview" handler={Preview} />
             <Route name="buckets" path="buckets" handler={Buckets} />
+            <Route name="build" path="build" handler={Build} />
         </Route>
     </Route>
 );
