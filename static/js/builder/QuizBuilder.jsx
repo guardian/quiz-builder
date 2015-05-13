@@ -100,6 +100,27 @@ export default class QuizBuilder extends React.Component {
             })))
         ));
     }
+
+    addBucket() {
+        this.updateQuiz(quiz => quiz.update(
+            'resultBuckets',
+            buckets => buckets.push(Immutable.fromJS({
+                id: uuid.v4(),
+                title: "",
+                description: "",
+                href: "",
+                share: "",
+                imageUrl: ""
+            }))
+        ));
+    }
+
+    deleteBucket(n) {
+        this.updateQuiz(quiz => quiz.update(
+            'resultBuckets',
+            buckets => buckets.remove(n)
+        ))
+    }
     
     deleteQuestion(n) {
         return () => this.updateQuiz(state => state.update(
@@ -141,6 +162,13 @@ export default class QuizBuilder extends React.Component {
         return (answerNumber) => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber, 'multiChoiceAnswers'],
             answers => ensureCorrectExists(answers.remove(answerNumber))
+        ));
+    }
+
+    setBucketField(fieldName) {
+        return (n) => (fieldValue) => this.updateQuiz(quiz => quiz.setIn(
+            ['resultBuckets', n, fieldName],
+            fieldValue
         ));
     }
 
@@ -280,7 +308,16 @@ export default class QuizBuilder extends React.Component {
         const isActive = (context) => context === currentContext;
         const className = (context) => isActive(context) ? "active" : null;
         const nQuestions = this.state.getIn(['quiz', 'questions']).size;
-        const title = (context) => context === 'questions' ? `Questions (${nQuestions})` : capitalize(context);
+        const buckets = this.state.getIn(['quiz', 'resultBuckets']);
+        const nBuckets = buckets ? buckets.size : 0;
+        const title = (context) => {
+            const byContext = {
+                questions: `Questions (${nQuestions})`,
+                buckets: `Buckets (${nBuckets})`
+            };
+
+            return byContext[context] || capitalize(context);
+        };
         
         return (
             <ul className="nav nav-pills">
@@ -337,6 +374,9 @@ export default class QuizBuilder extends React.Component {
                                   addQuestion={this.addQuestion.bind(this)}
                                   addGroup={this.addGroup.bind(this)}
                                   shuffleAnswers={this.shuffleAnswers.bind(this)}
+                                  addBucket={this.addBucket.bind(this)}
+                                  deleteBucket={this.deleteBucket.bind(this)}
+                                  setBucketField={this.setBucketField.bind(this)}
                                   addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );

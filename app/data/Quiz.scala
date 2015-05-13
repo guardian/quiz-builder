@@ -48,7 +48,15 @@ object ResultBucket {
   implicit val jsonFormat = Json.format[ResultBucket]
 }
 
-case class ResultBucket(id: String, title: String, share: String, youtubeId: Option[String])
+case class ResultBucket(
+  id: String,
+  title: String,
+  description: String,
+  href: Option[String],
+  share: String,
+  imageUrl: Option[String],
+  youtubeId: Option[String]
+)
 
 object ResultGroup {
   implicit val jsonFormat = Json.format[ResultGroup]

@@ -164,7 +164,7 @@ export default class ResultGroups extends React.Component {
                 <p>Only knowledge quizzes have response groups.</p>
             );
         }
-        
+
         const groups = this.groups();
         const numberOfQuestions = this.numberOfQuestions();
         const groupsByMinScore = zipObject(groups.map((group, index) =>
