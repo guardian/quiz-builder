@@ -4,6 +4,7 @@ import {move, on} from './utils';
 import shuffle from 'lodash-node/modern/collection/shuffle';
 import map from 'lodash-node/modern/collection/map';
 import some from 'lodash-node/modern/collection/some';
+import without from 'lodash-node/modern/array/without';
 import max from 'lodash-node/modern/math/max';
 import capitalize from 'lodash-node/modern/string/capitalize';
 import debounce from 'lodash-node/modern/function/debounce';
@@ -139,14 +140,19 @@ export default class QuizBuilder extends React.Component {
     addAnswer(questionNumber) {
         return () => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber],
-            question => question.update(
-                'multiChoiceAnswers',
-                answers => answers.push(Immutable.fromJS({
+            question => question.update('multiChoiceAnswers', answers => {
+                const answer = this.state.getIn(['quiz', 'quizType']) === 'personality' ? Immutable.fromJS({
+                    answer: '',
+                    imageUrl: '',
+                    buckets: []
+                }) : Immutable.fromJS({
                     answer: '',
                     imageUrl: '',
                     correct: answers.size === 0
-                }))
-            )
+                });
+
+                return answers.push(answer);
+            })
         ));
     }
 
@@ -183,6 +189,21 @@ export default class QuizBuilder extends React.Component {
         return (answerNumber) => this.updateQuiz(state => state.updateIn(
             ['questions', questionNumber, 'multiChoiceAnswers'],
             answers => answers.map((answer, i) => answer.set('correct', i === answerNumber))
+        ));
+    }
+
+    setAnswerHasBucket(questionNumber) {
+        return (answerNumber) => (bucketId, isPresent) => this.updateQuiz(state => state.updateIn(
+            ['questions', questionNumber, 'multiChoiceAnswers', answerNumber, 'buckets'],
+            buckets => {
+                const bucketsWithoutId = Immutable.fromJS(without(buckets ? buckets.toJS() : [], bucketId));
+
+                if (isPresent) {
+                    return bucketsWithoutId.push(bucketId);
+                } else {
+                    return bucketsWithoutId;
+                }
+            }
         ));
     }
 
@@ -377,6 +398,7 @@ export default class QuizBuilder extends React.Component {
                                   addBucket={this.addBucket.bind(this)}
                                   deleteBucket={this.deleteBucket.bind(this)}
                                   setBucketField={this.setBucketField.bind(this)}
+                                  setAnswerHasBucket={this.setAnswerHasBucket.bind(this)}
                                   addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );

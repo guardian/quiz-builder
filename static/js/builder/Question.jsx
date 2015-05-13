@@ -35,6 +35,9 @@ export default class Question extends React.Component {
                         removeAnswer={this.props.removeAnswer.bind(null, index)}
                         setImageUrl={this.props.setAnswerImageUrl(index)}
                         showImages={this.props.showImages}
+                        quizType={this.props.quizType}
+                        buckets={this.props.buckets}
+                        setHasBucket={this.props.setHasBucket(index)}
                         revealText={question.get('more')} />
             )).toJS()
         }

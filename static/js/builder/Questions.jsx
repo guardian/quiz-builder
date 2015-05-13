@@ -21,8 +21,11 @@ export default class Questions extends React.Component {
 
     render() {
         const props = this.props;
+        const {quiz} = props;
+        const quizType = quiz.get('quizType');
+        const buckets = quizType === 'personality' ? quiz.get('resultBuckets') : null;
 
-        let questions = props.quiz.get('questions').map((question, i) =>
+        let questions = quiz.get('questions').map((question, i) =>
             <Question question={question} 
                       key={`question_${i + 1}`} 
                       index={i} 
@@ -36,6 +39,9 @@ export default class Questions extends React.Component {
                       removeAnswer={props.removeAnswer(i)}
                       reorder={props.reorderAnswers(i)}
                       showImages={this.state.showImages}
+                      buckets={buckets}
+                      quizType={quizType}
+                      setHasBucket={props.setAnswerHasBucket(i)}
                       addAnswer={props.addAnswer(i)} />
         ).toJS();
 

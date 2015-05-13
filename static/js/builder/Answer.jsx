@@ -2,12 +2,38 @@ import classnames from 'classnames';
 import {nthLetter} from './utils';
 import React from 'react';
 import Thumbnail from './Thumbnail.jsx!';
+import FormInput from './FormInput.jsx!';
+import includes from 'lodash-node/modern/collection/includes';
 
-export default class Answer extends React.Component {
-    handleChange(event) {
-        this.props.setText(event.target.value);
+class BucketCheckboxes extends React.Component {
+    onChange(id) {
+        return event => {
+            this.props.setHasBucket(id, event.target.checked);
+        };
     }
 
+    render() {
+        return (
+            <div className="form-group">
+                {this.props.buckets.map(bucket =>
+                (
+                    <div className="checkbox" key={bucket.get('id')}>
+                        <label>
+                            <input type="checkbox"
+                                   checked={this.props.hasBucket(bucket.get('id'))}
+                                   onChange={this.onChange(bucket.get('id'))}
+                                />
+                            {bucket.get('title')}
+                        </label>
+                    </div>
+                )
+                )}
+            </div>
+        );
+    }
+}
+
+export default class Answer extends React.Component {
     handleImageUrlChange(event) {
         this.props.setImageUrl(event.target.value);
     }
@@ -16,18 +42,30 @@ export default class Answer extends React.Component {
         this.props.setReveal(event.target.value);
     }
 
+    isKnowledge() {
+        return this.props.quizType === 'knowledge' || !this.props.quizType;
+    }
+
+    isPersonality() {
+        return this.props.quizType === 'personality';
+    }
+
     render() {
+        const isKnowledge = this.isKnowledge();
+        const isPersonality = this.isPersonality();
         const answer = this.props.answer;
         const answerText = answer.get('answer');
         const imageUrl = answer.get('imageUrl');
-        const isCorrect = answer.get('correct');
+        const isCorrect = isKnowledge && answer.get('correct');
+        let answerBuckets = answer.get('buckets');
+        answerBuckets = answerBuckets ? answerBuckets.toJS() : [];
         const classes = classnames({
             'list-group-item': true,
             'list-group-item-success': isCorrect,
             'list-group-item--danger': !isCorrect
         });
         
-        const setCorrect = (
+        const setCorrect = isKnowledge && (
             <button type="button"
                     key="set_correct"
                     className="btn btn-default"
@@ -64,24 +102,30 @@ export default class Answer extends React.Component {
             </div>
         );
 
+        const buckets = isPersonality && (
+            <BucketCheckboxes key="buckets"
+                              buckets={this.props.buckets}
+                              hasBucket={id => includes(answerBuckets, id)}
+                              setHasBucket={this.props.setHasBucket}
+                />
+        );
+
         return (
             <li className={classes}>
                 <div className="row">
                     <div className="col-md-10">
                         {imageThumbnail}
 
-                        <div className="input-group">
-                            <span className="input-group-addon" 
-                                  id="basic-addon1">{nthLetter(this.props.index)}</span>
-                            <input className="form-control" 
-                                   value={answerText}
-                                   placeholder="Enter answer text here..." 
-                                   onChange={this.handleChange.bind(this)} />
-                        </div>
+                        <FormInput name={nthLetter(this.props.index)}
+                                   placeholder="Enter answer text here ..."
+                                   set={this.props.setText}
+                                   value={answerText} />
 
                         {imageUrlField}
 
                         {revealText}
+
+                        {buckets}
                     </div>
                     <div className="col-md-2" style={{textAlign: 'right'}}>
                         <div className="btn-group" role="group">
