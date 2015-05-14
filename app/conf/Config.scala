@@ -14,4 +14,11 @@ object Config {
     lazy val clientSecret = ConfigTable.get("googleauth.client_secret")
     lazy val redirectHost = ConfigTable.get("googleauth.redirect_host")
   }
+
+  object deployment {
+    lazy val rootDomain = ConfigTable.get("deployment.root_domain")
+    lazy val bucket = ConfigTable.get("deployment.bucket")
+    lazy val accessKeyId = ConfigTable.get("deployment.access_key_id")
+    lazy val secretAccessKey = ConfigTable.get("deployment.secret_access_key")
+  }
 }

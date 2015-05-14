@@ -3,6 +3,7 @@ package controllers
 import _root_.data.{Quiz, QuizTable}
 import auth.AuthActions
 import com.gu.googleauth.UserIdentity
+import deployment.Deployment
 import org.joda.time.DateTime
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -79,6 +80,13 @@ object Application extends Controller with AuthActions {
       QuizTable.update(username, updatedAt, request.body.quiz) map { _ =>
         Ok(Json.toJson(UpdateQuizResponse(updatedAt)))
       }
+    }
+  }
+
+  def deployQuiz(id: String) = AuthAction.async { request =>
+    QuizTable.get(id) map { quiz =>
+      val url = Deployment.deploy(quiz.get.quiz.get)
+      Ok(Json.toJson(DeployResponse(url)))
     }
   }
 }
