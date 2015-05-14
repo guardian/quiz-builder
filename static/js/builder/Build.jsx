@@ -20,7 +20,6 @@ export default class Build extends React.Component {
         });
 
         postNothing(`/quizzes/${id}/deploy`).then((response) => {
-            console.log(response);
             // todo check is mounted
             this.setState({
                 bootUrl: response.boot,
