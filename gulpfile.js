@@ -23,7 +23,7 @@ gulp.task('build', ['sass'], shell.task([
 ]));
 
 gulp.task('build-quiz', shell.task([
-    'jspm bundle-sfx static/js/quizzes/bootstrap conf/quiz-app.js'
+    'jspm bundle-sfx -m static/js/quizzes/bootstrap conf/quiz-app.js'
 ]));
 
 gulp.task('watch-build', function () {

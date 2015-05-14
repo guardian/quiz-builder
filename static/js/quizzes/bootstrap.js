@@ -11,6 +11,5 @@ export function boot(el, quizSpec, mediator) {
 }
 
 /** Horrible thing to get it working on frontend, as we still use AMD. */
-if (!'_boot_ng_quiz' in window) {
-    window._boot_ng_quiz = boot;
-}
+window._boot_ng_quiz = boot;
+console.log("Test", window._boot_ng_quiz);
