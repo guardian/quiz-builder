@@ -30,7 +30,12 @@ export default class Build extends React.Component {
 
     render() {
         const bootUrl = this.state.bootUrl && (
-            <p>Interactive boot script: {this.state.bootUrl}</p>
+            <div>
+                <h2>Your quiz has been built.</h2>
+                <p>Please add the following two embeds to a composer article to create the loading indicator and quiz:</p>
+                <div><pre>&lt;img src=&quot;http://interactive.guim.co.uk/2015/mar/quiz/auto-update-activity.gif&quot; /&gt;</pre></div>
+                <div><pre>{this.state.bootUrl}</pre></div>
+            </div>
         );
 
         const button = this.state.isLoading ? (
