@@ -59,7 +59,8 @@ export class Aggregate extends React.Component {
 export class Answer extends React.Component {
     render() {
         const answered = this.props.isAnswered,
-            {correct, buckets, more, isChosen} = this.props.answer,
+            {correct, buckets, isChosen} = this.props.answer,
+            moreText = this.props.moreText,
             isTypeKnowledge = this.props.isTypeKnowledge,
             isTypePersonality = this.props.isTypePersonality,
             pctRight = this.props.pctRight,
@@ -70,6 +71,7 @@ export class Answer extends React.Component {
             },
             icon,
             aggregate,
+            more,
             share = null;
 
         if (answered) {
@@ -104,7 +106,8 @@ export class Answer extends React.Component {
                     share = <Share question={questionNo}
                         key="share"
                         message={this.props.answer.share ? this.props.answer.share : this.props.questionText }
-                    />
+                    />;
+                    more = moreText ? <div className="quiz__answer__more">{moreText}</div> : null;
                 }
             }
         }
@@ -116,6 +119,7 @@ export class Answer extends React.Component {
                 {icon}
                 {this.props.answer.imageUrl ? <div className="quiz__answer__image"><img class="quiz__answer__img" src={genSrc(this.props.answer.imageUrl, 160)} /></div> : null}
                 {this.props.answer.answer ? this.props.answer.answer : null}
+                {more}
                 {aggregate}
             </a>
         );
@@ -153,8 +157,7 @@ export class Question extends React.Component {
               aggRight = this.props.aggregate ? (this.props.aggregate[1] ? this.props.aggregate[1] : 0) : undefined,
               pctRight = this.props.aggregate ? Math.round((aggRight * 100) / (aggWrong + aggRight)) : undefined,
               answers = question.multiChoiceAnswers,
-              defaultColumns = this.props.defaultColumns,
-              moreText = question.more;
+              defaultColumns = this.props.defaultColumns;
 
         return <div data-link-name={"question " + (this.props.index + 1)}
                     className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
@@ -184,12 +187,12 @@ export class Question extends React.Component {
                                             questionText={question.question}
                                             isTypeKnowledge={this.props.isTypeKnowledge}
                                             isTypePersonality={this.props.isTypePersonality}
+                                            moreText={question.more}
                                         />
                                 )
                             }
                         </div>)}
             </div>
-            {this.isAnswered() ? (moreText ? <div className="quiz__question__more">{moreText}</div> : null) : null}
         </div>
     }
 }
@@ -253,7 +256,7 @@ export class Quiz extends React.Component {
             questions: props.questions
         };
         this.defaultColumns = props.defaultColumns ? props.defaultColumns : 1;
-        this.quizId = props.quizIdentity;
+        this.quizId = props.id;
         this.isTypeKnowledge = props.quizType === 'knowledge' || !props.quizType;
         this.isTypePersonality = props.quizType === 'personality';
         this.resultBuckets = props.resultBuckets;
