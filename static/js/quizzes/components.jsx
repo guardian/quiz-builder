@@ -237,6 +237,9 @@ export class EndMessagePersonality extends React.Component {
                 {personality.href ?
                     <a href={personality.href} className="quiz__score">{personality.title}</a>
                     : <span className="quiz__score">{personality.title}</span>}
+                {personality.description ?
+                    <div className="quiz__description">{personality.description}</div>
+                    : null}
                 <Share 
                     message={personality.share}
                     key="share" />
