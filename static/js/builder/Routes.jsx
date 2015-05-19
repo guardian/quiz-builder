@@ -41,6 +41,12 @@ export class App extends React.Component {
                 </nav>
 
                 <div className="container">
+                    <div className="alert alert-warning haters-gonna-hate" role="alert">
+                        <b>Note:</b> This is a temporary tool designed to let us learn about quizzes. It will not be
+                        permanently available and will be turned off towards the end of June. It will at some point
+                        be replaced by a full production tool.
+                    </div>
+
                     <RouteHandler {...this.props} />
                 </div>
             </div>
