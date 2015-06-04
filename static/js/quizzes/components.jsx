@@ -270,16 +270,35 @@ export class Quiz extends React.Component {
     }
 
     chooseAnswer(answer) {
-        answer.isChosen = true;
+        if (!answer.isChosen) {
+            answer.isChosen = true;
 
-        if (this.isFinished() && this.isTypeKnowledge) {
-            saveResults(this.resultsKnowledge());
+            this.emitMessage('quiz/progress', {
+                quizId: this.quizId,
+                questions: this.length(),
+                questionsAnswered: this.progress()
+            });
+
+            if (this.isFinished() && this.isTypeKnowledge) {
+                const results = this.resultsKnowledge();
+                saveResults(results);
+                this.emitMessage('quiz/knowledge-results', results);
+            }
+            if (this.isFinished() && this.isTypePersonality) {
+                const results = this.resultsPersonality();
+                saveResults(results);
+                this.emitMessage('quiz/personality-results', results);
+            }
+
+            this.forceUpdate();
         }
-        if (this.isFinished() && this.isTypePersonality) {
-            saveResults(this.resultsPersonality());
+    }
+
+    emitMessage(topic, body) {
+        const {mediator} = this.props;
+        if (mediator) {
+            mediator.emit(topic, body);
         }
-        
-        this.forceUpdate();
     }
 
     length() {
