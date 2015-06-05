@@ -4,6 +4,8 @@ import {Quiz} from './components.jsx!';
 import qwery from 'qwery';
 
 export function boot(el, quizSpec, mediator) {
+    quizSpec.mediator = mediator;
+
     React.render(React.createElement(Quiz, quizSpec), el);
     if (mediator) {
         mediator.emit('ui:images:upgradePictures');
