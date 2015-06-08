@@ -256,7 +256,8 @@ export class Quiz extends React.Component {
         super(props);
         var quiz = this;
         this.state = {
-            questions: props.questions
+            questions: props.questions,
+            startTime: new Date()
         };
         this.defaultColumns = props.defaultColumns ? props.defaultColumns : 1;
         this.quizId = props.id;
@@ -274,7 +275,7 @@ export class Quiz extends React.Component {
             this.emitMessage('quiz/ophan-event', {
                 quizId: this.quizId,
                 body: body,
-                timeElapsed: 0
+                timeElapsed: new Date().getTime() - this.state.startTime.getTime()
             });
         };
 
