@@ -270,11 +270,19 @@ export class Quiz extends React.Component {
     }
 
     chooseAnswer(answer) {
+        const emitQuizEvent = function (body) {
+            this.emitMessage('quiz/ophan-event', {
+                quizId: this.quizId,
+                body: body,
+                timeElapsed: 0
+            });
+        };
+
         if (!answer.isChosen) {
             answer.isChosen = true;
 
-            this.emitMessage('quiz/progress', {
-                quizId: this.quizId,
+            emitQuizEvent({
+                eventType: 'progressUpdate',
                 questions: this.length(),
                 questionsAnswered: this.progress()
             });
@@ -282,12 +290,23 @@ export class Quiz extends React.Component {
             if (this.isFinished() && this.isTypeKnowledge) {
                 const results = this.resultsKnowledge();
                 saveResults(results);
-                this.emitMessage('quiz/knowledge-results', results);
+
+                emitQuizEvent({
+                    eventType: 'knowledgeResults',
+                    results: results.results,
+                    score: results.score
+                });
             }
             if (this.isFinished() && this.isTypePersonality) {
                 const results = this.resultsPersonality();
                 saveResults(results);
-                this.emitMessage('quiz/personality-results', results);
+
+                emitQuizEvent({
+                    eventType: 'personalityResults',
+                    results: results.results,
+                    // TODO: refactor all this so it is never called 'score' - it makes no sense
+                    bucketIndex: results.score
+                });
             }
 
             this.forceUpdate();
