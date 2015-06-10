@@ -271,7 +271,7 @@ export class Quiz extends React.Component {
     }
 
     chooseAnswer(answer) {
-        const emitQuizEvent = function (body) {
+        const emitQuizEvent = (body) => {
             this.emitMessage('quiz/ophan-event', {
                 quizId: this.quizId,
                 body: body,
