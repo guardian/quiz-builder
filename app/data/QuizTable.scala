@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 import play.api.libs.json.Json
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object QuizTable {
   object Entry {
@@ -43,15 +44,31 @@ object QuizTable {
   val TableName = Config.dynamodb.tablePrefix.getOrElse("") + "Quizzes"
 
   def list() = {
-    dynamoDbClient.scanFuture(new ScanRequest()
-      .withTableName(TableName)
-      .withLimit(10)
-      .withAttributesToGet("id", "title", "createdAt", "createdBy", "updatedBy", "updatedAt")
-    ) map { result =>
-      (result.getItems.asScala.toSeq map { item =>
-        Entry.fromAttributeValueMap(item.asScala.toMap)
-      }).flatten
+    def iter(lastEvaluatedKey: Option[java.util.Map[String, AttributeValue]]): Future[Seq[QuizTable.Entry]] = {
+      val scanRequest = new ScanRequest()
+        .withTableName(TableName)
+        .withLimit(10)
+        .withAttributesToGet("id", "title", "createdAt", "createdBy", "updatedBy", "updatedAt")
+        .withExclusiveStartKey(lastEvaluatedKey.orNull)
+
+      dynamoDbClient.scanFuture(scanRequest) flatMap { result =>
+        val theseItems = result.getItems.asScala.toSeq.flatMap { item =>
+          Entry.fromAttributeValueMap(item.asScala.toMap)
+        }
+
+        Option(result.getLastEvaluatedKey) match {
+          case Some(nextKey) =>
+            iter(Some(nextKey)) map { otherItems =>
+              theseItems ++ otherItems
+            }
+
+          case None =>
+            Future.successful(theseItems)
+        }
+      }
     }
+
+    iter(None).map(_.sortBy(x => - x.updatedAt.getOrElse(x.createdAt).getMillis))
   }
 
   def get(id: String) = {
