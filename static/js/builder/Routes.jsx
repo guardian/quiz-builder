@@ -10,11 +10,14 @@ import Preview from './Preview.jsx!';
 import Buckets from './Buckets.jsx!';
 import Build from './Build.jsx!';
 import userInfo from './userInfo';
+import {MONTHS} from './utils';
 
 const {DefaultRoute, Redirect, Link, Route, RouteHandler} = Router;
 
 export class App extends React.Component {
     render() {
+        const monthName = MONTHS[(new Date().getMonth() + 1) % 12];
+
         return (
             <div className="quiz-builder">
                 <nav className="navbar navbar-inverse navbar-static-top">
@@ -43,8 +46,8 @@ export class App extends React.Component {
                 <div className="container">
                     <div className="alert alert-warning haters-gonna-hate" role="alert">
                         <b>Note:</b> This is a temporary tool designed to let us learn about quizzes. It will not be
-                        permanently available and will be turned off towards the end of June. It will at some point
-                        be replaced by a full production tool.
+                        permanently available and will be turned off towards the end of {monthName}. It will at some
+                        point be replaced by a full production tool.
                     </div>
 
                     <RouteHandler {...this.props} />
