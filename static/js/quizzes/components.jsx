@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Aggregate from './Aggregate.jsx!';
 import EndMessageKnowledge from './EndMessageKnowledge.jsx!';
 import EndMessagePersonality from './EndMessagePersonality.jsx!';
 import Answer from './Answer.jsx!';

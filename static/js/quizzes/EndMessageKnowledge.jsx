@@ -3,7 +3,7 @@ import {Share} from './social.jsx!'
 import slice from 'lodash-node/modern/array/slice';
 import sum from 'lodash-node/modern/collection/sum';
 
-export class EndMessageKnowledge extends React.Component {
+export default class EndMessageKnowledge extends React.Component {
     render() {
         const {histogram, score} = this.props;
         let comparison;

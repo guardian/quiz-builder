@@ -1,7 +1,7 @@
 import React from 'react';
 import {Share} from './social.jsx!'
 
-export class EndMessagePersonality extends React.Component {
+export default class EndMessagePersonality extends React.Component {
     render() {
         const personality = this.props.personality;
         const youTube = personality.youtubeId && (
@@ -24,13 +24,15 @@ export class EndMessagePersonality extends React.Component {
                 <span className="quiz__score">{personality.title}</span>
             );
 
-        return <div className="quiz__end-message">
-            <div className="quiz__score-message">
-                {title}
-                {description}
-                <Share message={personality.share} />
-                {youTube}
+        return (
+            <div className="quiz__end-message">
+                <div className="quiz__score-message">
+                    {title}
+                    {description}
+                    <Share message={personality.share} />
+                    {youTube}
+                </div>
             </div>
-        </div>
+        );
     }
 }

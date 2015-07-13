@@ -1,9 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
+
+import Aggregate from './Aggregate.jsx!';
 import {cross, tick} from './svgs.jsx!';
 import {genSrc} from './images';
 
-export class Answer extends React.Component {
+export default class Answer extends React.Component {
     render() {
         const {correct, isChosen, imageUrl, answer} = this.props.answer;
         const {moreText, isTypeKnowledge, isAnswered, pctRight, revealAtEnd} = this.props;
@@ -29,7 +31,7 @@ export class Answer extends React.Component {
                 }
             } else {
                 symbol = (
-                    <span>&bullet;</span>
+                    <span>&bull;</span>
                 );
             }
         }
