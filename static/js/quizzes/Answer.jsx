@@ -9,10 +9,10 @@ export default class Answer extends React.Component {
     render() {
         const {correct, isChosen, imageUrl, answer} = this.props.answer;
         const {moreText, isTypeKnowledge, isAnswered, pctRight, revealAtEnd, isFinished} = this.props;
-        const shouldReveal = isTypeKnowledge && !revealAtEnd;
+        const shouldReveal = isTypeKnowledge && isAnswered && (!revealAtEnd || isFinished);
         const classes = classnames({
             'quiz__answer': true,
-            'quiz__answer--answered': isAnswered && shouldReveal,
+            'quiz__answer--answered': shouldReveal,
             'quiz__answer--chosen': !shouldReveal && isChosen,
             'quiz__answer--correct': shouldReveal && correct,
             'quiz__answer--correct-chosen': shouldReveal && correct && isChosen,
@@ -31,7 +31,7 @@ export default class Answer extends React.Component {
                 }
             } else if (isChosen) {
                 symbol = (
-                    <span style={{paddingLeft: 5}}>&bull;</span>
+                    <span key="icon" style={{paddingLeft: 5}}>&bull;</span>
                 );
             }
         }

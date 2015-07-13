@@ -17,6 +17,8 @@ export default class Aggregate extends React.Component {
             return (
                 <div className="quiz__answer-aggregate">{phraseText}</div>
             );
+        } else {
+            return null;
         }
     }
 }
