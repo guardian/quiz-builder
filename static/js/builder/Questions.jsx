@@ -48,7 +48,6 @@ export default class Questions extends React.Component {
                       buckets={buckets}
                       quizType={quizType}
                       setHasBucket={props.setAnswerHasBucket(i)}
-                      enableReveal={!revealAtEnd}
                       addAnswer={props.addAnswer(i)} />
         ).toJS();
 

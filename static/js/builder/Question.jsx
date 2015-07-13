@@ -38,7 +38,6 @@ export default class Question extends React.Component {
                         quizType={this.props.quizType}
                         buckets={this.props.buckets}
                         setHasBucket={this.props.setHasBucket(index)}
-                        enableReveal={this.props.enableReveal}
                         revealText={question.get('more')} />
             )).toJS()
         }
