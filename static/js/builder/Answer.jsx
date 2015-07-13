@@ -51,7 +51,7 @@ export default class Answer extends React.Component {
     render() {
         const isKnowledge = this.isKnowledge();
         const isPersonality = this.isPersonality();
-        const answer = this.props.answer;
+        const {answer, enableReveal} = this.props;
         const answerText = answer.get('answer');
         const imageUrl = answer.get('imageUrl');
         const isCorrect = isKnowledge && answer.get('correct');
@@ -74,7 +74,7 @@ export default class Answer extends React.Component {
             </button>
         );
 
-        const revealText = isCorrect && (
+        const revealText = isCorrect && enableReveal && (
             <div className="input-group" style={{marginTop: '10px'}}>
                 <span className="input-group-addon">Reveal text</span>
                 <input className="form-control" 

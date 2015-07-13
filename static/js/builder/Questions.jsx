@@ -27,6 +27,7 @@ export default class Questions extends React.Component {
         const props = this.props;
         const {quiz} = props;
         const quizType = quiz.get('quizType');
+        const revealAtEnd = quiz.get('revealAtEnd');
         const isPersonality = quizType === 'personality';
         const buckets = isPersonality ? quiz.get('resultBuckets') : null;
 
@@ -47,6 +48,7 @@ export default class Questions extends React.Component {
                       buckets={buckets}
                       quizType={quizType}
                       setHasBucket={props.setAnswerHasBucket(i)}
+                      enableReveal={!revealAtEnd}
                       addAnswer={props.addAnswer(i)} />
         ).toJS();
 
@@ -58,12 +60,12 @@ export default class Questions extends React.Component {
             questionsHtml = <p>Add some questions to get started.</p>
         }
 
-        const revealAtEnd = !isPersonality ? (
+        const revealAtEndCheckbox = !isPersonality ? (
             <div className="checkbox">
                 <label>
                     <input type="checkbox"
                            key="reveal_at_end"
-                           checked={quiz.get('revealAtEnd')}
+                           checked={revealAtEnd}
                            onChange={this.setRevealAtEnd.bind(this)}
                            /> Only reveal answers at end
                 </label>
@@ -80,7 +82,7 @@ export default class Questions extends React.Component {
                                    onChange={this.onShowImagesChange.bind(this)} /> Show images
                         </label>
                     </div>
-                    {revealAtEnd}
+                    {revealAtEndCheckbox}
                 </div>
 
                 {questionsHtml}
