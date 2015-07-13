@@ -63,12 +63,23 @@ export class Question extends React.Component {
               answers = question.multiChoiceAnswers,
               defaultColumns = this.props.defaultColumns;
 
+        const {imageUrl, imageCredit} = question;
+
+        const image = imageUrl && (
+            <img className="quiz__question__img" src={genSrc620(imageUrl)} />
+        );
+
+        const credit = imageCredit && (
+            <figcaption className="caption caption--main caption--img quiz__image-caption"
+                        itemprop="description"
+                        dangerouslySetInnerHTML={{__html: imageCredit}} />
+        );
+
         return (
             <div data-link-name={"question " + (this.props.index + 1)}
-                        className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
-
-                {question.imageUrl ? <img className="quiz__question__img" src={genSrc620(question.imageUrl)} /> : null}
-                {question.imageCredit ? <figcaption className="caption caption--main caption--img quiz__image-caption" itemprop="description" dangerouslySetInnerHTML={{__html: question.imageCredit}} /> : null}
+                 className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
+                {image}
+                {credit}
                 <h4 className="quiz__question-header">
                     <span className="quiz__question-number">{this.props.index + 1}</span>
                     <span className="quiz__question-text">{question.question}</span>
