@@ -75,7 +75,8 @@ object Quiz {
       columns,
       Nil,
       None,
-      Some(Seq.empty)
+      Some(Seq.empty),
+      None
     )
 
     case KnowledgeQuiz => Quiz(
@@ -91,7 +92,8 @@ object Quiz {
           0
         )
       )),
-      None
+      None,
+      Some(false)
     )
   }
 }
@@ -103,5 +105,6 @@ case class Quiz(
   defaultColumns: Option[Int],
   questions: Seq[Question],
   resultGroups: Option[Seq[ResultGroup]],
-  resultBuckets: Option[Seq[ResultBucket]]
+  resultBuckets: Option[Seq[ResultBucket]],
+  revealAtEnd: Option[Boolean]
 )

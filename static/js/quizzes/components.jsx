@@ -199,9 +199,8 @@ export class Question extends React.Component {
 
 export class EndMessageKnowledge extends React.Component {
     render() {
-        let histogram = this.props.histogram,
-            score = this.props.score,
-            comparison; 
+        const {histogram, score} = this.props;
+        let comparison;
 
         if (score > 0 && histogram) {
             let beat = Math.round((sum(slice(histogram, 0, score + 1)) * 100) / sum(histogram));
