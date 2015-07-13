@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Aggregate from './Aggregate.jsx!';
+import EndMessageKnowledge from './EndMessageKnowledge.jsx!';
 import {countWhere} from './utils';
 
 import './style.css!';
 import './social.css!';
 
 import chunk from 'lodash-node/modern/array/chunk';
-import slice from 'lodash-node/modern/array/slice';
 import zip from 'lodash-node/modern/array/zip';
 import includes from 'lodash-node/modern/collection/includes';
 import find from 'lodash-node/modern/collection/find';
@@ -17,7 +17,6 @@ import map from 'lodash-node/modern/collection/map';
 import reduce from 'lodash-node/modern/collection/reduce';
 import filter from 'lodash-node/modern/collection/filter';
 import forEach from 'lodash-node/modern/collection/forEach';
-import sum from 'lodash-node/modern/collection/sum';
 import compact from 'lodash-node/modern/array/compact';
 import take from 'lodash-node/modern/array/take';
 import merge from 'lodash-node/modern/object/merge';
@@ -30,7 +29,6 @@ import random from 'lodash-node/modern/number/random';
 import classnames from 'classnames';
 import {cross, tick} from './svgs.jsx!';
 import {saveResults, getResults} from './scores';
-import {Share} from './social.jsx!'
 import {genSrc, genSrcset, genSrc620} from './images';
 
 const quizTypes = ['knowledge', 'personality'];
@@ -168,36 +166,6 @@ export class Question extends React.Component {
                                 }
                             </div>)}
                 </div>
-            </div>
-        );
-    }
-}
-
-export class EndMessageKnowledge extends React.Component {
-    render() {
-        const {histogram, score} = this.props;
-        let comparison;
-
-        if (score > 0 && histogram) {
-            let beat = Math.round((sum(slice(histogram, 0, score + 1)) * 100) / sum(histogram));
-            comparison = (
-                <div>
-                    <div>How did you do?</div>
-                    <div>You beat <span className="quiz__end-message__beat">{isNaN(beat) ? 0 : beat}%</span> of others.</div>
-                </div>
-            );
-        }
-
-        return (
-            <div className="quiz__end-message">
-                <div className="quiz__score-message">You got <span className="quiz__score">{score}/{this.props.length}</span></div>
-                <div className="quiz__bucket-message">{this.props.message.title}</div>
-                {comparison}
-                <Share
-                    score={score}
-                    message={this.props.message.share}
-                    length={this.props.length}
-                    key="share" />
             </div>
         );
     }
