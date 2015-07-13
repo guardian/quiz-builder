@@ -29,7 +29,7 @@ export default class Answer extends React.Component {
                 } else if (isChosen) {
                     symbol = cross();
                 }
-            } else {
+            } else if (isChosen) {
                 symbol = (
                     <span style={{paddingLeft: 5}}>&bull;</span>
                 );
