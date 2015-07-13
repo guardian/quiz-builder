@@ -34,9 +34,6 @@ object Login extends Controller with AuthActions {
   def oauth2Callback = Action.async { implicit request =>
     val session = request.session
 
-    println(session)
-    println(request.queryString)
-
     session.get(AntiForgeryKey) match {
       case None =>
         Future.successful(Redirect(routes.Login.login())

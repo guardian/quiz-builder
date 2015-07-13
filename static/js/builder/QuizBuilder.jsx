@@ -284,6 +284,10 @@ export default class QuizBuilder extends React.Component {
         ));
     }
 
+    setRevealAtEnd(revealAtEnd) {
+        this.updateQuiz(quiz => quiz.set('revealAtEnd', revealAtEnd))
+    }
+
     setGroupShare(index) {
         return (shareText) => this.updateQuiz(quiz => quiz.setIn(
             ['resultGroups', index, 'share'],
@@ -418,6 +422,7 @@ export default class QuizBuilder extends React.Component {
                                   deleteBucket={this.deleteBucket.bind(this)}
                                   setBucketField={this.setBucketField.bind(this)}
                                   setAnswerHasBucket={this.setAnswerHasBucket.bind(this)}
+                                  setRevealAtEnd={this.setRevealAtEnd.bind(this)}
                                   addAnswer={this.addAnswer.bind(this)} />
                 </div>
             );
