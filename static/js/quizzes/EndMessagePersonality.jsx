@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import {Share} from './social.jsx!'
 
 export class EndMessagePersonality extends React.Component {

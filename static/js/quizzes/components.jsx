@@ -11,7 +11,6 @@ import './social.css!';
 
 import chunk from 'lodash-node/modern/array/chunk';
 import zip from 'lodash-node/modern/array/zip';
-import includes from 'lodash-node/modern/collection/includes';
 import find from 'lodash-node/modern/collection/find';
 import findIndex from 'lodash-node/modern/array/findIndex';
 import any from 'lodash-node/modern/collection/any';
@@ -19,7 +18,6 @@ import map from 'lodash-node/modern/collection/map';
 import reduce from 'lodash-node/modern/collection/reduce';
 import filter from 'lodash-node/modern/collection/filter';
 import forEach from 'lodash-node/modern/collection/forEach';
-import compact from 'lodash-node/modern/array/compact';
 import take from 'lodash-node/modern/array/take';
 import last from 'lodash-node/modern/array/last';
 import sortBy from 'lodash-node/modern/collection/sortBy';
