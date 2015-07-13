@@ -2,6 +2,7 @@ import React from 'react';
 
 import Aggregate from './Aggregate.jsx!';
 import EndMessageKnowledge from './EndMessageKnowledge.jsx!';
+import EndMessagePersonality from './EndMessagePersonality.jsx!';
 import {countWhere} from './utils';
 
 import './style.css!';
@@ -168,29 +169,6 @@ export class Question extends React.Component {
                 </div>
             </div>
         );
-    }
-}
-
-export class EndMessagePersonality extends React.Component {
-    render() {
-        const personality = this.props.personality;
-
-        return <div className="quiz__end-message">
-            <div className="quiz__score-message">
-                {personality.href ?
-                    <a href={personality.href} className="quiz__score">{personality.title}</a>
-                    : <span className="quiz__score">{personality.title}</span>}
-                {personality.description ?
-                    <div className="quiz__description">{personality.description}</div>
-                    : null}
-                <Share 
-                    message={personality.share}
-                    key="share" />
-                {personality.youtubeId ?
-                    <p><iframe width="320" height="180" src={"https://www.youtube.com/embed/" + personality.youtubeId} frameBorder="0"  allowfullscreen></iframe></p>
-                    : null}
-            </div>
-        </div>
     }
 }
 
