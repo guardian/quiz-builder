@@ -8,7 +8,7 @@ import {genSrc} from './images';
 export default class Answer extends React.Component {
     render() {
         const {correct, isChosen, imageUrl, answer} = this.props.answer;
-        const {moreText, isTypeKnowledge, isAnswered, pctRight, revealAtEnd} = this.props;
+        const {moreText, isTypeKnowledge, isAnswered, pctRight, revealAtEnd, isFinished} = this.props;
         const shouldReveal = isTypeKnowledge && !revealAtEnd;
         const classes = classnames({
             'quiz__answer': true,
@@ -54,10 +54,12 @@ export default class Answer extends React.Component {
             </div>
         );
 
+        const canSelectAnswer = !isAnswered || (revealAtEnd && !isFinished);
+
         return (
             <a data-link-name={`answer ${this.props.index + 1}`}
                className={classes}
-               onClick={isAnswered ? null : this.props.chooseAnswer}>
+               onClick={canSelectAnswer && this.props.chooseAnswer}>
                 {icon}
                 {image}
                 {answer}

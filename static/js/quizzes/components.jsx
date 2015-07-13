@@ -85,7 +85,7 @@ export class Question extends React.Component {
                                                 answer={answer}
                                                 isAnswered={this.isAnswered()}
                                                 pctRight={pctRight}
-                                                chooseAnswer={this.props.chooseAnswer.bind(null, answer)}
+                                                chooseAnswer={this.props.chooseAnswer.bind(null, question, answer)}
                                                 index={chunkI * 2 + answerI}
                                                 key={chunkI * 2 + answerI}
                                                 questionNo={this.props.index + 1}
@@ -94,6 +94,7 @@ export class Question extends React.Component {
                                                 isTypePersonality={this.props.isTypePersonality}
                                                 moreText={question.more}
                                                 revealAtEnd={this.props.revealAtEnd}
+                                                isFinished={this.props.isFinished}
                                             />
                                     )
                                 }
@@ -123,7 +124,7 @@ export class Quiz extends React.Component {
         });
     }
 
-    chooseAnswer(answer) {
+    chooseAnswer(question, answer) {
         const emitQuizEvent = (body) => {
             this.emitMessage('quiz/ophan-event', {
                 quizId: this.quizId,
@@ -133,7 +134,9 @@ export class Quiz extends React.Component {
         };
 
         if (!answer.isChosen) {
-            answer.isChosen = true;
+            forEach(question.multiChoiceAnswers, function (a) {
+                a.isChosen = (a === answer);
+            });
 
             emitQuizEvent({
                 eventType: 'progressUpdate',
@@ -242,41 +245,55 @@ export class Quiz extends React.Component {
 
     render() {
         const elEmbed = document.getElementsByClassName('element-embed')[0];
+        const isFinished = this.isFinished();
 
         if (elEmbed) {
             elEmbed.style.display = 'none';
         }
 
-        if (this.isTypeKnowledge || this.isTypePersonality) {
-            return <div data-link-name="quiz" className="quiz">
-                {map(
-                    zip(this.state.questions, this.aggregate ? take(this.aggregate.results, this.state.questions.length) : []),
-                    (question, i) => <Question
-                        question={question[0]}
-                        aggregate={question[1]}
-                        chooseAnswer={this.chooseAnswer.bind(this)}
-                        index={i}
-                        key={i}
-                        isTypePersonality={this.isTypePersonality}
-                        isTypeKnowledge={this.isTypeKnowledge}
-                        revealAtEnd={this.props.revealAtEnd}
-                        defaultColumns={this.defaultColumns} />)}
+        let endMessage = null;
 
-                {this.isFinished() && this.isTypeKnowledge ?
+        if (isFinished) {
+            if (this.isTypeKnowledge) {
+                endMessage = (
                     <EndMessageKnowledge
                         message={this.endMessageKnowledge()}
                         score={this.scoreKnowledge()}
                         length={this.length()}
                         histogram={this.aggregate ? this.aggregate.scoreHistogram : undefined}
-                        key="end_message" /> : null}
+                        key="end_message" />
+                );
+            } else {
+                endMessage = (
+                    <EndMessagePersonality personality={this.getPersonality()} key="end_message" />
+                );
+            }
+        }
 
-                {this.isFinished() && this.isTypePersonality ?
-                    <EndMessagePersonality
-                        personality={this.isTypePersonality ? this.getPersonality() : null}
-                        key="end_message" /> : null}
-            </div>;
+        if (this.isTypeKnowledge || this.isTypePersonality) {
+            return (
+                <div data-link-name="quiz" className="quiz">
+                    {map(
+                        zip(this.state.questions, this.aggregate ? take(this.aggregate.results, this.state.questions.length) : []),
+                        (question, i) => <Question
+                            question={question[0]}
+                            aggregate={question[1]}
+                            chooseAnswer={this.chooseAnswer.bind(this)}
+                            index={i}
+                            key={i}
+                            isTypePersonality={this.isTypePersonality}
+                            isTypeKnowledge={this.isTypeKnowledge}
+                            isFinished={isFinished}
+                            revealAtEnd={this.props.revealAtEnd}
+                            defaultColumns={this.defaultColumns} />)}
+
+                    {endMessage}
+                </div>
+            );
         } else {
-            return <div>Unknown or unspecified "quizType" property. Should be one of: {quizTypes.join(', ')}.</div>
+            return (
+                <div>Unknown or unspecified "quizType" property. Should be one of: {quizTypes.join(', ')}.</div>
+            )
         }
     }
 }
