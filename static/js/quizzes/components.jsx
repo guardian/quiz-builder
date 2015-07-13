@@ -58,8 +58,8 @@ export class Aggregate extends React.Component {
 export class Answer extends React.Component {
     render() {
         const answered = this.props.isAnswered;
-        const {correct, buckets, isChosen} = this.props.answer;
-        const {moreText, isTypeKnowledge, isTypePersonality, pctRight, questionNo} = this.props;
+        const {correct, isChosen} = this.props.answer;
+        const {moreText, isTypeKnowledge, isTypePersonality, pctRight, questionNo, revealAtEnd} = this.props;
 
         let classesNames = {
                 'quiz__answer': true
@@ -74,10 +74,10 @@ export class Answer extends React.Component {
                 {
                     'quiz__answer--answered': true
                 },
-                isTypePersonality ? {
-                    'quiz__answer--chosen': isChosen,
+                (isTypePersonality || revealAtEnd) ? {
+                    'quiz__answer--chosen': isChosen
                 } : null,
-                isTypeKnowledge ? {
+                (isTypeKnowledge && !revealAtEnd) ? {
                     'quiz__answer--correct': correct,
                     'quiz__answer--correct-chosen': correct && isChosen,
                     'quiz__answer--incorrect-chosen': isChosen && !correct,    
@@ -85,11 +85,9 @@ export class Answer extends React.Component {
                 } : null
             );
 
-            if (isTypePersonality && isChosen) {
+            if ((isTypePersonality && isChosen) || revealAtEnd) {
                 icon = <span className={'quiz__answer-icon'}>{tick()}</span>;
-            }
-
-            if (isTypeKnowledge) {
+            } else if (isTypeKnowledge) {
                 if (isChosen || correct) {
                     let symbol = correct ? tick(isChosen ? null : '#43B347') : cross();
                     icon = <span className={'quiz__answer-icon'}>{symbol}</span>;
@@ -154,41 +152,44 @@ export class Question extends React.Component {
               answers = question.multiChoiceAnswers,
               defaultColumns = this.props.defaultColumns;
 
-        return <div data-link-name={"question " + (this.props.index + 1)}
-                    className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
+        return (
+            <div data-link-name={"question " + (this.props.index + 1)}
+                        className={classnames({'quiz__question': true, isAnswered: this.isAnswered()})}>
 
-            {question.imageUrl ? <img className="quiz__question__img" src={genSrc620(question.imageUrl)} /> : null}
-            {question.imageCredit ? <figcaption className="caption caption--main caption--img quiz__image-caption" itemprop="description" dangerouslySetInnerHTML={{__html: question.imageCredit}} /> : null}
-            <h4 className="quiz__question-header">
-                <span className="quiz__question-number">{this.props.index + 1}</span>
-                <span className="quiz__question-text">{question.question}</span>
-            </h4>
-            <div>
-                {map(
-                    chunk(answers, defaultColumns),
-                    (thisChunk, chunkI) =>
-                        <div className="quiz__question__answer-row">
-                            {
-                                map(thisChunk,
-                                    (answer, answerI) =>
-                                        <Answer
-                                            answer={answer}
-                                            isAnswered={this.isAnswered()}
-                                            pctRight={pctRight}
-                                            chooseAnswer={this.props.chooseAnswer.bind(null, answer)}
-                                            index={chunkI * 2 + answerI}
-                                            key={chunkI * 2 + answerI}
-                                            questionNo={this.props.index + 1}
-                                            questionText={question.question}
-                                            isTypeKnowledge={this.props.isTypeKnowledge}
-                                            isTypePersonality={this.props.isTypePersonality}
-                                            moreText={question.more}
-                                        />
-                                )
-                            }
-                        </div>)}
+                {question.imageUrl ? <img className="quiz__question__img" src={genSrc620(question.imageUrl)} /> : null}
+                {question.imageCredit ? <figcaption className="caption caption--main caption--img quiz__image-caption" itemprop="description" dangerouslySetInnerHTML={{__html: question.imageCredit}} /> : null}
+                <h4 className="quiz__question-header">
+                    <span className="quiz__question-number">{this.props.index + 1}</span>
+                    <span className="quiz__question-text">{question.question}</span>
+                </h4>
+                <div>
+                    {map(
+                        chunk(answers, defaultColumns),
+                        (thisChunk, chunkI) =>
+                            <div className="quiz__question__answer-row">
+                                {
+                                    map(thisChunk,
+                                        (answer, answerI) =>
+                                            <Answer
+                                                answer={answer}
+                                                isAnswered={this.isAnswered()}
+                                                pctRight={pctRight}
+                                                chooseAnswer={this.props.chooseAnswer.bind(null, answer)}
+                                                index={chunkI * 2 + answerI}
+                                                key={chunkI * 2 + answerI}
+                                                questionNo={this.props.index + 1}
+                                                questionText={question.question}
+                                                isTypeKnowledge={this.props.isTypeKnowledge}
+                                                isTypePersonality={this.props.isTypePersonality}
+                                                moreText={question.more}
+                                                revealAtEnd={this.props.revealAtEnd}
+                                            />
+                                    )
+                                }
+                            </div>)}
+                </div>
             </div>
-        </div>
+        );
     }
 }
 
@@ -382,7 +383,7 @@ export class Quiz extends React.Component {
     }
 
     render() {
-        let elEmbed = document.getElementsByClassName('element-embed')[0];
+        const elEmbed = document.getElementsByClassName('element-embed')[0];
 
         if (elEmbed) {
             elEmbed.style.display = 'none';
@@ -400,6 +401,7 @@ export class Quiz extends React.Component {
                         key={i}
                         isTypePersonality={this.isTypePersonality}
                         isTypeKnowledge={this.isTypeKnowledge}
+                        revealAtEnd={this.props.revealAtEnd}
                         defaultColumns={this.defaultColumns} />)}
 
                 {this.isFinished() && this.isTypeKnowledge ?
