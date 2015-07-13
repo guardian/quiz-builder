@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Aggregate from './Aggregate.jsx!';
 import {countWhere} from './utils';
 
 import './style.css!';
@@ -32,28 +34,6 @@ import {Share} from './social.jsx!'
 import {genSrc, genSrcset, genSrc620} from './images';
 
 const quizTypes = ['knowledge', 'personality'];
-
-export class Aggregate extends React.Component {
-    render() {
-        const {pctRight, correct} = this.props;
-
-        let info = null;
-        if (typeof pctRight !== 'undefined') {
-            let phrase;
-            if (pctRight < 50) {
-                phrase = <span>{correct ? "Good job!" : "Don't worry."} More people got this question wrong than right!</span>
-            } else if (pctRight > 80) {
-                phrase = <span>{correct ? "This one's easy" : "Oh dear" } - {pctRight}% of people knew this</span>
-            }
-            if (phrase) {
-                info = <div className="quiz__answer-aggregate">
-                    { phrase }
-                </div>
-            }
-        }
-        return info;
-    }
-}
 
 export class Answer extends React.Component {
     render() {
