@@ -3,6 +3,7 @@ import React from 'react';
 import Aggregate from './Aggregate.jsx!';
 import EndMessageKnowledge from './EndMessageKnowledge.jsx!';
 import EndMessagePersonality from './EndMessagePersonality.jsx!';
+import Answer from './Answer.jsx!';
 import {countWhere} from './utils';
 
 import './style.css!';
@@ -20,7 +21,6 @@ import filter from 'lodash-node/modern/collection/filter';
 import forEach from 'lodash-node/modern/collection/forEach';
 import compact from 'lodash-node/modern/array/compact';
 import take from 'lodash-node/modern/array/take';
-import merge from 'lodash-node/modern/object/merge';
 import last from 'lodash-node/modern/array/last';
 import sortBy from 'lodash-node/modern/collection/sortBy';
 import pairs from 'lodash-node/modern/object/pairs';
@@ -28,75 +28,10 @@ import startsWith from 'lodash-node/modern/string/startsWith';
 import random from 'lodash-node/modern/number/random';
 
 import classnames from 'classnames';
-import {cross, tick} from './svgs.jsx!';
 import {saveResults, getResults} from './scores';
 import {genSrc, genSrcset, genSrc620} from './images';
 
 const quizTypes = ['knowledge', 'personality'];
-
-export class Answer extends React.Component {
-    render() {
-        const answered = this.props.isAnswered;
-        const {correct, isChosen} = this.props.answer;
-        const {moreText, isTypeKnowledge, isTypePersonality, pctRight, questionNo, revealAtEnd} = this.props;
-
-        let classesNames = {
-                'quiz__answer': true
-            },
-            icon,
-            aggregate,
-            more,
-            share = null;
-
-        if (answered) {
-            classesNames = merge(classesNames, 
-                {
-                    'quiz__answer--answered': true
-                },
-                (isTypePersonality || revealAtEnd) ? {
-                    'quiz__answer--chosen': isChosen
-                } : null,
-                (isTypeKnowledge && !revealAtEnd) ? {
-                    'quiz__answer--correct': correct,
-                    'quiz__answer--correct-chosen': correct && isChosen,
-                    'quiz__answer--incorrect-chosen': isChosen && !correct,    
-                    'quiz__answer--incorrect': !correct
-                } : null
-            );
-
-            if ((isTypePersonality && isChosen) || revealAtEnd) {
-                icon = <span className={'quiz__answer-icon'}>{tick()}</span>;
-            } else if (isTypeKnowledge) {
-                if (isChosen || correct) {
-                    let symbol = correct ? tick(isChosen ? null : '#43B347') : cross();
-                    icon = <span className={'quiz__answer-icon'}>{symbol}</span>;
-                }
-                if (isChosen) {
-                    aggregate = <Aggregate correct={correct} pctRight={pctRight} />
-                }
-                if (correct) {
-                    share = <Share question={questionNo}
-                        key="share"
-                        message={this.props.answer.share ? this.props.answer.share : this.props.questionText }
-                    />;
-                    more = moreText ? <div className="quiz__answer__more">{moreText}</div> : null;
-                }
-            }
-        }
-
-        return (
-            <a data-link-name={"answer " + (this.props.index + 1)}
-               className={classnames(classesNames)}
-               onClick={answered ? null : this.props.chooseAnswer}>
-                {icon}
-                {this.props.answer.imageUrl ? <div className="quiz__answer__image"><img class="quiz__answer__img" src={genSrc(this.props.answer.imageUrl, 160)} /></div> : null}
-                {this.props.answer.answer ? this.props.answer.answer : null}
-                {more}
-                {aggregate}
-            </a>
-        );
-    }
-}
 
 function isAnswered(question) {
     return any(question.multiChoiceAnswers, (a) => a.isChosen);
