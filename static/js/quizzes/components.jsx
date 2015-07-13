@@ -35,8 +35,7 @@ const quizTypes = ['knowledge', 'personality'];
 
 export class Aggregate extends React.Component {
     render() {
-        const pctRight = this.props.pctRight,
-            correct = this.props.correct;
+        const {pctRight, correct} = this.props;
 
         let info = null;
         if (typeof pctRight !== 'undefined') {
@@ -58,13 +57,9 @@ export class Aggregate extends React.Component {
 
 export class Answer extends React.Component {
     render() {
-        const answered = this.props.isAnswered,
-            {correct, buckets, isChosen} = this.props.answer,
-            moreText = this.props.moreText,
-            isTypeKnowledge = this.props.isTypeKnowledge,
-            isTypePersonality = this.props.isTypePersonality,
-            pctRight = this.props.pctRight,
-            questionNo = this.props.questionNo;
+        const answered = this.props.isAnswered;
+        const {correct, buckets, isChosen} = this.props.answer;
+        const {moreText, isTypeKnowledge, isTypePersonality, pctRight, questionNo} = this.props;
 
         let classesNames = {
                 'quiz__answer': true
