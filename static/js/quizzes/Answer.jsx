@@ -12,7 +12,7 @@ export default class Answer extends React.Component {
         const shouldReveal = isTypeKnowledge && !revealAtEnd;
         const classes = classnames({
             'quiz__answer': true,
-            'quiz__answer--answered': isAnswered,
+            'quiz__answer--answered': isAnswered && shouldReveal,
             'quiz__answer--chosen': !shouldReveal && isChosen,
             'quiz__answer--correct': shouldReveal && correct,
             'quiz__answer--correct-chosen': shouldReveal && correct && isChosen,
@@ -31,7 +31,7 @@ export default class Answer extends React.Component {
                 }
             } else {
                 symbol = (
-                    <span>&bull;</span>
+                    <span style={{paddingLeft: 5}}>&bull;</span>
                 );
             }
         }
