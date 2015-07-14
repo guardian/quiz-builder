@@ -30,9 +30,7 @@ export default class Answer extends React.Component {
                     symbol = cross();
                 }
             } else if (isChosen) {
-                symbol = (
-                    <span key="icon" style={{paddingLeft: 5}}>&bull;</span>
-                );
+                symbol = tick();
             }
         }
 
