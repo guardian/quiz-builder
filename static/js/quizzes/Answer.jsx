@@ -54,7 +54,7 @@ export default class Answer extends React.Component {
             </div>
         );
 
-        const canSelectAnswer = !isAnswered || (revealAtEnd && !isFinished);
+        const canSelectAnswer = !isAnswered || ((revealAtEnd || !isTypeKnowledge) && !isFinished);
 
         return (
             <a data-link-name={`answer ${this.props.index + 1}`}
