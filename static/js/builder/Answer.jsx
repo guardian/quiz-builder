@@ -51,7 +51,7 @@ export default class Answer extends React.Component {
     render() {
         const isKnowledge = this.isKnowledge();
         const isPersonality = this.isPersonality();
-        const answer = this.props.answer;
+        const {answer} = this.props;
         const answerText = answer.get('answer');
         const imageUrl = answer.get('imageUrl');
         const isCorrect = isKnowledge && answer.get('correct');
@@ -113,16 +113,12 @@ export default class Answer extends React.Component {
                 <div className="row">
                     <div className="col-md-10">
                         {imageThumbnail}
-
                         <FormInput name={nthLetter(this.props.index)}
                                    placeholder="Enter answer text here ..."
                                    set={this.props.setText}
                                    value={answerText} />
-
                         {imageUrlField}
-
                         {revealText}
-
                         {buckets}
                     </div>
                     <div className="col-md-2" style={{textAlign: 'right'}}>

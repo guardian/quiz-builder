@@ -78,7 +78,12 @@
     padding: 12px;
 }
 
-.quiz__answer--chosen,
+.quiz__answer--chosen {
+    background-color: #00456e; /* guardian-brand-dark */
+    color: #ffffff;
+    opacity: 1;
+}
+
 .quiz__answer--correct-chosen {
     background-color: #43B347; /* ??? */
     color: #ffffff;    

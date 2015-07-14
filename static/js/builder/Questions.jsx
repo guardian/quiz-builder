@@ -19,11 +19,17 @@ export default class Questions extends React.Component {
         });
     }
 
+    setRevealAtEnd(event) {
+        this.props.setRevealAtEnd(event.target.checked);
+    }
+
     render() {
         const props = this.props;
         const {quiz} = props;
         const quizType = quiz.get('quizType');
-        const buckets = quizType === 'personality' ? quiz.get('resultBuckets') : null;
+        const revealAtEnd = quiz.get('revealAtEnd');
+        const isPersonality = quizType === 'personality';
+        const buckets = isPersonality ? quiz.get('resultBuckets') : null;
 
         let questions = quiz.get('questions').map((question, i) =>
             <Question question={question} 
@@ -53,14 +59,29 @@ export default class Questions extends React.Component {
             questionsHtml = <p>Add some questions to get started.</p>
         }
 
+        const revealAtEndCheckbox = !isPersonality ? (
+            <div className="checkbox">
+                <label>
+                    <input type="checkbox"
+                           key="reveal_at_end"
+                           checked={revealAtEnd}
+                           onChange={this.setRevealAtEnd.bind(this)}
+                           /> Only reveal answers at end
+                </label>
+            </div>
+        ) : null;
+
         return (
             <div key="questions">
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox"
-                               checked={this.state.showImages}
-                               onChange={this.onShowImagesChange.bind(this)} /> Show images
-                    </label>
+                <div className="form-inline">
+                    <div className="checkbox" style={{paddingRight: 5}}>
+                        <label>
+                            <input type="checkbox"
+                                   checked={this.state.showImages}
+                                   onChange={this.onShowImagesChange.bind(this)} /> Show images
+                        </label>
+                    </div>
+                    {revealAtEndCheckbox}
                 </div>
 
                 {questionsHtml}
