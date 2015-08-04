@@ -101,6 +101,22 @@
             }
         },
 
+    "QuizBuilderGetDistributablesPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "QuizBuilderGetDistributablesPolicy",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject"],
+              "Resource": ["arn:aws:s3:::quiz-builder-dist/*"]
+            }
+          ]
+        },
+        "Roles": [{"Ref": "DistributionRole"}]
+      }
+    },
         "DynamoDBTablePolicy": {
             "Type": "AWS::IAM::Policy",
             "Properties": {
