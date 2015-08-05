@@ -6,14 +6,11 @@ import org.joda.time.DateTime
 import play.api.libs.json.{Format, Json}
 
 import scala.util.Try
-import conf.Config
+
 package object data extends Logging {
-    val dynamoDbClient: AmazonDynamoDBAsyncClient =
-    Config.awsKeys.creds.map { c =>
-      new AmazonDynamoDBAsyncClient(c.awsApiCreds).withRegion(Regions.EU_WEST_1)
-    } getOrElse {
-      new AmazonDynamoDBAsyncClient().withRegion(Regions.EU_WEST_1)
-    }
+
+  val dynamoDbClient: AmazonDynamoDBAsyncClient =
+    new AmazonDynamoDBAsyncClient().withRegion(Regions.EU_WEST_1)
 
   implicit class RichAttributeMap(map: Map[String, AttributeValue]) {
     def getString(k: String): Option[String] =
