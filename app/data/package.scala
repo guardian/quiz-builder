@@ -8,7 +8,6 @@ import play.api.libs.json.{Format, Json}
 import scala.util.Try
 
 package object data extends Logging {
-
   val dynamoDbClient: AmazonDynamoDBAsyncClient =
     new AmazonDynamoDBAsyncClient().withRegion(Regions.EU_WEST_1)
 
