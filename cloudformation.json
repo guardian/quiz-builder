@@ -50,30 +50,10 @@
             "desiredCapacity": 1,
             "maxSize": 2
           },
-          "RELEASE": {
-            "lowercase": "release",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "QA": {
-            "lowercase": "qa",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "TEST": {
-            "lowercase": "test",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
-          "CODE": {
-            "lowercase": "code",
-            "desiredCapacity": 1,
-            "maxSize": 2
-          },
           "PROD": {
             "lowercase": "prod",
-            "desiredCapacity": 2,
-            "maxSize": 4
+            "desiredCapacity": 1,
+            "maxSize": 2
           }
       }
   },
@@ -95,6 +75,31 @@
         "Path": "/"
       }
     },
+      "DynamoDBTablePolicy": {
+          "Type": "AWS::IAM::Policy",
+          "Properties": {
+              "PolicyName": "QuizBuilderDynamoDBPolicy",
+              "PolicyDocument": {
+                  "Statement": [ {
+                      "Action": [
+                          "dynamodb:*"
+                      ],
+                      "Effect": "Allow",
+                      "Resource": { "Fn::Join": [":", [
+                          "arn:aws:dynamodb",
+                          {"Ref": "AWS::Region"},
+                          {"Ref": "AWS::AccountId"},
+                          {"Fn::Join": ["", [
+                              "table/",
+                              {"Ref": "DynamoDBTablePrefix"},
+                              "*"
+                          ]]}
+                      ]] }
+                  }]
+              },
+              "Roles": [ { "Ref": "QuizBuilderRole" } ]
+          }
+      },
     "QuizBuilderDescribeEC2Policy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
