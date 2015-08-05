@@ -1,0 +1,38 @@
+{
+  "defaultStacks": ["quiz-builder"],
+  "packages": {
+    "restorer" : {
+      "type": "autoscaling",
+      "data": {
+        "bucket": "composer-dist",
+        "publicReadAcl": false
+      }
+    },
+    "quiz-builder-cloudformation" : {
+      "type": "cloud-formation",
+      "fileName": "cloudformation",
+      "data": {
+        "templatePath": "quiz-builder.json",
+        "cloudFormationStackName": "QuizBuilder",
+        "prependStackToCloudFormationStackName": false
+      }
+    }
+  },
+  "recipes": {
+    "default": {
+      "depends": ["quiz-builder-cloudformation", "artifactUploadOnly", "deployOnly"]
+    },
+
+    "deployOnly": {
+      "actionsBeforeApp": ["QuizBuilder.deploy"]
+    },
+
+    "artifactUploadOnly": {
+      "actionsBeforeApp": ["QuizBuilder.uploadArtifacts"]
+    },
+
+    "restorer-cloudformation": {
+      "actions": ["quiz-builder-cloudformation.updateStack"]
+    }
+  }
+}
