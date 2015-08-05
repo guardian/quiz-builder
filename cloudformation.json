@@ -45,6 +45,22 @@
     },
 
     "Resources": {
+        "DistributionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [ {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "ec2.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    } ]
+                },
+                "Path": "/"
+            }
+        },
+
         "LoadBalancer": {
             "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
             "Properties": {
@@ -110,7 +126,7 @@
             {
               "Effect": "Allow",
               "Action": ["s3:GetObject"],
-              "Resource": ["arn:aws:s3:::quiz-builder-dist/*"]
+              "Resource": ["arn:aws:s3:::composer-dist/*"]
             }
           ]
         },
@@ -142,23 +158,6 @@
                 "Roles": [ { "Ref": "DistributionRole" } ]
             }
         },
-
-        "DistributionRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Statement": [ {
-                        "Effect": "Allow",
-                        "Principal": {
-                            "Service": [ "ec2.amazonaws.com" ]
-                        },
-                        "Action": [ "sts:AssumeRole" ]
-                    } ]
-                },
-                "Path": "/"
-            }
-        },
-
         "DistributionInstanceProfile": {
             "Type": "AWS::IAM::InstanceProfile",
             "Properties": {
