@@ -187,7 +187,7 @@
                             "adduser --system --home /quiz-builder --disabled-password quiz-builder",
 
                             {"Fn::Join": ["/", [
-                                "wget https://s3-eu-west-1.amazonaws.com/quiz-builder-dist",
+                                "wget https://s3-eu-west-1.amazonaws.com/composer-dist/quiz-builder",
                                 { "Ref" : "Stage" },
                                 "quiz-builder.conf --directory-prefix=/etc/init"]]
                             },
