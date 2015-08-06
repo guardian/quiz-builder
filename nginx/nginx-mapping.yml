@@ -1,0 +1,6 @@
+name: quizzes
+mappings:
+  - prefix: quizzes
+    port: 9098
+    domain-root: local.gutools.co.uk
+    cert-domain: local.dev-gutools.co.uk

@@ -1,57 +1,71 @@
 {
-  "jspm": {
-    "directories": {
-      "lib": "lib"
+
+    "name": "quiz-builder",
+    "version": "1.0.0",
+    "description": "Tool for building Guardian quiz JSON",
+    "main": "app.js",
+    "scripts": {
+        "start": "NODE_ENV='development' ./node_modules/.bin/nodemon app.js"
     },
     "dependencies": {
-      "classnames": "npm:classnames@^1.2.0",
-      "ded/bonzo": "github:ded/bonzo@^2.0.0",
-      "ded/qwery": "github:ded/qwery@^4.0.0",
-      "ded/reqwest": "github:ded/reqwest@^1.1.5",
-      "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
-      "fat/bean": "github:fat/bean@^1.0.14",
-      "jsonschema": "npm:jsonschema@^1.0.1",
-      "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
-      "lodash": "npm:lodash@^3.7.0",
-      "lodash-node": "npm:lodash-node@^3.7.0",
-      "moment": "npm:moment@^2.10.2",
-      "node-uuid": "npm:node-uuid@^1.4.3",
-      "react": "npm:react@^0.13.1",
-      "react-router": "npm:react-router@^0.13.2",
-      "reqwest": "github:ded/reqwest@^1.1.5",
-      "systemjs/plugin-css": "github:systemjs/plugin-css@^0.1.10",
-      "whatwg-fetch": "npm:whatwg-fetch@^0.7.0"
+        "express": "^4.13.3",
+        "aws-sdk": "2.1.43",
+        "gulp": "^3.8.11",
+        "gulp-sass": "^1.3.3",
+        "gulp-sourcemaps": "^1.5.2",
+        "body-parser": "~1.10.2",
+        "cookie-parser": "~1.3.3",
+        "jspm": "^0.15.3",
+        "serve-favicon": "~2.2.0",
+        "morgan": "~1.5.1",
+        "q": "^1.4.1",
+        "pan-domain-node": "git://github.com/guardian/pan-domain-node.git",
+        "less-middleware": "1.0.x",
+        "ejs": "~2.2.3"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.0.12",
-      "babel-runtime": "npm:babel-runtime@^5.0.12",
-      "core-js": "npm:core-js@^0.8.1"
+        "core-util-is": "^1.0.1",
+        "end-of-stream": "^1.1.0",
+        "gulp": "^3.8.11",
+        "gulp-s3": "^0.3.0",
+        "gulp-shell": "^0.4.1",
+        "gulp-util": "^3.0.4",
+        "lodash": "^3.7.0",
+        "lodash.template": "^3.5.0",
+        "mime": "^1.3.4",
+        "nodemon": "1.4.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "license": "Apache 2",
+    "jspm": {
+        "directories": {
+            "lib": "lib"
+        },
+        "dependencies": {
+            "classnames": "npm:classnames@^1.2.0",
+            "ded/bonzo": "github:ded/bonzo@^2.0.0",
+            "ded/qwery": "github:ded/qwery@^4.0.0",
+            "ded/reqwest": "github:ded/reqwest@^1.1.5",
+            "facebook/immutable-js": "github:facebook/immutable-js@^3.7.2",
+            "fat/bean": "github:fat/bean@^1.0.14",
+            "jsonschema": "npm:jsonschema@^1.0.1",
+            "jsx": "github:floatdrop/plugin-jsx@^1.1.0",
+            "lodash": "npm:lodash@^3.7.0",
+            "lodash-node": "npm:lodash-node@^3.7.0",
+            "moment": "npm:moment@^2.10.2",
+            "node-uuid": "npm:node-uuid@^1.4.3",
+            "react": "npm:react@^0.13.1",
+            "react-router": "npm:react-router@^0.13.2",
+            "reqwest": "github:ded/reqwest@^1.1.5",
+            "systemjs/plugin-css": "github:systemjs/plugin-css@^0.1.10",
+            "whatwg-fetch": "npm:whatwg-fetch@^0.7.0"
+        },
+        "devDependencies": {
+            "babel": "npm:babel-core@^5.0.12",
+            "babel-runtime": "npm:babel-runtime@^5.0.12",
+            "core-js": "npm:core-js@^0.8.1"
+        }
     }
-  },
-  "name": "quiz-builder",
-  "version": "1.0.0",
-  "description": "Tool for building Guardian quiz JSON",
-  "main": "lib/bootstrap.js",
-  "dependencies": {
-    "gulp": "^3.8.11",
-    "gulp-sass": "^1.3.3",
-    "gulp-sourcemaps": "^1.5.2",
-    "jspm": "^0.15.3"
-  },
-  "devDependencies": {
-    "core-util-is": "^1.0.1",
-    "end-of-stream": "^1.1.0",
-    "gulp": "^3.8.11",
-    "gulp-s3": "^0.3.0",
-    "gulp-shell": "^0.4.1",
-    "gulp-util": "^3.0.4",
-    "lodash": "^3.7.0",
-    "lodash.template": "^3.5.0",
-    "mime": "^1.3.4"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Robert Berry <robert.berry@theguardian.com>",
-  "license": "Apache 2"
 }
