@@ -9,7 +9,8 @@ var application = require('../app/controllers/application');
 
 module.exports = function (app, passport, env) {
     app.get("/", application.index);
-
+    app.get("/quizzes.json", application.listQuizzes);
+    app.get("/quizzes/:id.json", application.getQuiz);
     // user routes
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
@@ -23,7 +24,7 @@ module.exports = function (app, passport, env) {
     if (app.get('env') === 'development') {
         app.use(function(err, req, res, next) {
             res.status(err.status || 500);
-            res.render('error', {o
+            res.render('error', {
                 message: err.message,
                 error: err
             });
