@@ -8,10 +8,19 @@ var application = require('../app/controllers/application');
 
 
 module.exports = function (app, passport, env) {
+    // user routes
     app.get("/", application.index);
+    app.get("/_healthcheck", application.healthcheck);
     app.get("/quizzes.json", application.listQuizzes);
     app.get("/quizzes/:id.json", application.getQuiz);
-    // user routes
+
+    app.post("/quizzes.json", application.createQuiz);
+    app.post("/quizzes/:id.json", application.updateQuiz);
+
+    app.delete("/quizzes/:id", application.deleteQuiz);
+
+
+
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');

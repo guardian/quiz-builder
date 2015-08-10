@@ -1,18 +1,14 @@
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
+const UUID = require('node-uuid');
 
-var dynamodb = new AWS.DynamoDB({region: 'eu-west-1'});
+const dynamodb = new AWS.DynamoDB({region: 'eu-west-1'});
+
+const TableName = 'QuizBuilderPROD_Quizzes';
 
 function listQuizzes() {
-    var params = {
-        TableName: 'QuizBuilderPROD_Quizzes',
-        AttributesToGet: [
-            'id',
-            'title',
-            'createdAt',
-            'createdBy',
-            'updatedBy',
-            'updatedAt'
-        ],
+    const params = {
+        TableName: TableName,
+        ProjectionExpression: 'id, title, createdAt, createdBy, updatedAt, updatedBy',
         ConsistentRead: true || false,
         Limit: 10,
         Segment: 0,
@@ -22,7 +18,6 @@ function listQuizzes() {
     return new Promise((resolve, reject) => {
         dynamodb.scan(params, (err, data) => {
             if (err) {
-                console.log("error: ", err);
                 return reject(err);
             }
             return resolve(data);
@@ -31,11 +26,14 @@ function listQuizzes() {
 }
 
 function getQuiz(id) {
-    var params = {
-        TableName: 'QuizBuilderPROD_Quizzes',
+    const params = {
+        TableName: TableName,
         Key: {
-            S: id
-        }
+            id: {
+                S: id
+            }
+        },
+        ProjectionExpression: 'id, title, createdAt, createdBy, updatedAt, updatedBy, quiz'
     };
 
     return new Promise((resolve, reject) => {
@@ -48,8 +46,132 @@ function getQuiz(id) {
     });
 }
 
+function updateQuiz(id, user, body) {
+    const quiz = body.quiz;
+    const title = body.title;
+
+    const params = {
+        TableName: TableName,
+        Key: {
+            id: {
+                S: id
+            }
+        },
+        AttributesToUpdate: {
+            updatedAt: {
+                Value: {
+                    N: Date.now().toString()
+                },
+                Action: 'PUT'
+            },
+            updatedBy: {
+                S: user
+            },
+            quiz: {
+                Value: {
+                    S: quiz
+                },
+                Action: 'PUT'
+            },
+            title: {
+                Value: {
+                    S: title
+                },
+                Action: 'PUT'
+            }
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        dynamodb.updateItem(params, (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(data);
+        });
+    });
+}
+
+
+function createQuiz(user, body) {
+    const title = body.title;
+    const type = body.type;
+    const defaultColumns = body.defaultColumns;
+    const id = UUID.v4();
+
+    const emptyQuiz = () => {
+        return JSON.stringify({
+            id: id,
+            header: {
+                titleText: title,
+                quizType: type,
+                defaultColumns: defaultColumns
+            }
+        });
+    };
+
+    const params = {
+        TableName: TableName,
+        Item: {
+            id: {
+                S: id
+            },
+            createdAt: {
+                N: Date.now().toString()
+            },
+            updatedAt: {
+                N: Date.now().toString()
+            },
+            createdBy: {
+                S: user
+            },
+            updatedBy: {
+                S: user
+            },
+            quiz: {
+                S: emptyQuiz()
+            },
+            title: {
+                S: title
+            }
+        },
+        ReturnValues: 'ALL_NEW'
+    };
+
+    return new Promise((resolve, reject) => {
+        dynamodb.putItem(params, (err, data) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(data);
+        });
+    });
+}
+
+function deleteQuiz(id) {
+    const params = {
+        TableName: TableName,
+        Key: {
+            id: {
+                S: id
+            }
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        dynamodb.deleteItem(params, (err, data) => {
+            if(err) {
+                return reject(err);
+            }
+            return resolve(data);
+        });
+    });
+}
 
 module.exports = {
     listQuizzes: listQuizzes,
-    getQuiz: getQuiz
+    getQuiz: getQuiz,
+    updateQuiz: updateQuiz,
+    createQuiz: createQuiz,
+    deleteQuiz: deleteQuiz
 };

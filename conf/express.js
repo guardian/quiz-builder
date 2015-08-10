@@ -32,8 +32,8 @@ module.exports = function (app, env) {
     // uncomment after placing your favicon in /public
     //app.use(favicon(__dirname + '/public/favicon.ico'));
     app.use(logger('dev'));
-    app.use(bodyParser.json());;
-    app.use(bodyParser.urlencoded({ extended: false }));
+//    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(require('less-middleware')(path.join(__dirname, '/public')));
     app.use(express.static(path.join(__dirname, '/public')));
@@ -48,7 +48,6 @@ module.exports = function (app, env) {
 
     // Use panda auth for all routes except healthcheck
     app.use(/\/((?!healthcheck).)*/, httpToHttpsRedirectOnProd, pandaAuthMiddleware);
-
     // Panda Auth no user error handler
     var PANDA_AUTH_ERROR_MESSAGE = PanDomainNode.PandaAuthFailedErrorMessage;
     app.use(function(err, req, res, next) {
