@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const UUID = require('node-uuid');
+const unmarshal = require('dynamodb-marshaler').unmarshalItem;
 
 const dynamodb = new AWS.DynamoDB({region: 'eu-west-1'});
 
@@ -20,7 +21,7 @@ function listQuizzes() {
             if (err) {
                 return reject(err);
             }
-            return resolve(data);
+            return resolve(data.Items.map(unmarshal));
         });
     });
 }
@@ -41,7 +42,7 @@ function getQuiz(id) {
             if (err) {
                 return reject(err);
             }
-            return resolve(data);
+           return resolve(unmarshal(data.Item));
         });
     });
 }

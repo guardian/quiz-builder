@@ -21,14 +21,15 @@ exports.healthcheck = (req, res) => {
 
 exports.listQuizzes =  (req, res) => {
     dynamo.listQuizzes().then((data) => {
-        res.send({"quizzes": data.Items});
+        res.send(data);
     }, errorHandler);
 };
 
 
 exports.getQuiz = (req, res) => {
     dynamo.getQuiz(req.params.id).then((data) => {
-        res.send(data);
+        var transformed = data['quiz'] = JSON.parse(data['quiz']);
+        res.send(transformed);
     }, errorHandler);
 };
 
