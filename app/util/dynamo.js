@@ -48,7 +48,7 @@ function getQuiz(id) {
 
 function updateQuiz(id, user, body) {
     const quiz = body.quiz;
-    const title = body.title;
+    const title = quiz.header.titleText;
 
     const params = {
         TableName: TableName,
@@ -57,7 +57,7 @@ function updateQuiz(id, user, body) {
                 S: id
             }
         },
-        AttributesToUpdate: {
+        AttributeUpdates: {
             updatedAt: {
                 Value: {
                     N: Date.now().toString()
@@ -65,11 +65,14 @@ function updateQuiz(id, user, body) {
                 Action: 'PUT'
             },
             updatedBy: {
-                S: user
+                Value: {
+                    S: user
+                },
+                Action: 'PUT'
             },
             quiz: {
                 Value: {
-                    S: quiz
+                    S: JSON.stringify(quiz)
                 },
                 Action: 'PUT'
             },
