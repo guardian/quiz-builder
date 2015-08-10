@@ -137,8 +137,7 @@ function createQuiz(user, body) {
             title: {
                 S: title
             }
-        },
-        ReturnValues: 'ALL_NEW'
+        }
     };
 
     return new Promise((resolve, reject) => {
