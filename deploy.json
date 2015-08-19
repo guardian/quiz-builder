@@ -13,7 +13,7 @@
       "fileName": "cloudformation",
       "data": {
         "templatePath": "quiz-builder.json",
-        "cloudFormationStackName": "QuizBuilder",
+        "cloudFormationStackName": "quiz-builder",
         "prependStackToCloudFormationStackName": false
       }
     }
@@ -24,11 +24,11 @@
     },
 
     "deployOnly": {
-      "actionsBeforeApp": ["QuizBuilder.deploy"]
+      "actionsBeforeApp": ["quiz-builder.deploy"]
     },
 
     "artifactUploadOnly": {
-      "actionsBeforeApp": ["QuizBuilder.uploadArtifacts"]
+      "actionsBeforeApp": ["quiz-builder.uploadArtifacts"]
     },
 
     "quiz-builder-cloudformation": {
