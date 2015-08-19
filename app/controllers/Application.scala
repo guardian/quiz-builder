@@ -1,8 +1,6 @@
 package controllers
 
 import _root_.data.{Quiz, QuizTable}
-import auth.AuthActions
-import com.gu.googleauth.UserIdentity
 import deployment.Deployment
 import org.joda.time.DateTime
 import play.api.libs.json.Json
@@ -14,13 +12,11 @@ import scala.concurrent.Future
 
 object UserInfo {
   implicit val jsonWrites = Json.writes[UserInfo]
-
-  def fromUserIdentity(user: UserIdentity) = UserInfo(user.email, user.fullName)
 }
 
 case class UserInfo(email: String, name: String)
 
-object Application extends Controller with AuthActions {
+object Application extends Controller with PanDomainAuthActions {
   def boot(id: String) = AuthAction.async {
     QuizTable.get(id) map { response =>
       Ok(views.txt.boot(id, Json.toJson(response.get)))
@@ -28,7 +24,7 @@ object Application extends Controller with AuthActions {
   }
 
   def launchApp(ignoredParam: String) = AuthAction { request =>
-    Ok(views.html.index(UserInfo.fromUserIdentity(request.user)))
+    Ok(views.html.index(UserInfo(request.user.email, request.user.firstName + " " + request.user.lastName)))
   }
 
   def listQuizzes = AuthAction.async {
