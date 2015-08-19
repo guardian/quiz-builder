@@ -24,6 +24,7 @@ lazy val mainProject = project.in(file("."))
   .enablePlugins(PlayScala, RiffRaffArtifact)
   .settings(Defaults.coreDefaultSettings: _*)
   .settings(
+    name in Universal := normalizedName.value,
     riffRaffPackageType := (packageZipTarball in config("universal")).value,
     riffRaffArtifactResources ++= Seq(
       baseDirectory.value / "cloudformation" / "quiz-builder.json" ->
