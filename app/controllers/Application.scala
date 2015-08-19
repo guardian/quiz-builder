@@ -34,6 +34,7 @@ object Application extends Controller with PanDomainAuthActions {
   }
 
   def getQuiz(id: String) = AuthAction.async {
+
     QuizTable.get(id) map { response =>
       (for {
         entry <- response
