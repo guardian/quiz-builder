@@ -6,9 +6,7 @@
 GET     /_healthcheck               controllers.Healthcheck.healthcheck
 
 # Authentication
-GET     /oauth2callback             controllers.Login.oauth2Callback
-GET     /loginAction                controllers.Login.loginAction
-GET     /login                      controllers.Login.login
+GET     /oauthCallback              controllers.Login.oauthCallback
 GET     /logout                     controllers.Login.logout
 
 # debug

@@ -22,6 +22,6 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "com.amazonaws" % "aws-java-sdk" % "1.9.32",
-  "com.gu" %% "play-googleauth" % "0.2.1",
+  "com.gu" %% "pan-domain-auth-play" % "0.2.6",
   "org.clapper" %% "grizzled-slf4j" % "1.0.2"
 )
