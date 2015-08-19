@@ -2,19 +2,13 @@ import com.typesafe.sbt.packager.Keys._
 
 name := "quiz-builder"
 
-version := "1.0-SNAPSHOT"
+version := "1.0"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala, SbtWeb, RiffRaffArtifact)
+sources in (Compile, doc) := Seq.empty
 
-scalaVersion := "2.11.6"
+publishArtifact in (Compile, packageDoc) := false
 
-scalacOptions := List("-feature", "-deprecation")
-
-doc in Compile <<= target.map(_ / "none")
-
-name in Universal := normalizedName.value
-
-riffRaffPackageType := (dist in Universal).value
+ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
 
 libraryDependencies ++= Seq(
   jdbc,
@@ -25,3 +19,14 @@ libraryDependencies ++= Seq(
   "com.gu" %% "pan-domain-auth-play" % "0.2.6",
   "org.clapper" %% "grizzled-slf4j" % "1.0.2"
 )
+
+lazy val mainProject = project.in(file("."))
+  .enablePlugins(PlayScala, RiffRaffArtifact)
+  .settings(Defaults.coreDefaultSettings: _*)
+  .settings(
+    riffRaffPackageType := (packageZipTarball in config("universal")).value,
+    riffRaffArtifactResources ++= Seq(
+      baseDirectory.value / "cloudformation" / "quiz-builder.json" ->
+        "packages/cloudformation/quiz-builder.json"
+    )
+  )
