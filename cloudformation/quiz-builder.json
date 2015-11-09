@@ -41,7 +41,7 @@
     "SSLCertificateId": {
       "Environment": {
         "CODE": "arn:aws:iam::743583969668:server-certificate/sites.code.dev-gutools.co.uk-exp2023-08-15",
-        "PROD": "arn:aws:iam::743583969668:server-certificate/sites.gutools.co.uk-exp2015-10-20"
+        "PROD": "arn:aws:iam::743583969668:server-certificate/star.gutools.co.uk-exp2018-11-17"
       }
     },
       "EnvironmentMap": {
@@ -84,6 +84,22 @@
         "Path": "/"
       }
     },
+      "PanDomainPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "PanDomainPolicy",
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": ["s3:GetObject"],
+                            "Resource": ["arn:aws:s3:::pan-domain-auth-settings/*"]
+                        }
+                    ]
+                },
+                "Roles": [{"Ref": "QuizBuilderRole"}]
+            }
+        },
       "DynamoDBTablePolicy": {
           "Type": "AWS::IAM::Policy",
           "Properties": {
