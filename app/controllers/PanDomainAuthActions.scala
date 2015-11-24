@@ -15,7 +15,7 @@ trait PanDomainAuthActions extends AuthActions {
   override lazy val system: String = "quiz-builder"
   override def authCallbackUrl: String = config.hostName + "/oauthCallback"
   override lazy val domain: String = config.domain
-  override lazy val awsCredentials = for (key <- config.pandomainKey; secret <- config.pandomainSecret) yield new BasicAWSCredentials(key, secret)
+  lazy val awsCredentials = for (key <- config.pandomainKey; secret <- config.pandomainSecret) yield new BasicAWSCredentials(key, secret)
 
 
 }
