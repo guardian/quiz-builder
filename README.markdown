@@ -1,3 +1,5 @@
+# NOTE: This is no longer used - replaced by https://github.com/guardian/ten-four_quiz-builder
+
 # Quiz builder
 
 Tool for building Guardian quiz JSON.
